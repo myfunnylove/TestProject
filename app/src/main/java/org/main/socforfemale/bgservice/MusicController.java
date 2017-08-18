@@ -27,6 +27,7 @@ import android.widget.TextView;
 import org.main.socforfemale.R;
 import org.main.socforfemale.base.Base;
 import org.main.socforfemale.resources.utils.log;
+import org.main.socforfemale.ui.activity.MainActivity;
 
 import java.util.Formatter;
 import java.util.Locale;

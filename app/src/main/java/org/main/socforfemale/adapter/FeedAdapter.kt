@@ -349,7 +349,8 @@ class FeedAdapter(context: Context,
                     val adapter = PostAudioGridAdapter(ctx, post.audios,object :MusicPlayerListener{
                         override fun playClick(listSong: ArrayList<Audio>, position: Int) {
 
-                            player.playClick(listSong,position)
+                            try{
+                                player.playClick(listSong,position)
 
 
                                 if (FeedFragment.playedSongPosition != -1 ){
@@ -366,6 +367,9 @@ class FeedAdapter(context: Context,
                                 }
 
                                 FeedFragment.playedSongPosition = i
+                            }catch (e :Exception){
+
+                            }
 
                         }
 

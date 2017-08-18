@@ -475,6 +475,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
             else -> {
 
                 log.d("lastfragment -> ${lastFragment}")
+                log.d("profil followers count -> ${FFFFragment.followersCount}")
                 if  (lastFragment == 4 && FFFFragment.followersCount != -1 && profilFragment != null ){
                     MyProfileFragment.FOLLOWING = FFFFragment.followersCount.toString()
                     profilFragment!!.postAdapter!!.updateFollowersCount()

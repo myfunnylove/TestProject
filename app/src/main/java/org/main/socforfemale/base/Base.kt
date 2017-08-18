@@ -71,7 +71,7 @@ class Base : Application (){
 
         CalligraphyConfig.initDefault(
                 CalligraphyConfig.Builder()
-                                 .setDefaultFontPath("font/Muli-Regular.ttf")
+                                 .setDefaultFontPath("font/Quicksand-Regular.otf")
                                  .setFontAttrId(R.attr.fontPath)
                                  .build()
                                      )

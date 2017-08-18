@@ -218,7 +218,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
                 followersFragment!!.swapList(follow.users)
                 FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
-
+                log.d("get followers -> ${FFFFragment.followersCount}")
             }
         }
         else if (from == Http.CMDS.GET_FOLLOWING){
@@ -231,6 +231,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
                 followersFragment!!.swapList(follow.users)
                 FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
+                log.d("get following -> ${FFFFragment.followersCount}")
 
             }
         }

@@ -221,7 +221,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         super.onResume()
         log.d("Onresume $OZGARGAN_USERNI_IDSI $QAYSI_HOLATGA_OZGARDI")
 
-         if (adapter != null) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
+         if (adapter != null && header.text.toString() == Base.instance.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
         if (OZGARGAN_USERNI_IDSI != -1 && adapter != null){
             when(QAYSI_HOLATGA_OZGARDI){
                 ProfileFragment.REQUEST ->{

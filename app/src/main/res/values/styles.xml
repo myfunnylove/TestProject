@@ -105,14 +105,16 @@
     </style>
 
 
+    <style name="TextViewCustomFont">
 
+    </style>
     <!--Material Button-->
     <!--TextStyle-->
     <style name="HeaderText">
 
         <item name="android:textSize">@dimen/headerTextSize</item>
         <item name="android:textColor">@color/headerTextColor</item>
-
+        <item name="fontPath">font/Quicksand-Bold.otf</item>
     </style>
     <style name="NormalText">
 
