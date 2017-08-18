@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        app:srcCompat="@drawable/image"
+        />
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+       android:layout_below="@+id/logo">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/HeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="WELCOME"
+                />
+
+            <TextView
+                android:id="@+id/errorText"
+                style="@style/ErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/loginLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="USER NAME"
+                android:textColorHint="@color/asbestos"
+                >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/login"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/passLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="PASSWORD"
+                android:textColorHint="@color/asbestos">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/pass"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                style="@style/NormalText"
+                android:textSize="12sp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:text="FORGOT PASSSWORD?" />
+            <Button
+
+                android:id="@+id/logIn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Log IN"
+
+                android:theme="@style/ButtonUnpressed" />
+
+            <TextView
+                style="@style/NormalText"
+                android:textColor="@color/asbestos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="OR" />
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/loginVk"
+                android:layout_width="match_parent"
+
+                android:layout_height="50dp"
+                android:theme="@style/VkBtn"
+                app:srcCompat="@drawable/vk"
+
+                />
+
+
+
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/loginFb"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:theme="@style/FaceBookBtn"
+                app:srcCompat="@drawable/facebook"
+
+                />
+
+
+            <TextView
+                style="@style/NormalText"
+                android:textColor="@color/asbestos"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="OR"
+                />
+
+            <TextView
+                android:id="@+id/signUp"
+                style="@style/NormalText"
+                android:textColor="@color/asbestos"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:text="SIGN UP FOR ACCOUNT"
+                android:background="@drawable/gray_when_select"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    <LinearLayout
+        android:id="@+id/progressLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80dddddd"
+        android:gravity="center"
+
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+</RelativeLayout>

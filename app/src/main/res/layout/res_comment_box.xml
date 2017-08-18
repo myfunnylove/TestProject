@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="6dp"
+    android:layout_marginBottom="1dp"
+    >
+
+    <org.main.socforfemale.resources.customviews.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center_horizontal"
+
+        app:civ_fill_color="@color/white" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/username"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="Renata"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/comment"
+            style="@style/NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="2"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:gravity="center_vertical|right"-->
+    <!--&gt;-->
+    <!--<android.support.v7.widget.AppCompatImageView-->
+
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:padding="3dp"-->
+    <!--app:srcCompat="@drawable/clock"-->
+    <!--/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/time"-->
+    <!--style="@style/NormalText"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+
+
+    <!--android:text="1 hour"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/silver"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+</LinearLayout>

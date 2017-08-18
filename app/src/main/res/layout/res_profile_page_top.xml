@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+
+        android:elevation="6dp"
+        android:layout_marginTop="140dp"
+        tools:targetApi="lollipop"
+        >
+       <LinearLayout
+
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+            android:gravity="bottom"
+           android:orientation="vertical"
+           >
+           <TextView
+
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/HeaderText"
+               android:text="Renata"
+               android:gravity="center"
+
+               />
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/NormalText"
+               android:text="\@renatochka"
+               android:gravity="center"
+                android:textSize="14sp"
+               />
+           <Button
+               android:layout_width="180dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               style="@style/ButtonUnpressed"
+               android:text="Settings"
+               android:layout_marginTop="8dp"
+               android:layout_marginBottom="8dp"
+               />
+           <LinearLayout
+               android:id="@+id/postsLay"
+               android:layout_width="match_parent"
+               android:layout_height="50dp"
+               android:orientation="horizontal"
+
+               >
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical"
+                   android:layout_weight="1"
+                   android:background="@drawable/res_block_gray_when_select"
+                   >
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/HeaderText"
+                       android:gravity="center"
+                       android:text="354"
+                        android:textColor="@color/sky"
+                       />
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/NormalText"
+                       android:gravity="center"
+                       android:text="POSTS"
+
+                       />
+               </LinearLayout>
+               <LinearLayout
+                   android:id="@+id/followersLay"
+
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_weight="1"
+                   android:background="@drawable/res_block_gray_when_select"
+
+
+                   >
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/HeaderText"
+                       android:gravity="center"
+                       android:text="100"
+                       android:textColor="@color/sky"
+
+                       />
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/NormalText"
+                       android:gravity="center"
+                       android:text="FOLLWERS"
+
+                       />
+               </LinearLayout>
+               <LinearLayout
+                   android:id="@+id/followingLay"
+
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_weight="1"
+                   android:background="@drawable/res_block_gray_when_select"
+
+
+                   >
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/HeaderText"
+                       android:gravity="center"
+                       android:text="10"
+                       android:textColor="@color/sky"
+
+                       />
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/NormalText"
+                       android:gravity="center"
+                       android:text="FOLLOWING"
+
+                       />
+               </LinearLayout>
+           </LinearLayout>
+       </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+    <org.main.socforfemale.resources.customviews.FloatingActionImageView
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+
+        app:layout_anchor="@+id/appbar"
+        app:layout_anchorGravity="top|center"
+
+        />
+
+
+    </android.support.design.widget.CoordinatorLayout>

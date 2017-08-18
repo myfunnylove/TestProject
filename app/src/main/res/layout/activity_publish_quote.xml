@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+
+
+                <EditText
+                    android:id="@+id/quoteText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/headerTextColor"
+                    android:layout_above="@+id/appbar"
+
+                    android:gravity="left|top"
+                    android:padding="16dp"
+                    android:hint="write something..."
+                    android:elevation="5dp"
+                    android:textColorHint="@color/asbestos"
+                    tools:targetApi="lollipop" />
+
+
+
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:elevation="5dp"
+    tools:targetApi="lollipop"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.15dp"
+        android:background="@color/silver"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/textSize1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TEXT SIZE"
+            android:gravity="center"
+            style="@style/HeaderText"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/textSize2"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TEXT SIZE"
+            android:gravity="center"
+            style="@style/HeaderText"
+            android:textSize="17sp"
+            />
+        <TextView
+            android:id="@+id/textSize3"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TEXT SIZE"
+            android:gravity="center"
+            style="@style/HeaderText"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="@color/clouds"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/colorList"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="@color/clouds"/>
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+
+
+         />
+</android.support.design.widget.AppBarLayout>
+
+</RelativeLayout>

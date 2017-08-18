@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="buttonTextSize">16sp</dimen>
+    <dimen name="headerTextSize">17sp</dimen>
+    <dimen name="normalTextSize">16sp</dimen>
+</resources>

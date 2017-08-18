@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/border_bottom"
+
+    >
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/play"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:srcCompat="@drawable/play"
+
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+
+        >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:paddingLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/songName"
+            style="@style/NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="12sp"
+            android:paddingLeft="10dp"
+            />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/duration"
+        style="@style/NormalText"
+        android:layout_width="44dp"
+        android:layout_height="match_parent"
+        android:gravity="center|right"
+        android:text="00:00"
+        android:textSize="12sp" />
+</LinearLayout>

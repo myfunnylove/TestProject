@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="buttonTextSize">16sp</dimen>
+    <dimen name="headerTextSize">17sp</dimen>
+    <dimen name="normalTextSize">14sp</dimen>
+    <dimen name="five">2dp</dimen>
+
+    <dimen name="staggered_child_small">120dp</dimen>
+    <dimen name="staggered_child_medium">230dp</dimen>
+    <dimen name="staggered_child_large">310dp</dimen>
+    <dimen name="staggered_child_xlarge">400dp</dimen>
+</resources>

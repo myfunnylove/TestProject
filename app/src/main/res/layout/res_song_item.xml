@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:paddingTop="12dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        app:srcCompat="@drawable/music_select" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/border_bottom"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/songName"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Bangrarang"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/songArtist"
+            style="@style/NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+
+            android:text="Skrillex"
+            android:textSize="13sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/songDuration"
+                style="@style/NormalText"
+                android:textColor="@color/silver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:layout_gravity="center_vertical"
+
+                android:text="10:00:00"
+                android:textSize="13sp" />
+            <TextView
+                android:id="@+id/songSize"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:gravity="left"
+                android:layout_gravity="left|center_vertical"
+                android:maxLines="1"
+                android:text="1 mb"
+                android:textColor="@color/silver"
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/songCheck"
+        style="@style/NormalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+
+        android:clickable="false"
+        android:focusable="false"
+        android:textColor="@color/silver"
+        android:textSize="13sp" />
+</LinearLayout>

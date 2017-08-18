@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <color name="__picker_pager_bg">#CA000000</color>
+  <color name="__picker_selected_bg">#44000000</color>
+  <color name="__picker_black_40">#282828</color>
+  <color name="__picker_common_primary">#f3f3f3</color>
+
+  <color name="__picker_text_40">#505050</color>
+  <color name="__picker_text_80">#505050</color>
+  <color name="__picker_text_120">#787878</color>
+  <color name="__picker_item_photo_border_selected">#00B8A9</color>
+  <color name="__picker_item_photo_border_n">#33ffffff</color>
+  <color name="__picker_colorPrimary">@color/__picker_white</color>
+  <color name="__picker_colorPrimaryDark">#363636</color>
+  <color name="__picker_colorAccent">#E91E63</color>
+  <color name="__picker_normalTextColor">#767676</color>
+  <color name="__picker_headerTextColor">#363636</color>
+  <color name="__picker_background">#fff</color>
+  <color name="__picker_white">#fff</color>
+  <color name="__picker_sky">@color/__picker_palette1.1</color>
+  <color name="__picker_sky_light">#70C1B3</color>
+  <color name="__picker_turquoise">#1abc9c</color>
+  <color name="__picker_greenSea">#16a085</color>
+  <color name="__picker_emerald">#2ecc71</color>
+  <color name="__picker_nephrits">#27ae60</color>
+  <color name="__picker_peterRiver">#3498db</color>
+  <color name="__picker_belizeHole">#2980b9</color>
+  <color name="__picker_ametHist">#9b59b6</color>
+  <color name="__picker_wisteria">#8e44ad</color>
+  <color name="__picker_wetAsplalt">#34495e</color>
+  <color name="__picker_midnightBlue">#2c3e50</color>
+  <color name="__picker_sunFlower">#f1c40f</color>
+  <color name="__picker_orange">#f39c12</color>
+  <color name="__picker_carrot">#e67e22</color>
+  <color name="__picker_pumpkin">#d35400</color>
+  <color name="__picker_alizarin">#e74c3c</color>
+  <color name="__picker_pomegranate">#c0392b</color>
+  <color name="__picker_clouds">#fafafa</color>
+  <color name="__picker_silver">#d5d9dc</color>
+  <color name="__picker_asbestos">#7f8c8d</color>
+  <color name="__picker_asbestosdark">#656f70</color>
+  <color name="__picker_black_semi_transparent">#B2000000</color>
+
+  <!--COLOR PALETTE-->
+  <color name="__picker_palette1.1">#00B8A9</color>
+  <color name="__picker_palette1.2">#F8F3D4</color>
+  <color name="__picker_palette1.3">#F6416C</color>
+  <color name="__picker_palette1.4">#FFDE7D</color>
+  <color name="__picker_vkColor">#507299</color>
+  <color name="__picker_errorColor">#F44336</color>
+  <color name="__picker_successColor">#00E676</color>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="100dp"
+
+    android:layout_height="70dp"
+
+    android:background="@drawable/style_border_light_gray"
+    android:layout_margin="2dp"
+
+>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/play_select" />
+
+    <LinearLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="2dp"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/songName"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Bangrarang"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/songArtist"
+            style="@style/NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:gravity="center"
+
+            android:text="Skrillex"
+            android:textSize="13sp" />
+
+
+
+    </LinearLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/errorImg"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:background="@color/transparent20"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/upload_error" />
+
+
+
+</RelativeLayout>

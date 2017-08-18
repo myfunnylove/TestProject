@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="horizontal"
+
+    >
+
+    <org.main.socforfemale.resources.customviews.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center_horizontal"
+
+        app:civ_fill_color="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/topContainer"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+
+        >
+
+
+        <TextView
+            android:id="@+id/username"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity="center|right"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatImageView
+
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:padding="3dp"
+            app:srcCompat="@drawable/clock" />
+
+        <TextView
+            android:id="@+id/time"
+            style="@style/NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:text="1 hour"
+            android:textColor="@color/silver"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/popup"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+
+        android:paddingLeft="6dp"
+        app:srcCompat="@drawable/dots_vertical" />
+</LinearLayout>

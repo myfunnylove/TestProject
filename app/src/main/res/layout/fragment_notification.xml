@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/clouds"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/emptyContainer"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+
+        >
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            app:srcCompat="@drawable/notification_light"
+            android:background="@drawable/res_circle_bg"
+            android:padding="16dp"
+            android:layout_margin="6dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/HeaderText"
+            android:textColor="@color/silver"
+            android:text="Your notification will be here"
+            android:gravity="center"
+            />
+    </LinearLayout>
+</RelativeLayout>

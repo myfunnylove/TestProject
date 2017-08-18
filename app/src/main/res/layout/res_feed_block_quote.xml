@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="2dp"
+    app:cardMaxElevation="2dp"
+    app:cardCornerRadius="2dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    >
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:paddingTop="10dp"
+           android:paddingLeft="16dp"
+           android:paddingRight="16dp"
+           android:paddingBottom="10dp"
+           >
+
+            <include layout="@layout/res_feed_top"/>
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginBottom="10dp"
+               android:background="@color/clouds"/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+
+               android:text="“Don't cry because it's over, smile because it happened.”"
+               android:textColor="@color/headerTextColor"
+               android:gravity="left"
+
+
+               android:textSize="15sp"
+
+               />
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginBottom="10dp"
+               android:background="@color/clouds"/>
+            <include layout="@layout/res_feed_bottom"/>
+       </LinearLayout>
+</android.support.v7.widget.CardView>

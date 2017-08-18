@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/appbar"
+            android:fillViewport="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/loadedImage"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+
+                android:scaleType="centerCrop"
+                />
+                <EditText
+                    android:id="@+id/commentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/headerTextColor"
+
+                    android:gravity="left|top"
+                    android:padding="16dp"
+                    android:hint="add comment"
+                    android:elevation="5dp"
+                    android:textColorHint="@color/asbestos"
+                    tools:targetApi="lollipop" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    >
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+
+
+        android:elevation="5dp"
+        tools:targetApi="lollipop" />
+</android.support.design.widget.AppBarLayout>
+
+</RelativeLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.main.socforfemale.resources.customviews.layoutmanager.TwoWayView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/images"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:twowayview_layoutManager="StaggeredGridLayoutManager"
+    app:twowayview_numColumns="2"
+    app:twowayview_numRows="2" />
+

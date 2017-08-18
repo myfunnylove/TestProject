@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">#494949</color>
+    <color name="colorAccent">#e94c6f</color>
+    <color name="normalTextColor">#858585</color>
+    <color name="headerTextColor">#494949</color>
+    <color name="background">#fff</color>
+    <color name="white">#fff</color>
+    <color name="sky">#e94c6f</color>
+    <color name="sky_light">#70C1B3</color>
+    <color name="turquoise">#1abc9c</color>
+    <color name="greenSea">#16a085</color>
+    <color name="emerald">#2ecc71</color>
+    <color name="nephrits">#27ae60</color>
+    <color name="peterRiver">#3498db</color>
+    <color name="belizeHole">#2980b9</color>
+    <color name="ametHist">#9b59b6</color>
+    <color name="wisteria">#8e44ad</color>
+    <color name="wetAsplalt">#34495e</color>
+    <color name="midnightBlue">#2c3e50</color>
+    <color name="sunFlower">#f1c40f</color>
+    <color name="orange">#f39c12</color>
+    <color name="carrot">#e67e22</color>
+    <color name="pumpkin">#d35400</color>
+    <color name="alizarin">#e74c3c</color>
+    <color name="pomegranate">#c0392b</color>
+    <color name="clouds">#f7f7f7</color>
+    <color name="silver">#d5d9dc</color>
+    <color name="asbestos">#b7b7b7</color>
+    <color name="asbestosdark">#858585</color>
+    <color name="black_semi_transparent">#B2000000</color>
+
+    <!--COLOR PALETTE-->
+    <color name="palette1.1">#00B8A9</color>
+    <color name="palette1.2">#F8F3D4</color>
+    <color name="palette1.3">#F6416C</color>
+    <color name="palette1.4">#FFDE7D</color>
+    <color name="vkColor">#507299</color>
+    <color name="errorColor">#F44336</color>
+    <color name="successColor">#00E676</color>
+
+    <color name="transparent80">#80000000</color>
+    <color name="transparent20">#20000000</color>
+</resources>

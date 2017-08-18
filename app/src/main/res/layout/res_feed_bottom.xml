@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|right"
+
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/likeLay"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/likeIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:padding="3dp"
+            app:srcCompat="@drawable/like_select"
+
+            />
+
+        <TextSwitcher
+            android:id="@+id/likeCount"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:inAnimation="@anim/slide_in_likes_counter"
+            android:outAnimation="@anim/slide_out_likes_counter">
+
+            <TextView
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:textSize="12sp"
+
+                />
+            <TextView
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:textSize="12sp"
+
+                />
+        </TextSwitcher>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/commentLay"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+
+        <android.support.v7.widget.AppCompatImageView
+
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            app:srcCompat="@drawable/comment"
+android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/commentCount"
+            style="@style/NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="3dp"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/headerlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/settings"
+            style="@style/HeaderText"
+            android:padding="16dp"
+            android:textColor="@color/asbestos"
+            />
+        <View
+            android:layout_width="200dp"
+            android:layout_height="0.50dp"
+            android:layout_gravity="center"
+            android:background="@color/silver"
+            android:layout_marginBottom="6dp"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        >
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/account"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/HeaderText"
+            android:text="@string/personalData"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/namelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:paddingLeft="52dp"
+            android:paddingRight="16dp"
+            android:textColorHint="@color/asbestos">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/name"
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/headerTextColor"
+            android:focusableInTouchMode="true"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username"
+        android:textColorHint="@color/asbestos"
+        android:paddingLeft="52dp"
+
+        android:paddingRight="16dp"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/username"
+            style="@style/NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:focusableInTouchMode="true"
+            android:textColor="@color/headerTextColor"
+
+            />
+    </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/genderLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="56dp"
+            android:background="@drawable/res_block_gray_when_select"
+            android:paddingRight="16dp"
+            >
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textSize="12sp"
+                android:textColor="@color/asbestos"
+                />
+            <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/silver"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        >
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/security"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/HeaderText"
+            android:text="@string/security"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/phoneLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="56dp"
+        android:background="@drawable/res_block_gray_when_select"
+        android:paddingRight="16dp"
+        >
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/phone"
+            android:textSize="12sp"
+            android:textColor="@color/asbestos"
+            />
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addPhone"
+            android:textSize="14sp"
+            android:textColor="@color/headerTextColor"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.50dp"
+            android:background="@color/clouds"
+            android:layout_marginTop="8dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mailLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="56dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:background="@drawable/res_block_gray_when_select"
+
+        >
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mail"
+            android:textSize="12sp"
+            android:textColor="@color/asbestos"
+            />
+        <TextView
+            android:id="@+id/mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addMail"
+            android:textSize="14sp"
+
+            android:textColor="@color/headerTextColor"
+
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.50dp"
+            android:background="@color/clouds"
+            android:layout_marginTop="8dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/passwordLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="56dp"
+
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:background="@drawable/res_block_gray_when_select"
+
+        >
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textSize="12sp"
+            android:textColor="@color/asbestos"
+            />
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/changePassword"
+            android:textSize="14sp"
+
+            android:textColor="@color/headerTextColor"
+
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.50dp"
+            android:background="@color/clouds"
+            android:layout_marginTop="8dp"
+            />
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/hideProfileLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="56dp"
+
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:background="@drawable/res_block_gray_when_select"
+
+            >
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/closedAccaunt"
+                android:textSize="12sp"
+                android:textColor="@color/asbestos"
+                />
+            <org.main.socforfemale.resources.customviews.SwitchButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorAccent"
+                app:sb_background="@color/clouds"
+                app:sb_shadow_effect="true"
+                app:sb_uncheck_color="@color/silver"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/silver"
+
+            />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        >
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/settings"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/HeaderText"
+            android:text="@string/other"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+
+            />
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pushLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="56dp"
+            android:background="@drawable/res_block_gray_when_select"
+            android:paddingRight="16dp"
+            >
+
+            <TextView
+                android:id="@+id/push"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notifications"
+                android:textSize="14sp"
+                android:textColor="@color/asbestos"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.50dp"
+                android:background="@color/clouds"
+                android:layout_marginTop="8dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/deleteAccountLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="56dp"
+            android:background="@drawable/res_block_gray_when_select"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            >
+
+            <TextView
+                android:id="@+id/deleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/deleteAccount"
+                android:textSize="14sp"
+                android:textColor="@color/asbestos"
+                />
+
+
+        </LinearLayout>
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="0.50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/silver"
+
+        />
+
+
+        <LinearLayout
+            android:id="@+id/quitLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            >
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/exit"
+
+                />
+            <TextView
+                android:id="@+id/quit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/quit"
+                android:textSize="14sp"
+                android:textColor="@color/headerTextColor"
+                android:layout_marginLeft="16dp"
+                android:textStyle="bold"
+
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/silver"
+
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            >
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/info"
+
+                />
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aboutApp"
+                android:textSize="14sp"
+                android:textColor="@color/headerTextColor"
+                android:layout_marginLeft="16dp"
+                android:textStyle="bold"
+
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/HeaderText"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="13sp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/silver"
+            android:text="V1.0.0 beta"
+            />
+    </LinearLayout>
+
+</ScrollView>
