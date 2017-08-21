@@ -112,7 +112,7 @@
                 android:layout_height="45dp"
                 android:background="@color/white"
                 android:imeOptions="actionSend"
-
+                android:maxLength="2048"
                 android:maxLines="1"
                 android:paddingLeft="6dp" />
         </LinearLayout>

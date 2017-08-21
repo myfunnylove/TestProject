@@ -27,7 +27,7 @@ data class User (
         @SerializedName("last_name")
         var last_name:String,
         @SerializedName("profilPhoto")
-        var profilPhoto:String,
+        var profilPhoto:String = "",
         @SerializedName("signType")
         var signType:Int // facebook = 0, vkontakte = 1,sms = 2
 
@@ -38,8 +38,10 @@ data class UserInfo(@SerializedName("info")      var info:UserData)
 
 data class UserData(@SerializedName("username")  var username:String,
                     @SerializedName("user_id")   var user_id:String,
-                    @SerializedName("photo_org") var photo150:String,
+                    @SerializedName("photo_org") var photo150:String ,
                     @SerializedName("close")     var close:Int,
                     @SerializedName("block")     var block:Int,
                     @SerializedName("follow")    var follow:Int,
-                    @SerializedName("request")    var request:Int)
+                    @SerializedName("request")    var request:Int){
+
+}

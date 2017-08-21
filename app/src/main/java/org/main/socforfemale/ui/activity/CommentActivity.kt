@@ -30,6 +30,8 @@ import org.main.socforfemale.resources.utils.log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
+import org.main.socforfemale.base.Base
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
@@ -97,7 +99,11 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
         }
 
         sendComment.setOnClickListener {
-            send()
+            if(commentText.text.isNotEmpty()){
+                send()
+            }else{
+                Toast.makeText(Base.instance,Base.instance.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -116,7 +122,11 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
         commentText.setOnEditorActionListener(object : OnEditorActionListener {
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    send()
+                    if(commentText.text.isNotEmpty()){
+                        send()
+                    }else{
+                        Toast.makeText(Base.instance,Base.instance.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
+                    }
                     return true
                 }
 

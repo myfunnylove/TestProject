@@ -75,6 +75,8 @@ class Base : Application (){
                                  .setFontAttrId(R.attr.fontPath)
                                  .build()
                                      )
+
+
         Logger.addLogAdapter(AndroidLogAdapter())
     }
 

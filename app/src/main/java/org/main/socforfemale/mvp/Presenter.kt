@@ -80,7 +80,7 @@ class Presenter(viewer: Viewer) {
 
                                  val userInfo     = Gson().fromJson<UserInfo>(Http.getResponseData(infoUser.prms),UserInfo::class.java)
                                  user.userName    = userInfo.info.username
-                                 user.profilPhoto = userInfo.info.photo150
+                                 user.profilPhoto = if (userInfo.info.photo150.isNullOrEmpty()) "" else userInfo.info.photo150
                                  Prefs.Builder().setUser(user)
                                  Observable.just(infoUser)
                              }else{

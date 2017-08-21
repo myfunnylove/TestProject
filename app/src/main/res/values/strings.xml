@@ -16,6 +16,7 @@
     <string name="error_1996">ERROR 1996</string>
     <string name="error_no_type">SOMETHING GET ERROR</string>
     <string name="error_empty_quote">Quote text required</string>
+    <string name="error_empty_comment">Comment text required</string>
     <string name="error_not_loaded_yet">NOT LOADED YET</string>
     <string name="error_cyrillic_letters">ERROR CYRILLIC LETTERS</string>
     <string name="follow">FOLLOW</string>
