@@ -58,6 +58,7 @@ object Http {
         val GET_COMMENT_LIST           = "24"
         val DELETE_POST                = "25"
         val CHANGE_POST                = "26"
+        val CHANGE_USER_SETTINGS       = "27"
     }
 
 

@@ -17,7 +17,7 @@ data class User (
         @SerializedName("password")
         var password:String,
         @SerializedName("gender")
-        var gender:String, // female = 0, male = 1
+        var gender:String, // nothing = 0, female = 1, male = 2
         @SerializedName("phone")
         var phoneOrMail:String,
         @SerializedName("smsCode")

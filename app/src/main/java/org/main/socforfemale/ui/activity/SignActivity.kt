@@ -69,7 +69,7 @@ class SignActivity : BaseActivity() ,Viewer{
             selectMail.isEnabled  = false
             selectPhone.isEnabled = false
 
-            val user = User("","","","","","female",phoneStr,smsStr,"","","",signMode)
+            val user = User("","","","","","N",phoneStr,smsStr,"","","",signMode)
             Base.get.prefs.setUser(user)
             startActivity(Intent(this,LoginAndPassActivity().javaClass))
             this.finish()

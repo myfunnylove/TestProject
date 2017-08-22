@@ -50,4 +50,11 @@
     <string name="quit">QUIT</string>
     <string name="aboutApp">ABOUT APP</string>
     <string name="exit_to_press_again">Please click BACK again to exit</string>
+    <string name="save">SAVE</string>
+    <string name="publish">PUBLISH</string>
+    <string name="change">CHANGE</string>
+    <string name="delete">DELETE</string>
+    <string name="done">DONE</string>
+    <string name="saved">SAVED</string>
+    <string name="unknown">UNKNOWN</string>
 </resources>

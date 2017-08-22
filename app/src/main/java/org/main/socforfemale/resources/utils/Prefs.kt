@@ -38,6 +38,6 @@ object Prefs {
         if (user != "")
         return Gson().fromJson(user,User::class.java)
         else
-            return User("","","","","","female","","","","","",-1)
+            return User("","","","","","N","","","","","",-1)
     }
 }

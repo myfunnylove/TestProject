@@ -108,7 +108,7 @@
         />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:theme="@style/AppTheme.LOGIN"
+            android:theme="@style/AppTheme.SETTINGS"
             android:windowSoftInputMode="adjustResize|stateHidden"
 
             />

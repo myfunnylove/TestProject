@@ -189,7 +189,7 @@ class LoginActivity : BaseActivity(), Viewer {
             vkUser.userId = vkObj.optString("id")
             vkUser.first_name = vkObj.optString("first_name")
             vkUser.last_name = vkObj.optString("last_name")
-            vkUser.gender = if (vkObj.optString("sex") == "1") "female" else "male"
+            vkUser.gender = if (vkObj.optString("sex") == "1") "F" else "M"
             vkUser.signType = 1
             vkUser.token = vkAccessToken
             vkUser.phoneOrMail = vkEmail
