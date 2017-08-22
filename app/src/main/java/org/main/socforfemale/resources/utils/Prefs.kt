@@ -6,7 +6,6 @@ import android.preference.PreferenceManager
 import com.google.gson.Gson
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.model.User
-import java.util.prefs.Preferences
 
 /**
  * Created by Michaelan on 6/18/2017.
@@ -17,7 +16,7 @@ object Prefs {
 
     private val USER = "user"
     fun Builder():Prefs{
-        if (prefs == null) prefs = PreferenceManager.getDefaultSharedPreferences(Base.instance)
+        if (prefs == null) prefs = PreferenceManager.getDefaultSharedPreferences(Base.get)
 
         return Prefs
     }

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,7 @@ class FollowAdapter(context:Context,
     var users    = follows
     var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var clicker  = adapterClicker
-    var profile  = Prefs.Builder().getUser()
+    var profile  = Base.get.prefs.getUser()
     val model    = Model()
     val which    = which
 
@@ -67,7 +68,9 @@ class FollowAdapter(context:Context,
         h!!.itemView.runEnterAnimation(p1)
         log.d("$user")
         h.login.text = user.username
-//        h.name.text = users.name
+        h.login.typeface = Typeface.createFromAsset(Base.get.context.assets,"font/Quicksand-Regular.otf")
+        h.name.visibility = View.GONE
+
         var photo = ""
         try{
             photo = if (user.photo150.startsWith("http")) user.photo150 else Http.BASE_URL+user.photo150
@@ -80,7 +83,7 @@ class FollowAdapter(context:Context,
                 .error(R.drawable.account)
                 .into(h.img)
 
-       if (which == 0 && user.userId != Prefs.Builder().getUser().userId){
+       if (which == 0 && user.userId != Base.get.prefs.getUser().userId){
            if (user.follow == 0 && user.request == 0){
 
                log.d("${user.userId} -> ${user.username}ga follow qilinmagan")
@@ -165,7 +168,7 @@ class FollowAdapter(context:Context,
 
                                 }
                             }else{
-                                Toast.makeText(Base.instance, Base.instance.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(Base.get, Base.get.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
 
                             }
 

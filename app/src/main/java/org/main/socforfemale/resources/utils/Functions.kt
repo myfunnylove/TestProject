@@ -15,22 +15,11 @@ import okhttp3.RequestBody
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.model.Song
 import java.io.File
-import android.net.NetworkInfo
 import android.net.ConnectivityManager
 import android.widget.Toast
 import android.os.Build
-import android.R.attr.x
-import android.view.Display
 import android.view.WindowManager
-import android.R.attr.y
 import android.graphics.Point
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.signature.StringSignature
-import com.bumptech.glide.Glide
-import android.graphics.Bitmap
-import java.lang.reflect.Array.getByte
-
-
 
 
 /**
@@ -127,7 +116,7 @@ object Functions {
         val listPermissionNeeded = ArrayList<String>()
 
         for (i in permissions){
-            res = ContextCompat.checkSelfPermission(Base.instance,i)
+            res = ContextCompat.checkSelfPermission(Base.get,i)
 
             if (res != PackageManager.PERMISSION_GRANTED){
                 listPermissionNeeded.add(i)
@@ -163,7 +152,7 @@ object Functions {
 
 
     fun show(str:String){
-        Toast.makeText(Base.instance,str, Toast.LENGTH_SHORT).show()
+        Toast.makeText(Base.get,str, Toast.LENGTH_SHORT).show()
 
     }
 

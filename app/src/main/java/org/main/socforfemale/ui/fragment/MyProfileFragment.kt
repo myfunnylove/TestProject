@@ -45,7 +45,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     var progressLay            by Delegates.notNull<ViewGroup>()
     var swipeRefreshLayout     by Delegates.notNull<SwipeRefreshLayout>()
 
-    var user                          = Prefs.getUser()
+    var user                          = Base.get.prefs.getUser()
     var oldpostList: PostList?         = null
     var postAdapter: FeedAdapter?      = null
 
@@ -59,10 +59,10 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     var scroll: EndlessRecyclerViewScrollListener? = null
     companion object {
         var TAG:String   = "ProfileFragment"
-        val FOLLOW       = Base.instance.resources.getString(R.string.follow)
-        val UN_FOLLOW    = Base.instance.resources.getString(R.string.unfollow)
-        val REQUEST      = Base.instance.resources.getString(R.string.request)
-        val SETTINGS     = Base.instance.resources.getString(R.string.settings)
+        val FOLLOW       = Base.get.resources.getString(R.string.follow)
+        val UN_FOLLOW    = Base.get.resources.getString(R.string.unfollow)
+        val REQUEST      = Base.get.resources.getString(R.string.request)
+        val SETTINGS     = Base.get.resources.getString(R.string.settings)
         val F_TYPE       = "fType"
         var FOLLOW_TYPE  = ""
 
@@ -109,7 +109,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 
 
 
-        manager = LinearLayoutManager(Base.instance)
+        manager = LinearLayoutManager(Base.get)
         postView.layoutManager = manager
         postView.setHasFixedSize(true)
         scroll = object : EndlessRecyclerViewScrollListener(manager) {
@@ -246,8 +246,8 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
                     postAdapter = FeedAdapter(activity, postList, this, this, true, FOLLOW_TYPE, PostUser("", "", "http"))
                     postView.adapter = postAdapter
 
-//                    val connectErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.network_error, errorImg.context.theme)
-//                    val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.account_light,          errorImg.context.theme)
+//                    val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error, errorImg.context.theme)
+//                    val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.account_light,          errorImg.context.theme)
 //                    if (error == ""){
 //                        errorImg.setImageDrawable(defaultErrorIcon)
 //                    }else{
@@ -623,7 +623,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 //                    pause()
 //                }
         }else{
-            Toast.makeText(Base.instance, Base.instance.resources.getString(R.string.error_something), Toast.LENGTH_SHORT).show()
+            Toast.makeText(Base.get, Base.get.resources.getString(R.string.error_something), Toast.LENGTH_SHORT).show()
         }
     }
 

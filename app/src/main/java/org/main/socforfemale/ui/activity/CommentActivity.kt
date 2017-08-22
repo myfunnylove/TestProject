@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_comment.*
 import org.json.JSONObject
 import org.main.socforfemale.adapter.CommentAdapter
 import org.main.socforfemale.base.Http
-import org.main.socforfemale.model.Comment
 import org.main.socforfemale.model.Comments
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.Prefs
@@ -44,7 +43,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
     var postId    = -1
     val presenter = Presenter(this)
-    val user      = Prefs.Builder().getUser()
+    val user      = Base.get.prefs.getUser()
     var scroll: EndlessRecyclerViewScrollListener? = null
 
  //   var commentList:   ArrayList<Comment>? = null
@@ -102,7 +101,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
             if(commentText.text.isNotEmpty()){
                 send()
             }else{
-                Toast.makeText(Base.instance,Base.instance.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
+                Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -125,7 +124,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
                     if(commentText.text.isNotEmpty()){
                         send()
                     }else{
-                        Toast.makeText(Base.instance,Base.instance.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
                     }
                     return true
                 }

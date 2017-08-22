@@ -45,7 +45,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     var transaction:          FragmentTransaction?  = null
     var lastFragment:         Int                   = 0
     var presenter:            Presenter?            = null
-    var user = Prefs.Builder().getUser()
+    var user = Base.get.prefs.getUser()
 
     /*
     *
@@ -303,7 +303,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     }
 
     override fun donGo(why: String) {
-       // Toast.makeText(Base.instance.applicationContext, why, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(Base.get.applicationContext, why, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -561,7 +561,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             Http.CMDS.CHANGE_AVATAR -> {
 
-                user = Prefs.Builder().getUser()
+                user = Base.get.prefs.getUser()
 
                 profilFragment!!.setAvatar(user.profilPhoto)
             }
@@ -641,7 +641,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
     fun startIntroAnimation(){
 
-        val actionbarsize = Functions.DPtoPX(56f,Base.instance)
+        val actionbarsize = Functions.DPtoPX(56f,Base.get)
         tablayout.translationY = actionbarsize.toFloat()
 
 

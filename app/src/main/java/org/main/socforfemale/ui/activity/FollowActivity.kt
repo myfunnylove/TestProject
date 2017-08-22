@@ -46,7 +46,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     var transaction:FragmentTransaction?= null
 
     val presenter:Presenter             = Presenter(this)
-    var user                            = Prefs.Builder().getUser()
+    var user                            = Base.get.prefs.getUser()
     var profilFragment:ProfileFragment? = null
     var followersFragment:FFFFragment?  = null
     var userID                          = ""
@@ -106,7 +106,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
         }else if (int == FOLLOWERS ){
             userID = intent.extras.getString("userId")
             val header = Bundle()
-            header.putString("header", Base.instance.resources.getString(R.string.followers))
+            header.putString("header", Base.get.resources.getString(R.string.followers))
             if (followersFragment == null){
                 followersFragment = FFFFragment.newInstance(header)
                 followersFragment!!.connect(this)
@@ -131,7 +131,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
         }else if (int == FOLLOWING){
             userID = intent.extras.getString("userId")
             val header = Bundle()
-            header.putString("header", Base.instance.resources.getString(R.string.following))
+            header.putString("header", Base.get.resources.getString(R.string.following))
             if (followersFragment == null){
                 followersFragment = FFFFragment.newInstance(header)
                 followersFragment!!.connect(this)

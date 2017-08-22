@@ -1,11 +1,9 @@
 package org.main.socforfemale.ui.activity
 
 import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.resources.utils.log
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.main.socforfemale.resources.utils.Prefs
 
@@ -14,8 +12,8 @@ import org.main.socforfemale.resources.utils.Prefs
  */
 class SettingsActivity : BaseActivity() {
 
-    val userData = Prefs.Builder().getUser()
-    val sex = listOf(Base.instance.resources.getString(R.string.male),Base.instance.resources.getString(R.string.female))
+    val userData = Base.get.prefs.getUser()
+    val sex = listOf(Base.get.resources.getString(R.string.male),Base.get.resources.getString(R.string.female))
     override fun getLayout(): Int {
         return R.layout.activity_settings
     }

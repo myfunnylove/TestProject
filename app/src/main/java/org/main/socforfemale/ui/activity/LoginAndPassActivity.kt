@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_login_and_password.*
 import okhttp3.MultipartBody
 
 import org.json.JSONObject
+import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.model.ProgressRequestBody
 import org.main.socforfemale.mvp.Presenter
@@ -43,10 +44,10 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
         from = intent.getIntExtra("from",from)
 
-        if(Prefs.Builder().getUser().profilPhoto != ""){
-            log.d("photo: ${Prefs.Builder().getUser().profilPhoto }")
+        if(Base.get.prefs.getUser().profilPhoto != ""){
+            log.d("photo: ${Base.get.prefs.getUser().profilPhoto }")
             Picasso.with(this)
-                    .load(Prefs.Builder().getUser().profilPhoto)
+                    .load(Base.get.prefs.getUser().profilPhoto)
                     .error(android.R.drawable.stat_notify_error)
                     .into(profilPhoto)
         }
@@ -90,16 +91,16 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
                 val obj = JSONObject()
                 obj.put("username",username)
                 obj.put("password",password)
-                obj.put("photo",Prefs.Builder().getUser().profilPhoto)
+                obj.put("photo",Base.get.prefs.getUser().profilPhoto)
                 when(from){
                     -1 -> {
-                        obj.put("phone", Prefs.Builder().getUser().phoneOrMail)
+                        obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
 
                         presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
                     }
 
                     LoginActivity.FACEBOOK -> {
-                        val user = Prefs.Builder().getUser()
+                        val user = Base.get.prefs.getUser()
 
                         obj.put("id",user.userId)
                         obj.put("token",user.token)
@@ -109,7 +110,7 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
                     }
 
                     LoginActivity.VKONTAKTE -> {
-                        val user = Prefs.Builder().getUser()
+                        val user = Base.get.prefs.getUser()
 
                         obj.put("id",user.userId)
                         obj.put("token",user.token)
@@ -118,7 +119,7 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
                     }
 
                     else -> {
-                        obj.put("phone", Prefs.Builder().getUser().phoneOrMail)
+                        obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
 
                         presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
                     }
@@ -150,13 +151,13 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
         }else {
             val response = JSONObject(result)
 
-            val user = Prefs.Builder().getUser()
+            val user = Base.get.prefs.getUser()
             log.d("login: $username password: $password")
             user.userId   = response.optString("user_id")
             user.session  = response.optString("session")
             user.password = password
             user.userName = username
-            Prefs.setUser(user)
+            Base.get.prefs.setUser(user)
 
 
             startActivity(Intent(this,MainActivity().javaClass))

@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import org.main.socforfemale.R
 import org.main.socforfemale.adapter.FollowAdapter
 import org.main.socforfemale.base.Base
@@ -43,7 +42,7 @@ class SearchFragment : BaseFragment(), AdapterClicker{
 
     var usersList:ArrayList<Users>? = null
     var adapter:FollowAdapter?      = null
-    val user:User                   = Prefs.Builder().getUser()
+    val user:User                   = Base.get.prefs.getUser()
     var changePosition              = -1
     companion object {
         var TAG:String  = "SearchFragment"
@@ -123,7 +122,7 @@ class SearchFragment : BaseFragment(), AdapterClicker{
 
             for (i in 0..this.length - 1) {
                 if (Character.UnicodeBlock.of(this.get(i)) == Character.UnicodeBlock.CYRILLIC) {
-                    result = Base.instance.resources.getString(R.string.error_cyrillic_letters)
+                    result = Base.get.resources.getString(R.string.error_cyrillic_letters)
                 }
             }
 
@@ -137,16 +136,16 @@ class SearchFragment : BaseFragment(), AdapterClicker{
        if (users.size > 0){
            emptyContainer.visibility = View.GONE
            usersList                 = users
-           adapter                   = FollowAdapter(Base.instance,users,this,1)
+           adapter                   = FollowAdapter(Base.get,users,this,1)
            list.visibility           = View.VISIBLE
            list.adapter              = adapter
 
 
        }else{
-           val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.search_light,    errorImg.context.theme)
+           val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
            errorImg.setImageDrawable(defaultErrorIcon)
 
-           errorText.text = Base.instance.resources.getString(R.string.error_empty_search_result)
+           errorText.text = Base.get.resources.getString(R.string.error_empty_search_result)
 
 
        }
@@ -169,8 +168,8 @@ class SearchFragment : BaseFragment(), AdapterClicker{
         }else{
             log.e("list null yoki list bom bosh")
 
-            val connectErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.network_error, errorImg.context.theme)
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.search_light,    errorImg.context.theme)
+            val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error, errorImg.context.theme)
+            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
             if (error == ""){
                 errorImg.setImageDrawable(defaultErrorIcon)
             }else{

@@ -36,10 +36,10 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
     var cachedImages:ArrayList<Bitmap>? = null
     init {
         setHasStableIds(true)
-        hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(Base.instance.resources)
-                .setFailureImage(VectorDrawableCompat.create(Base.instance.resources, R.drawable.image_broken_variant_white, null))
-                .setProgressBarImage(VectorDrawableCompat.create(Base.instance.resources, R.drawable.image, null))
-                .setPlaceholderImage(VectorDrawableCompat.create(Base.instance.resources, R.drawable.image, null))
+        hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(Base.get.resources)
+                .setFailureImage(VectorDrawableCompat.create(Base.get.resources, R.drawable.image_broken_variant_white, null))
+                .setProgressBarImage(VectorDrawableCompat.create(Base.get.resources, R.drawable.image, null))
+                .setPlaceholderImage(VectorDrawableCompat.create(Base.get.resources, R.drawable.image, null))
         cachedImages = ArrayList()
         images.forEach { img ->
             Picasso.with(context)
@@ -88,7 +88,7 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
         val span = if (i == 0) (images.size - 1) else 1
 
 
-     //   val size = Base.instance.resources.getDimensionPixelSize(dimenId)
+     //   val size = Base.get.resources.getDimensionPixelSize(dimenId)
 
         val params: GridLayoutManager.LayoutParams = itemView.layoutParams as GridLayoutManager.LayoutParams
 
@@ -128,7 +128,7 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
                     .hideStatusBar(true)
                     .allowZooming(true)
                     .allowSwipeToDismiss(true)
-                    .setBackgroundColor(Base.instance.resources.getColor(R.color.transparent80))
+                    .setBackgroundColor(Base.get.resources.getColor(R.color.transparent80))
                     .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
                     .show()
 

@@ -46,7 +46,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
 
     var usersList:ArrayList<Users>?  = null
     var adapter: FollowAdapter?      = null
-    val user: User = Prefs.Builder().getUser()
+    val user: User = Base.get.prefs.getUser()
     var changePosition               = -1
 
 
@@ -127,17 +127,17 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         if (users.size > 0){
             emptyContainer.visibility = View.GONE
             usersList                 = users
-            adapter                   = FollowAdapter(Base.instance,users,this)
+            adapter                   = FollowAdapter(Base.get,users,this)
             list.adapter              = adapter
 
 
         }else{
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.search_light,    errorImg.context.theme)
+            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
 
             errorImg.setImageDrawable(defaultErrorIcon)
 
 
-            errorText.text = Base.instance.resources.getString(R.string.error_empty_search_result)
+            errorText.text = Base.get.resources.getString(R.string.error_empty_search_result)
 
 
         }
@@ -158,8 +158,8 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         }else{
             log.e("list null yoki list bom bosh")
 
-            val connectErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.network_error,   errorImg.context.theme)
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.search_light,    errorImg.context.theme)
+            val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error,   errorImg.context.theme)
+            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
             if (error == ""){
                 errorImg.setImageDrawable(defaultErrorIcon)
             }else{
@@ -221,7 +221,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         super.onResume()
         log.d("Onresume $OZGARGAN_USERNI_IDSI $QAYSI_HOLATGA_OZGARDI")
 
-         if (adapter != null && header.text.toString() == Base.instance.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
+         if (adapter != null && header.text.toString() == Base.get.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
         if (OZGARGAN_USERNI_IDSI != -1 && adapter != null){
             when(QAYSI_HOLATGA_OZGARDI){
                 ProfileFragment.REQUEST ->{

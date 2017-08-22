@@ -2,14 +2,11 @@ package org.main.socforfemale.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -22,14 +19,10 @@ import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.PhotoUpload
 import org.main.socforfemale.model.ProgressRequestBody
 import org.main.socforfemale.model.ResponseData
-import org.main.socforfemale.model.Song
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.imageuploadmask.ImageUploadMask
-import org.main.socforfemale.resources.customviews.imageuploadmask.RoundRectMask
 import org.main.socforfemale.resources.customviews.imageuploadmask.ShapeMask
 import org.main.socforfemale.resources.utils.CustomAnim
-import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.publish.PublishUniversalActivity
 import retrofit2.Call
@@ -53,7 +46,7 @@ class PickedPhotoAdapter(ctx:Context,adapterClicker:AdapterClicker,listPhoto:Arr
         val UPLOAD = 0
         val UPDATE = 1
     }
-    val user = Prefs.Builder().getUser()
+    val user = Base.get.prefs.getUser()
     val name = RequestBody.create(MediaType.parse("text/plain"),"test_image")
 
     override fun getItemCount(): Int {
@@ -170,7 +163,7 @@ class PickedPhotoAdapter(ctx:Context,adapterClicker:AdapterClicker,listPhoto:Arr
             image = itemView.findViewById(R.id.image) as AppCompatImageView
             errorImg = itemView.findViewById(R.id.errorImg) as AppCompatImageView
             container = itemView.findViewById(R.id.container) as ViewGroup
-            pr = ImageUploadMask.Builder(Base.instance)
+            pr = ImageUploadMask.Builder(Base.get)
                     .bind(image)
                     .textColorInt(Color.WHITE)
                     .maskColorInt(Color.argb(90,0,0,0))

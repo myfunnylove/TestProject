@@ -28,7 +28,6 @@ import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
-import org.main.socforfemale.bgservice.MusicService
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.*
@@ -37,7 +36,6 @@ import org.main.socforfemale.resources.customviews.CircleImageView
 import org.main.socforfemale.resources.customviews.CustomManager
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.CommentActivity
 import org.main.socforfemale.ui.activity.MainActivity
@@ -74,11 +72,11 @@ class FeedAdapter(context: Context,
     var clicker               = adapterClicker
     val like                  = R.drawable.like_select
     val unLike                = R.drawable.like
-    var profile               = Prefs.Builder().getUser()
+    var profile               = Base.get.prefs.getUser()
     val model                 = Model()
     val pOrF                  = profilOrFeed
     val FOLLOW_TYPE           = followType
-    var user                  = Prefs.Builder().getUser()
+    var user                  = Base.get.prefs.getUser()
     val postUser              = postUser
     var lastAnimationPosition = -1
     var itemsCount            = 0
@@ -180,9 +178,9 @@ class FeedAdapter(context: Context,
 
             val icon: VectorDrawableCompat?
             if (post.like == "0")
-                icon = VectorDrawableCompat.create(Base.instance.resources, unLike, h.likeIcon.context.theme)
+                icon = VectorDrawableCompat.create(Base.get.resources, unLike, h.likeIcon.context.theme)
             else
-                icon = VectorDrawableCompat.create(Base.instance.resources, like, h.likeIcon.context.theme)
+                icon = VectorDrawableCompat.create(Base.get.resources, like, h.likeIcon.context.theme)
 
             h.likeIcon.setImageDrawable(icon)
 
@@ -259,7 +257,7 @@ class FeedAdapter(context: Context,
 
             Picasso.with(ctx)
                     .load(photo)
-                    .error(VectorDrawableCompat.create(Base.instance.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
                     .into(h.avatar)
 
             if (h.quote.tag == null || h.quote.tag != post.id) {
@@ -288,7 +286,7 @@ class FeedAdapter(context: Context,
                 }
                 try {
 
-                    h.quote.setTextColor(ContextCompat.getColor(Base.instance, Const.colorPalette.get(post.quote.textColor.toInt())!!.drawable))
+                    h.quote.setTextColor(ContextCompat.getColor(Base.get, Const.colorPalette.get(post.quote.textColor.toInt())!!.drawable))
 
                 } catch (e: Exception) {
 
@@ -401,12 +399,12 @@ class FeedAdapter(context: Context,
 
                         feeds.posts.get(i).like = "1"
                         feeds.posts.get(i).likes = (feeds.posts.get(i).likes.toInt() + 1).toString()
-                        h.likeIcon.setImageDrawable(VectorDrawableCompat.create(Base.instance.resources, like, h.likeIcon.context.theme));
+                        h.likeIcon.setImageDrawable(VectorDrawableCompat.create(Base.get.resources, like, h.likeIcon.context.theme));
                     } else {
                         feeds.posts.get(i).likes = (feeds.posts.get(i).likes.toInt() - 1).toString()
 
                         feeds.posts.get(i).like = "0"
-                        h.likeIcon.setImageDrawable(VectorDrawableCompat.create(Base.instance.resources, unLike, h.likeIcon.context.theme));
+                        h.likeIcon.setImageDrawable(VectorDrawableCompat.create(Base.get.resources, unLike, h.likeIcon.context.theme));
 
                     }
 
@@ -464,7 +462,7 @@ class FeedAdapter(context: Context,
 //
 //                                        }
 //                                    } else {
-//                                        Toast.makeText(Base.instance, Base.instance.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(Base.get, Base.get.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
 //                                    }
 
                                 }
@@ -569,7 +567,7 @@ class FeedAdapter(context: Context,
                     .load(postUser!!.photo)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .error(VectorDrawableCompat.create(Base.instance.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
 
                     .into(object : SimpleTarget<Bitmap>(100,100){
                         override fun onResourceReady(resource: Bitmap?, glideAnimation: GlideAnimation<in Bitmap>?) {
@@ -665,7 +663,7 @@ class FeedAdapter(context: Context,
                                         MainActivity.FEED_STATUS = MainActivity.NEED_UPDATE
                                     }else{
 
-                                        Toast.makeText(Base.instance, Base.instance.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(Base.get, Base.get.resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
 
                                     }
 
@@ -797,8 +795,8 @@ class FeedAdapter(context: Context,
 //    fun updateHeaderButton(holder:Holder,animated:Boolean){
 //
 //
-//        val liked = VectorDrawableCompat.create(Base.instance.resources, like, holder.likeIcon.context.theme)
-//        val unliked = VectorDrawableCompat.create(Base.instance.resources,unLike, holder.likeIcon.context.theme)
+//        val liked = VectorDrawableCompat.create(Base.get.resources, like, holder.likeIcon.context.theme)
+//        val unliked = VectorDrawableCompat.create(Base.get.resources,unLike, holder.likeIcon.context.theme)
 //
 //
 //        if (animated){

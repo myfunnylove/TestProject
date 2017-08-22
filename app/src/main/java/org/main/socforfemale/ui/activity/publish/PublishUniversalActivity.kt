@@ -23,6 +23,7 @@ import org.main.socforfemale.R
 import org.main.socforfemale.adapter.ColorPaletteAdapter
 import org.main.socforfemale.adapter.PickedPhotoAdapter
 import org.main.socforfemale.adapter.PickedSongAdapter
+import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.connectors.AdapterClicker
@@ -119,7 +120,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
             onBackPressed()
 
         }
-        user      = Prefs.getUser()
+        user      = Base.get.prefs.getUser()
         presenter = Presenter(this)
 
             initQuoteSettings()

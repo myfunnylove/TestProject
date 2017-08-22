@@ -1,7 +1,6 @@
 package org.main.socforfemale.ui.fragment
 
 import android.content.*
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.widget.SwipeRefreshLayout
@@ -12,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.MediaController
 import android.widget.TextView
 import android.widget.Toast
 import org.main.socforfemale.R
@@ -33,11 +31,8 @@ import kotlin.properties.Delegates
 import org.main.socforfemale.bgservice.MusicController
 import org.main.socforfemale.bgservice.MusicService
 import org.main.socforfemale.model.Audio
-import org.main.socforfemale.model.Song
-import android.content.Context.BIND_AUTO_CREATE
 import org.main.socforfemale.bgservice.MusicService.MusicBinder
 import android.os.IBinder
-import android.os.Handler
 import android.support.v4.content.LocalBroadcastManager
 import org.main.socforfemale.adapter.PostAudioGridAdapter
 
@@ -56,7 +51,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     var progressLay            by Delegates.notNull<ViewGroup>()
     var swipeRefreshLayout     by Delegates.notNull<SwipeRefreshLayout>()
     //  var refreshLayout  by Delegates.notNull<RecyclerRefreshLayout>()
-    val user = Prefs.Builder().getUser()
+    val user = Base.get.prefs.getUser()
     var manager:LinearLayoutManager?                      = null
     var scroll:EndlessRecyclerViewScrollListener?         = null
     companion object {
@@ -105,7 +100,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
 //            refreshLayout.setRefreshing(true)
 //            connectActivity!!.goNext(Const.REFRESH_FEED,"")
 //        }
-        manager = LinearLayoutManager(Base.instance)
+        manager = LinearLayoutManager(Base.get)
         listFeed.layoutManager = manager
         listFeed.setHasFixedSize(true)
         scroll = object : EndlessRecyclerViewScrollListener(manager) {
@@ -233,8 +228,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
         }else{
             log.e("list null yoki list bom bosh")
 
-            val connectErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.network_error, errorImg.context.theme)
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.instance.resources, R.drawable.feed_light,          errorImg.context.theme)
+            val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error, errorImg.context.theme)
+            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.feed_light,          errorImg.context.theme)
             if (error == ""){
                 errorImg.setImageDrawable(defaultErrorIcon)
             }else{
@@ -543,7 +538,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
 //                    pause()
 //                }
             }else{
-                Toast.makeText(Base.instance,Base.instance.resources.getString(R.string.error_something),Toast.LENGTH_SHORT).show()
+                Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_something),Toast.LENGTH_SHORT).show()
             }
     }
 

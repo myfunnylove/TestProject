@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.main.socforfemale.R
+import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.model.User
@@ -60,7 +61,7 @@ class LoginActivity : BaseActivity(), Viewer {
     override fun initView() {
         Const.TAG = "LoginACtivity"
 
-        if (Prefs.Builder().getUser().session == "") {
+        if (Base.get.prefs.getUser().session == "") {
             presenter = Presenter(this)
 
             Functions.checkPermissions(this) /*CHECK PERMISSION*/
@@ -172,7 +173,7 @@ class LoginActivity : BaseActivity(), Viewer {
             log.d(response!!.json.toString())
             val list = JSONArray(response.json.optString("response"))
 
-            val vkUser = Prefs.Builder().getUser()
+            val vkUser = Base.get.prefs.getUser()
 
             val vkObj = JSONObject(list.get(0).toString())
             vkUser.userId = vkObj.optString("id")
@@ -183,7 +184,7 @@ class LoginActivity : BaseActivity(), Viewer {
             vkUser.token = vkAccessToken
             vkUser.phoneOrMail = vkEmail
             vkUser.profilPhoto = if (vkObj.has("photo_200_orig")) vkObj.optString("photo_200_orig") else ""
-            Prefs.Builder().setUser(vkUser)
+            Base.get.prefs.setUser(vkUser)
 
             val sendObj = JSONObject()
             sendObj.put("vk_id", vkObj.optString("id"))
@@ -238,7 +239,7 @@ class LoginActivity : BaseActivity(), Viewer {
                                 data.optString("url"),
                                 0)
 
-                        Prefs.Builder().setUser(fbUser)
+                        Base.get.prefs.setUser(fbUser)
 
                         val sendObj = JSONObject()
                         sendObj.put("fb_id", user.optString("id"))

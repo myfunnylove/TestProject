@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.main.socforfemale.model.User
+import org.main.socforfemale.resources.utils.Prefs
 import javax.inject.Singleton
 
 /**
@@ -21,5 +23,9 @@ class ContextModule(private val application: Application) {
     fun context() : Context = application
 
 
+
+    @Provides
+    @Singleton
+    fun getPrefs() : Prefs = Prefs.Builder()
 
 }

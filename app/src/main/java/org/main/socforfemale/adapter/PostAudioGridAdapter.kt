@@ -1,32 +1,19 @@
 package org.main.socforfemale.adapter
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v7.widget.AppCompatImageView
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
 import org.main.socforfemale.bgservice.MusicService
-import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.Audio
-import org.main.socforfemale.model.Image
-import org.main.socforfemale.resources.utils.log
-import org.main.socforfemale.ui.fragment.FeedFragment
 import java.net.URLDecoder
-import java.net.URLEncoder
 
 /**
  * Created by Michaelan on 6/28/2017.
@@ -54,9 +41,9 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
 
 
 
-        val playIcon = VectorDrawableCompat.create(Base.instance.resources,PLAY,h!!.play.context.theme)
+        val playIcon = VectorDrawableCompat.create(Base.get.resources,PLAY,h!!.play.context.theme)
 
-        val pauseIcon = VectorDrawableCompat.create(Base.instance.resources,PAUSE,h.play.context.theme)
+        val pauseIcon = VectorDrawableCompat.create(Base.get.resources,PAUSE,h.play.context.theme)
 
 
 

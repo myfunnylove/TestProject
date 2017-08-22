@@ -27,11 +27,9 @@ import android.widget.TextView;
 import org.main.socforfemale.R;
 import org.main.socforfemale.base.Base;
 import org.main.socforfemale.resources.utils.log;
-import org.main.socforfemale.ui.activity.MainActivity;
 
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.logging.Handler;
 
 /*
  * This is demo code to accompany the Mobiletuts+ series:
@@ -76,7 +74,7 @@ public class MusicController extends FrameLayout {
         mContext = context;
         mUseFastForward = true;
         mFromXml = true;
-     //   mAccessibilityManager = AccessibilityManager.getInstance(context);
+     //   mAccessibilityManager = AccessibilityManager.getGet(context);
     }
 
     @Override
@@ -92,7 +90,7 @@ public class MusicController extends FrameLayout {
         mUseFastForward = useFastForward;
         initFloatingWindowLayout();
         initFloatingWindow();
-     //   mAccessibilityManager = AccessibilityManager.getInstance(context);
+     //   mAccessibilityManager = AccessibilityManager.getGet(context);
     }
 
     public MusicController(Context context) {
@@ -104,7 +102,7 @@ public class MusicController extends FrameLayout {
        // mWindow = new PhoneWindow(mContext);
        // mWindow.setWindowManager(mWindowManager, null, null);
         //mWindow.requestFeature(Window.FEATURE_NO_TITLE);
-//        mDecor = new View(Base.Companion.getInstance());
+//        mDecor = new View(Base.Companion.getGet());
 //        mDecor.setBackgroundColor(Color.WHITE);
         ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 100);
 //        mDecor.setLayoutParams(params);
@@ -523,10 +521,10 @@ public class MusicController extends FrameLayout {
             return;
 
         if (mPlayer.isPlaying()) {
-            mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getInstance().getResources(), R.drawable.mc_pause,mPauseButton.getContext().getTheme()));
+            mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getGet().getResources(), R.drawable.mc_pause,mPauseButton.getContext().getTheme()));
             mPauseButton.setContentDescription(mPauseDescription);
         } else {
-            mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getInstance().getResources(), R.drawable.mc_play,mPauseButton.getContext().getTheme()));
+            mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getGet().getResources(), R.drawable.mc_play,mPauseButton.getContext().getTheme()));
             mPauseButton.setContentDescription(mPlayDescription);
         }
 

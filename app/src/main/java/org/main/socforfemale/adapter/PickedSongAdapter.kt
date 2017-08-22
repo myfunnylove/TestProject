@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -45,7 +44,7 @@ class PickedSongAdapter(ctx:Context,adapterClicker:AdapterClicker,listPhoto:Arra
     var inflater:LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var list = listPhoto
     var isFirst = true
-    val user = Prefs.Builder().getUser()
+    val user = Base.get.prefs.getUser()
 
     val name = RequestBody.create(MediaType.parse("text/plain"),"test_audio")
 
@@ -175,7 +174,7 @@ class PickedSongAdapter(ctx:Context,adapterClicker:AdapterClicker,listPhoto:Arra
             progress = itemView.findViewById(R.id.progress) as ViewGroup
             errorImg = itemView.findViewById(R.id.errorImg) as AppCompatImageView
 
-            pr = ImageUploadMask.Builder(Base.instance)
+            pr = ImageUploadMask.Builder(Base.get)
                     .bind(progress)
                     .textColorInt(Color.BLACK)
                     .maskColorInt(Color.argb(90,0,0,0))

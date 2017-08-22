@@ -13,13 +13,11 @@ import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
-import org.main.socforfemale.model.ProgressRequestBody
 import org.main.socforfemale.model.UserInfo
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import retrofit2.HttpException
-import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
@@ -53,11 +51,11 @@ class Presenter(viewer: Viewer) {
 
                                  val response = JSONObject(Http.getResponseData(res.prms))
 
-                                 val user = Prefs.Builder().getUser()
+                                 val user = Base.get.prefs.getUser()
 
                                  user.userId  = response.optString("user_id")
                                  user.session = response.optString("session")
-                                    Prefs.Builder().setUser(user)
+                                    Base.get.prefs.setUser(user)
 
                                  val reqObj = JSONObject()
                                      reqObj.put("user_id",user.userId)
@@ -76,12 +74,12 @@ class Presenter(viewer: Viewer) {
 
 
 
-                                 val user = Prefs.Builder().getUser()
+                                 val user = Base.get.prefs.getUser()
 
                                  val userInfo     = Gson().fromJson<UserInfo>(Http.getResponseData(infoUser.prms),UserInfo::class.java)
                                  user.userName    = userInfo.info.username
                                  user.profilPhoto = if (userInfo.info.photo150.isNullOrEmpty()) "" else userInfo.info.photo150
-                                 Prefs.Builder().setUser(user)
+                                 Base.get.prefs.setUser(user)
                                  Observable.just(infoUser)
                              }else{
 
@@ -110,12 +108,12 @@ class Presenter(viewer: Viewer) {
                                 when(response.res){
 
                                     "0"    -> view.onSuccess(cmd,Http.getResponseData(response.prms))
-                                    "1996" -> view.onFailure(cmd,Base.instance.resources.getString(R.string.error_no_type))
+                                    "1996" -> view.onFailure(cmd,Base.get.resources.getString(R.string.error_no_type))
                                      else  -> {
                                          if (response.message != "null")
                                               view.onFailure(cmd,response.message)
                                          else
-                                              view.onFailure(cmd,Base.instance.resources.getString(R.string.error_something))
+                                              view.onFailure(cmd,Base.get.resources.getString(R.string.error_something))
                                      }
 
                                 }
@@ -126,11 +124,11 @@ class Presenter(viewer: Viewer) {
                                     log.e(fail.toString())
                                                   view.hideProgress()
                                when (fail) {
-                                   is SocketTimeoutException ->  view.onFailure(cmd,Base.instance.resources.getString(R.string.internet_conn_error))
-                                   is UnknownHostException ->    view.onFailure(cmd,Base.instance.resources.getString(R.string.internet_conn_error))
-                                   is HttpException ->           view.onFailure(cmd,Base.instance.resources.getString(R.string.internet_conn_error))
+                                   is SocketTimeoutException ->  view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
+                                   is UnknownHostException ->    view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
+                                   is HttpException ->           view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
                                    else -> {
-                                       view.onFailure(cmd,Base.instance.resources.getString(R.string.error_something))
+                                       view.onFailure(cmd,Base.get.resources.getString(R.string.error_something))
                                    }
                                }
                              })
@@ -161,7 +159,7 @@ class Presenter(viewer: Viewer) {
                     log.d("Data : succes from -> ${Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH} $response")
 
                     if (response.res == "0") view.onSuccess(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,"" )
-                        else view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.instance.resources.getString(R.string.error_something))
+                        else view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.get.resources.getString(R.string.error_something))
 
                 },{
                     fail ->
@@ -169,11 +167,11 @@ class Presenter(viewer: Viewer) {
 
                     when (fail) {
                         is UnknownHostException ->{
-                            view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.instance.resources.getString(R.string.internet_conn_error))
+                            view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.get.resources.getString(R.string.internet_conn_error))
 
                         }
                         else -> {
-                            view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.instance.resources.getString(R.string.error_something))
+                            view.onFailure(Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH,Base.get.resources.getString(R.string.error_something))
                         }
                         }
 
@@ -185,7 +183,7 @@ class Presenter(viewer: Viewer) {
 
 
     fun uploadPhoto(body: MultipartBody.Part){
-        val user = Prefs.Builder().getUser()
+        val user = Base.get.prefs.getUser()
         log.d("upload file ketvotti: ${body.body()!!}")
         val name = RequestBody.create(MediaType.parse("text/plain"),"image/*")
         Observable.just(model.uploadPhoto(body,name,user.userId,user.session))
@@ -203,7 +201,7 @@ class Presenter(viewer: Viewer) {
     }
 
     fun uploadAvatar(body: MultipartBody.Part){
-        val user = Prefs.Builder().getUser()
+        val user = Base.get.prefs.getUser()
         log.d("upload file ketvotti: ${body.body()!!}")
         val name = RequestBody.create(MediaType.parse("text/plain"),"image/*")
         Observable.just(model.uploadAvatar(body,name,user.userId,user.session,"avatar"))
@@ -232,7 +230,7 @@ class Presenter(viewer: Viewer) {
                         val userInfo     = Gson().fromJson<UserInfo>(Http.getResponseData(result.prms),UserInfo::class.java)
                         user.userName    = userInfo.info.username
                         user.profilPhoto = userInfo.info.photo150
-                        Prefs.Builder().setUser(user)
+                        Base.get.prefs.setUser(user)
                         view.onSuccess(Http.CMDS.CHANGE_AVATAR,Http.getResponseData(result.prms))
                     }
                 },{

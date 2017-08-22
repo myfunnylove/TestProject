@@ -395,7 +395,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
 
         /**
          * Set @{@code ImageRequestBuilder} for drawees. Use it for post-processing, custom resize options etc.
-         * Use {@link ImageViewer#createImageRequestBuilder()} to create its new instance.
+         * Use {@link ImageViewer#createImageRequestBuilder()} to create its new get.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */

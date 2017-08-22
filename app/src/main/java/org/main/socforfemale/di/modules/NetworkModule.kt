@@ -7,7 +7,6 @@ import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.OkHttpClient
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
 import org.main.socforfemale.resources.utils.Functions
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -49,13 +48,13 @@ class NetworkModule {
                 }
                 .addInterceptor { chain ->
                     var req = chain.request()
-                    if (!Functions.isNetworkAvailable(Base.instance)) {
+                    if (!Functions.isNetworkAvailable(Base.get)) {
                         req = req.newBuilder()
                                 .cacheControl(CacheControl.FORCE_CACHE)
                                 .build()
                     }
 
-                    if (Functions.isNetworkAvailable(Base.instance)){
+                    if (Functions.isNetworkAvailable(Base.get)){
                         req =  req.newBuilder()
                                 .header("Cache-Control", "public, max-age=" + 5000)
                                 .removeHeader("Pragma")

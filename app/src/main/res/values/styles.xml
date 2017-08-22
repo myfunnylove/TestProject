@@ -120,6 +120,7 @@
 
         <item name="android:textSize">@dimen/normalTextSize</item>
         <item name="android:textColor">@color/normalTextColor</item>
+        <item name="fontPath">font/Quicksand-Regular.otf</item>
 
     </style>
     <style name="ErrorText">

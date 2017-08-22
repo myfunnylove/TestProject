@@ -9,6 +9,7 @@ import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.mvp.Viewer
 import kotlinx.android.synthetic.main.activity_sign.*
 import org.json.JSONObject
+import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.model.User
 import org.main.socforfemale.mvp.Presenter
@@ -62,7 +63,7 @@ class SignActivity : BaseActivity() ,Viewer{
             selectPhone.isEnabled = false
 
             val user = User("","","","","","female",phoneStr,smsStr,"","","",signMode)
-            Prefs.Builder().setUser(user)
+            Base.get.prefs.setUser(user)
             startActivity(Intent(this,LoginAndPassActivity().javaClass))
             this.finish()
         }
