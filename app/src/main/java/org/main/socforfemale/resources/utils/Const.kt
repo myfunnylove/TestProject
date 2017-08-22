@@ -90,10 +90,10 @@ object Const {
                                 25 to Color(R.color.material_blue_900,""),
                                 26 to Color(R.color.material_light_blue_600,""),
                                 27 to Color(R.color.material_orange_900,""),
-                                29 to Color(R.color.material_brown_800,""),
-                                30 to Color(R.color.material_grey_400,""),
-                                31 to Color(R.color.material_grey_500,""),
-                                32 to Color(R.color.material_grey_600,"")
+                                28 to Color(R.color.material_brown_800,""),
+                                29 to Color(R.color.material_grey_400,""),
+                                30 to Color(R.color.material_grey_500,""),
+                                31 to Color(R.color.material_grey_800,"")
                                 )
 
 
