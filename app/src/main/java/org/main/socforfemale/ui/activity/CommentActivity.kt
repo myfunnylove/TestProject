@@ -31,9 +31,14 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import org.main.socforfemale.base.Base
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
+import javax.inject.Inject
 
 
 /**
@@ -42,7 +47,8 @@ import org.main.socforfemale.resources.utils.Functions
 class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
     var postId    = -1
-    val presenter = Presenter(this)
+    @Inject
+    lateinit var presenter:Presenter
     val user      = Base.get.prefs.getUser()
     var scroll: EndlessRecyclerViewScrollListener? = null
 
@@ -63,6 +69,13 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     }
 
     override fun initView() {
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
+
         Const.TAG = "CommentActivity"
         drawingStartLocation = intent.getIntExtra(LOCATION,0)
 

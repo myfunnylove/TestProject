@@ -20,7 +20,11 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.connectors.GoNext
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.*
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
@@ -33,6 +37,7 @@ import org.main.socforfemale.ui.activity.publish.PublishSongActivity
 import org.main.socforfemale.ui.activity.publish.PublishUniversalActivity
 import org.main.socforfemale.ui.fragment.*
 import java.io.File
+import javax.inject.Inject
 
 class MainActivity : BaseActivity(), GoNext, Viewer {
 
@@ -44,7 +49,8 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     var manager:              FragmentManager?      = null
     var transaction:          FragmentTransaction?  = null
     var lastFragment:         Int                   = 0
-    var presenter:            Presenter?            = null
+    @Inject
+    lateinit var presenter:Presenter
     var user = Base.get.prefs.getUser()
 
     /*
@@ -91,7 +97,12 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
         Const.TAG = "MainActivity"
         startIntroAnimation()
 
-        presenter = Presenter(this)
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
         setPager()
 
     }

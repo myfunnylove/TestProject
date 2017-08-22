@@ -11,9 +11,13 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.connectors.GoNext
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.Followers
 import org.main.socforfemale.model.Following
 import org.main.socforfemale.model.PostList
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
@@ -23,6 +27,7 @@ import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.MyProfileFragment
 import org.main.socforfemale.ui.fragment.ProfileFragment
 import org.main.socforfemale.ui.fragment.SearchFragment
+import javax.inject.Inject
 
 
 class FollowActivity : BaseActivity(), GoNext,Viewer {
@@ -45,7 +50,8 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     var manager:FragmentManager?        = null
     var transaction:FragmentTransaction?= null
 
-    val presenter:Presenter             = Presenter(this)
+    @Inject
+    lateinit var presenter:Presenter
     var user                            = Base.get.prefs.getUser()
     var profilFragment:ProfileFragment? = null
     var followersFragment:FFFFragment?  = null
@@ -57,6 +63,12 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     override fun initView() {
         Const.TAG = "FollowActivity"
 
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
 
         showFragment(intent.getIntExtra(TYPE,-1))
 

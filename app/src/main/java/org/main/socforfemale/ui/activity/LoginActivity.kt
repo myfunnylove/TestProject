@@ -18,7 +18,11 @@ import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.User
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
@@ -62,7 +66,13 @@ class LoginActivity : BaseActivity(), Viewer {
         Const.TAG = "LoginACtivity"
 
         if (Base.get.prefs.getUser().session == "") {
-            presenter = Presenter(this)
+            DaggerMVPComponent
+                    .builder()
+                    .mVPModule(MVPModule(this, Model()))
+                    .presenterModule(PresenterModule())
+                    .build()
+                    .inject(this)
+
 
             Functions.checkPermissions(this) /*CHECK PERMISSION*/
 

@@ -11,10 +11,15 @@ import kotlinx.android.synthetic.main.activity_sign.*
 import org.json.JSONObject
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.User
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Prefs
+import javax.inject.Inject
 
 class SignActivity : BaseActivity() ,Viewer{
 
@@ -23,7 +28,9 @@ class SignActivity : BaseActivity() ,Viewer{
     val PHONE_MODE = 77
     val MAIL_MODE  = 129
     val SMS_MODE   = 3
-    var presenter:Presenter? = null
+
+    @Inject
+    lateinit var presenter:Presenter
 
     var phoneStr:String      = ""
     var smsStr:  String      = ""
@@ -88,7 +95,12 @@ class SignActivity : BaseActivity() ,Viewer{
     override fun initView() {
         Const.TAG = "SignActivity"
 
-        presenter = Presenter(this)
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
         signMode = PHONE_MODE
 
         val phoneDis = VectorDrawableCompat.create(resources,R.drawable.phone,selectPhone.context.theme)

@@ -27,13 +27,18 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.connectors.AdapterClicker
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.*
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import java.io.File
+import javax.inject.Inject
 
 
 class PublishUniversalActivity :BaseActivity(),Viewer {
@@ -44,7 +49,8 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
     var listImage:ArrayList<PhotoUpload> = ArrayList()
     var imageAdapter:PickedPhotoAdapter? = null
     var songAdapter:PickedSongAdapter?   = null
-    var presenter:Presenter?             = null
+    @Inject
+    lateinit var presenter:Presenter
 
     var visibly       = false
     var TEXT_SIZE     = 16f
@@ -121,9 +127,15 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
         }
         user      = Base.get.prefs.getUser()
-        presenter = Presenter(this)
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
 
-            initQuoteSettings()
+
+        initQuoteSettings()
 
         var icon = VectorDrawableCompat.create(resources,R.drawable.music,publishMusic.context.theme)
 

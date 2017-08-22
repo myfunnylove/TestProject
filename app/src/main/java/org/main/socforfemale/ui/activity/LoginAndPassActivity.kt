@@ -16,20 +16,26 @@ import okhttp3.MultipartBody
 import org.json.JSONObject
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
+import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.MVPModule
+import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.ProgressRequestBody
+import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by Michaelan on 6/16/2017.
  */
 class LoginAndPassActivity :BaseActivity(),Viewer{
 
-    var presenter:Presenter? = null
+    @Inject
+    lateinit var presenter:Presenter
     var isLoginFree = false
     var username = ""
     var password = ""
@@ -52,11 +58,17 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
                     .into(profilPhoto)
         }
 
-        presenter = Presenter(this)
+        DaggerMVPComponent
+                .builder()
+                .mVPModule(MVPModule(this, Model()))
+                .presenterModule(PresenterModule())
+                .build()
+                .inject(this)
+
 
         login.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
-                if(s!!.toString().length >= 6) presenter!!.filterLogin(login)
+                if(s!!.toString().length >= 6) presenter.filterLogin(login)
                 else login.setLoginResult()
             }
 

@@ -15,7 +15,6 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.model.UserInfo
 import org.main.socforfemale.resources.utils.Const
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -23,10 +22,11 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 
-class Presenter(viewer: Viewer) {
+class Presenter(viewer: Viewer, modeler:Model) {
 
     val view:Viewer = viewer
-    val model = Model()
+
+    val model:Model = modeler
 
     fun requestAndResponse(data:JSONObject,cmd:String){
 

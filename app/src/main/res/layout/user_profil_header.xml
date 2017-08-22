@@ -30,8 +30,8 @@
 
             <org.main.socforfemale.resources.customviews.CircleImageView
                 android:id="@+id/avatar"
-                android:layout_width="145dp"
-                android:layout_height="145dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:background="@drawable/res_circle_gray_when_select"
                 />
 
