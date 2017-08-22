@@ -82,7 +82,18 @@ object Const {
                                  17 to Color(R.color.alizarin,""),
                                  18 to Color(R.color.pomegranate,""),
                                  19 to Color(R.color.asbestos,""),
-                                 20 to Color(R.color.asbestosdark,"")
+                                20 to Color(R.color.material_red_900,""),
+                                21 to Color(R.color.material_pink_900,""),
+                                22 to Color(R.color.material_purple_900,""),
+                                23 to Color(R.color.material_deep_purple_900,""),
+                                24 to Color(R.color.material_indigo_900,""),
+                                25 to Color(R.color.material_blue_900,""),
+                                26 to Color(R.color.material_light_blue_600,""),
+                                27 to Color(R.color.material_orange_900,""),
+                                29 to Color(R.color.material_brown_800,""),
+                                30 to Color(R.color.material_grey_400,""),
+                                31 to Color(R.color.material_grey_500,""),
+                                32 to Color(R.color.material_grey_600,"")
                                 )
 
 

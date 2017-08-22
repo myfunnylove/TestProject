@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_follow.*
 import org.main.socforfemale.R
 import org.main.socforfemale.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_publish_quote.*

@@ -93,7 +93,7 @@
             android:background="@color/white"
             android:maxLength="20"
             android:maxLines="1"
-            android:paddingLeft="6dp" />
+            android:paddingLeft="16dp" />
     </LinearLayout>
 
 

@@ -21,7 +21,6 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.MyProfileFragment
@@ -29,6 +28,7 @@ import org.main.socforfemale.ui.fragment.ProfileFragment
 import org.main.socforfemale.ui.fragment.SearchFragment
 import javax.inject.Inject
 
+import kotlinx.android.synthetic.main.activity_follow.*
 
 class FollowActivity : BaseActivity(), GoNext,Viewer {
 
@@ -69,7 +69,14 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
         showFragment(intent.getIntExtra(TYPE,-1))
 
 
