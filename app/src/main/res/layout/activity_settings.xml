@@ -297,6 +297,7 @@
                     android:textSize="12sp" />
 
                 <org.main.socforfemale.resources.customviews.SwitchButton
+                    android:id="@+id/switchCloseAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:sb_background="@color/clouds"

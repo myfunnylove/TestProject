@@ -6,20 +6,24 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_settings.*
+import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_settings.*
-import org.json.JSONObject
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.di.DaggerMVPComponent
-import org.main.socforfemale.di.MVPComponent
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
+import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.resources.utils.Prefs
+import org.main.socforfemale.resources.customviews.SwitchButton
+import org.main.socforfemale.resources.utils.log
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -32,6 +36,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
     val sex = listOf(Base.get.resources.getString(R.string.unknown),Base.get.resources.getString(R.string.male),Base.get.resources.getString(R.string.female))
     var changed = false
     val map = hashMapOf(0 to "N", 1 to "F", 2 to "M")
+    val model                 = Model()
 
     @Inject
     lateinit var presenter:Presenter
@@ -72,6 +77,34 @@ class SettingsActivity : BaseActivity() ,Viewer{
             onBackPressed()
 
         }
+        switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+        switchCloseAccount.setOnCheckedChangeListener{view, isChecked ->
+            val js = JSONObject()
+            js.put("session",Base.get.prefs.getUser().session)
+            js.put("user_id",Base.get.prefs.getUser().userId)
+            model.responseCall(Http.getRequestData(js,Http.CMDS.CLOSE_PROFIL))
+                    .enqueue(object :Callback<ResponseData>{
+                        override fun onResponse(call: Call<ResponseData>?, response: Response<ResponseData>?) {
+                            log.d("close profil $response")
+
+                            try{
+                               if (response!!.body()!!.res == "0"){
+                                   val user = Base.get.prefs.getUser()
+                                   user.close = !user.close
+                                   Base.get.prefs.setUser(user)
+                               }
+                           }catch (e:Exception){}
+
+                        }
+
+                        override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
+                            log.d("close profil fail $t")
+
+                        }
+
+                    })
+         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

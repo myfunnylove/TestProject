@@ -29,8 +29,9 @@ data class User (
         @SerializedName("profilPhoto")
         var profilPhoto:String = "",
         @SerializedName("signType")
-        var signType:Int // facebook = 0, vkontakte = 1,sms = 2
-
+        var signType:Int ,// facebook = 0, vkontakte = 1,sms = 2
+        @SerializedName("close")
+        var close:Boolean = false // close 1 open 0
 
 )
 
