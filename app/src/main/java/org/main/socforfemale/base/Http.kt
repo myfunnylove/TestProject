@@ -76,64 +76,6 @@ object Http {
     }
 
     fun getResponseData(prm:String):String = String(Base64.decode(prm,0))
-    val cacheFile = File(Base.instance.cacheDir.absolutePath + File.separator, "data/NetCache")
-
-    /* CREATE REST SERVICE */
-    private val client = OkHttpClient.Builder()
-            .connectTimeout(7,TimeUnit.MINUTES)
-            .readTimeout   (7,TimeUnit.MINUTES)
-            .writeTimeout  (7,TimeUnit.MINUTES)
-
-            .cache(Cache(cacheFile,50*1024*1024))
-
-            .addNetworkInterceptor { chain ->
-                val response = chain.proceed(chain.request())
-                val cache    = response.header("Cache-Control")
-                if (cache == null || cache.contains("no-store")  || cache.contains("no-cache") || cache.contains("must-revalidate") || cache.contains("max-age=0")){
-                    response.newBuilder()
-                            .removeHeader("Pragma")
-                            .header("Cache-Control","public, max=age="+5000).build()
-                }else{
-                    response
-                }
-            }
-            .addInterceptor { chain ->
-                var req = chain.request()
-                if (!Functions.isNetworkAvailable(Base.instance)) {
-                    req = req.newBuilder()
-                            .cacheControl(CacheControl.FORCE_CACHE)
-                            .build()
-                }
-
-                    if (Functions.isNetworkAvailable(Base.instance)){
-                        req =  req.newBuilder()
-                                .header("Cache-Control", "public, max-age=" + 5000)
-                                .removeHeader("Pragma")
-                                .build();
-                    }else{
-                        val maxStale = 60 * 60 * 24 * 28
-                        req = req.newBuilder()
-                                .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                                .removeHeader("Pragma")
-                                .build()
-                    }
-
-
-                chain.proceed(req)
-
-            }
-
-            .build()
-
-    private fun getRetrofit():Retrofit = Retrofit.Builder()
-                                                 .baseUrl(BASE_URL)
-                                                 .client(client)
-                                                 .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-                                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
-                                                 .build()
-
-    fun getRestService():API = getRetrofit().create(API::class.java)
 
 
 

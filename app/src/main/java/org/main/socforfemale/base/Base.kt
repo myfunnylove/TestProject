@@ -20,17 +20,28 @@ import com.orhanobut.logger.Logger
 import com.orhanobut.logger.Logger.addLogAdapter
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig
 import com.facebook.imagepipeline.core.ImagePipelineConfig
-
-
-
-
-
+import org.main.socforfemale.connectors.API
+import org.main.socforfemale.di.AppComponent
+import org.main.socforfemale.di.DaggerAppComponent
+import org.main.socforfemale.di.modules.ApiModule
+import org.main.socforfemale.di.modules.ContextModule
+import org.main.socforfemale.di.modules.NetworkModule
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 
 /**
  * Created by Michaelan on 5/18/2017.
  */
 class Base : Application (){
+
+
+    @Inject
+    lateinit var APIClient:API
+
+    @Inject
+    lateinit var context:Context
+
 
     val vkAccessTokenTracker = object : VKAccessTokenTracker(){
         override fun onVKAccessTokenChanged(oldToken: VKAccessToken?, newToken: VKAccessToken?) {
@@ -42,45 +53,60 @@ class Base : Application (){
 
     }
 
+
+
+
+
     private fun goLoginActivity() {
         val intent = Intent(this,LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        startActivity(intent);
+        startActivity(intent)
     }
 
     override fun onCreate() {
         super.onCreate()
 
         instance = this
+        DaggerAppComponent
+                .builder()
+                .apiModule(ApiModule())
+                .contextModule(ContextModule(this))
+                .networkModule(NetworkModule())
+                .build()
+                .inject(this)
+
+        vkAccessTokenTracker.startTracking()
+        VKSdk.initialize(context)
+
+        FacebookSdk.sdkInitialize(context)
+
+        AppEventsLogger.activateApp(context)
+
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        MultiDex.install(instance)
-        val config = ImagePipelineConfig.newBuilder(this)
+        MultiDex.install(context)
+
+
+        Logger.addLogAdapter(AndroidLogAdapter())
+        val config = ImagePipelineConfig.newBuilder(context)
                 .setProgressiveJpegConfig(SimpleProgressiveJpegConfig())
                 .setResizeAndRotateEnabledForNetwork(true)
                 .setDownsampleEnabled(true)
                 .build()
-        Fresco.initialize(this, config)
-        vkAccessTokenTracker.startTracking()
-
-        VKSdk.initialize(instance)
-
-        FacebookSdk.sdkInitialize(instance)
-
-        AppEventsLogger.activateApp(this)
+        Fresco.initialize(context, config)
 
         CalligraphyConfig.initDefault(
                 CalligraphyConfig.Builder()
-                                 .setDefaultFontPath("font/Quicksand-Regular.otf")
-                                 .setFontAttrId(R.attr.fontPath)
-                                 .build()
-                                     )
+                        .setDefaultFontPath("font/Quicksand-Regular.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build())
 
-
-        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     companion object {
+
+
         lateinit var instance: Base
             private set
     }
