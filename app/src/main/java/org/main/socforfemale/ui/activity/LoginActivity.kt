@@ -30,6 +30,7 @@ import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import java.util.*
+import javax.inject.Inject
 
 
 class LoginActivity : BaseActivity(), Viewer {
@@ -39,7 +40,10 @@ class LoginActivity : BaseActivity(), Viewer {
     var fbCallbackManager: CallbackManager? = null
     var username = ""
     var password = ""
-    var presenter: Presenter? = null
+
+    @Inject
+    lateinit var presenter:Presenter
+
     var vkAccessToken: String = ""
     var vkEmail: String = ""
 
@@ -68,7 +72,7 @@ class LoginActivity : BaseActivity(), Viewer {
         if (Base.get.prefs.getUser().session == "") {
             DaggerMVPComponent
                     .builder()
-                    .mVPModule(MVPModule(this, Model()))
+                    .mVPModule(MVPModule(this, Model(),this))
                     .presenterModule(PresenterModule())
                     .build()
                     .inject(this)
@@ -100,7 +104,7 @@ class LoginActivity : BaseActivity(), Viewer {
                     val obj = JSONObject()
                     obj.put("username", username)
                     obj.put("password", password)
-                    presenter!!.requestAndResponse(obj, Http.CMDS.LOGIN_PAYTI)
+                    presenter.requestAndResponse(obj, Http.CMDS.LOGIN_PAYTI)
                 }
             }
 
@@ -121,8 +125,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == VKONTAKTE) { /* INTEGRATE VIA VKONTAKTE */
             val VKCallback = object : VKCallback<VKAccessToken> {
@@ -145,10 +148,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
             fbCallbackManager!!.onActivityResult(requestCode, resultCode, data)
         }
-
-
     }
-
 
     /*
     *
@@ -289,7 +289,7 @@ class LoginActivity : BaseActivity(), Viewer {
     private fun goNextActivity(from: Int) {
         val intent = Intent(this, LoginAndPassActivity::class.java)
         intent.putExtra("from", from)
-        startActivity(intent)
+        startActivityForResult(intent,Const.TO_FAIL)
         this.finish()
     }
 
@@ -327,6 +327,10 @@ class LoginActivity : BaseActivity(), Viewer {
 
             Http.CMDS.FB_ORQALI_LOGIN -> goNextActivity(FACEBOOK)
             Http.CMDS.VK_ORQALI_LOGIN -> goNextActivity(VKONTAKTE)
+
+            "96" -> {
+
+            }
 
             else -> {
                 errorText.text = message

@@ -315,6 +315,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 
                 if (postList.posts.get(0).id != "-1") postList.posts.add(0,postList.posts.get(0))
                 postAdapter = FeedAdapter(activity, postList, this, this, true, FOLLOW_TYPE, postUser)
+
                 postView.adapter = postAdapter
             }else if (postList.posts.size == 1 && (MainActivity.endFeed == 1 && MainActivity.startFeed == 0)){
                 log.d("post qoshildi postni birinchi elementi update qilinadi")

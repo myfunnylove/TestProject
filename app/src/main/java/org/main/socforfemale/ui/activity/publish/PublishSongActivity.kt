@@ -76,4 +76,8 @@ class PublishSongActivity : BaseActivity(),AdapterClicker{
 
         return true
     }
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    }
 }

@@ -99,7 +99,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -120,7 +120,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 //        if (feedFragment != null && feedFragment!!.feedAdapter == null){
 //            feedFragment!!.showProgress()
 //        }
-        presenter!!.requestAndResponse(reqObj, Http.CMDS.FEED)
+        presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
 
         tablayout.addTab(tablayout.newTab().setIcon(R.drawable.feed_select))
         tablayout.addTab(tablayout.newTab().setIcon(R.drawable.search))
@@ -290,7 +290,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                 reqObj.put("end",     endFeed)
 
 
-                presenter!!.requestAndResponse(reqObj, Http.CMDS.FEED)
+                presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
 
             }
 
@@ -303,7 +303,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                 reqObj.put("end",     end)
 
                 MY_POSTS_STATUS = FIRST_TIME
-                presenter!!.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
             }
             else -> {
 
@@ -418,9 +418,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         log.d("MainActivity -> OnactivityResult: req:${requestCode} res: ${resultCode} intent: ${if (data != null) true else false}")
 
         when (resultCode) {
@@ -455,12 +453,12 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                     }
                     Const.GO_COMMENT_ACTIVITY ->{
                         if (feedFragment != null && !feedFragment!!.isHidden){
-                           try {
+                            try {
 
-                               //TODO COMMENTLANI SONINI OLIB KELISH
+                                //TODO COMMENTLANI SONINI OLIB KELISH
 //                               feedFragment!!.feedAdapter!!.feeds.posts.get(COMMENT_POST_UPDATE).comments = COMMENT_COUNT.toString()
 //                               feedFragment!!.feedAdapter!!.notifyItemChanged(COMMENT_POST_UPDATE)
-                           }catch (e :Exception){}
+                            }catch (e :Exception){}
 
                         }
                     }
@@ -469,13 +467,13 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             Const.PICK_UNIVERSAL -> {
                 log.d("after posting go feed $MY_POSTS_STATUS")
-                    FEED_STATUS  = NEED_UPDATE
-                    if (feedFragment!!.feedAdapter != null){
-                        MyPostOffset.startFeed = 0
-                        MyPostOffset.endFeed   = 1
-                    }
+                FEED_STATUS  = NEED_UPDATE
+                if (feedFragment!!.feedAdapter != null){
+                    MyPostOffset.startFeed = 0
+                    MyPostOffset.endFeed   = 1
+                }
 
-                    MY_POSTS_STATUS = NEED_UPDATE
+                MY_POSTS_STATUS = NEED_UPDATE
 
                 val tab = tablayout.getTabAt(0)
                 tab!!.setIcon(Const.selectedTabs.get(0)!!)
@@ -499,12 +497,11 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             }
         }
-
-
     }
-
     var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
+
+        log.d("onbackpressed")
 
 
         if (doubleBackToExitPressedOnce) {
@@ -645,7 +642,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
         }, ProgressRequestBody.IMAGE_ALL)
         val body = MultipartBody.Part.createFormData("upload", File(this).name, reqFile)
-        presenter!!.uploadAvatar(body)
+        presenter.uploadAvatar(body)
 
     }
 

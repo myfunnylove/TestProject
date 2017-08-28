@@ -1,5 +1,6 @@
 package org.main.socforfemale.mvp
 
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatEditText
 import com.google.gson.Gson
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -12,8 +13,10 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
+import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.base.Http
 import org.main.socforfemale.model.UserInfo
+import org.main.socforfemale.pattern.SessionOut
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
 import retrofit2.HttpException
@@ -22,12 +25,12 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 
-class Presenter(viewer: Viewer, modeler:Model) {
+class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
 
     val view:Viewer = viewer
 
     val model:Model = modeler
-
+    val context = context
     fun requestAndResponse(data:JSONObject,cmd:String){
 
 
@@ -109,6 +112,12 @@ class Presenter(viewer: Viewer, modeler:Model) {
 
                                     "0"    -> view.onSuccess(cmd,Http.getResponseData(response.prms))
                                     "1996" -> view.onFailure(cmd,Base.get.resources.getString(R.string.error_no_type))
+                                    "96"   -> {
+                                        val sesion = SessionOut.Builder(context)
+                                                .setErrorCode(96)
+                                                .build()
+                                        sesion.out()
+                                    }
                                      else  -> {
                                          if (response.message != "null")
                                               view.onFailure(cmd,response.message)

@@ -52,6 +52,8 @@ object Const {
     val REFRESH_FEED    = 13
     val REFRESH_PROFILE_FEED    = 14
     val GO_COMMENT_ACTIVITY = 15
+    val SESSION_OUT = 16
+    val PROFIL_PAGE_OTHER     = 17
 
     val TO_FAIL = -1;
 

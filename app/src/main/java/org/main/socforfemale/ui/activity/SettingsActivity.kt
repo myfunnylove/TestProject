@@ -1,5 +1,6 @@
 package org.main.socforfemale.ui.activity
 
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
@@ -19,7 +20,6 @@ import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.resources.customviews.SwitchButton
 import org.main.socforfemale.resources.utils.log
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +47,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -107,6 +107,11 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
     }
 
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.menu_save,menu)

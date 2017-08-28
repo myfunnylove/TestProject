@@ -38,6 +38,7 @@
             android:maxLines="1"
             android:textSize="14sp"
             android:paddingLeft="10dp"
+
             />
         <TextView
             android:id="@+id/songName"

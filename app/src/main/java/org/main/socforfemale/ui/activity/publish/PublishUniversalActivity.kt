@@ -129,7 +129,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
         user      = Base.get.prefs.getUser()
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -249,9 +249,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
     }
 
     var photo:File? = null
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         log.d("MainActivity -> OnactivityResult: req:${requestCode} res: ${resultCode} intent: ${if (data != null) true else false }" )
 
         if (resultCode == Activity.RESULT_OK ){
@@ -279,7 +277,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
                             }
 
                             override fun data(data: String) {
-                              //  uploadPhotoByUri(data,PickedPhotoAdapter.Photo.UPDATE)
+                                //  uploadPhotoByUri(data,PickedPhotoAdapter.Photo.UPDATE)
 
                             }
 
@@ -301,31 +299,31 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 //              uploadAudioByUri(song.songPath,PickedSongAdapter.Audio.UPLOAD)
 
 
-                     listMusic.add(song)
-                        idMusic = listMusic.size - 1
-                        if (songAdapter == null){
+                listMusic.add(song)
+                idMusic = listMusic.size - 1
+                if (songAdapter == null){
 
-                            songAdapter = PickedSongAdapter(this,object :AdapterClicker{
-                                override fun click(position: Int) {
-                                    idMusic = position
-
-                                }
-
-                                override fun data(data: String) {
-//                                    uploadAudioByUri(data,PickedSongAdapter.Audio.UPDATE)
-
-                                }
-
-                            },listMusic)
-
-                            viewMusic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
-                            viewMusic.setHasFixedSize(true)
-                            viewMusic.adapter = songAdapter
-
-                        }else{
-                            songAdapter!!.swapItems(listMusic)
+                    songAdapter = PickedSongAdapter(this,object :AdapterClicker{
+                        override fun click(position: Int) {
+                            idMusic = position
 
                         }
+
+                        override fun data(data: String) {
+//                                    uploadAudioByUri(data,PickedSongAdapter.Audio.UPDATE)
+
+                        }
+
+                    },listMusic)
+
+                    viewMusic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+                    viewMusic.setHasFixedSize(true)
+                    viewMusic.adapter = songAdapter
+
+                }else{
+                    songAdapter!!.swapItems(listMusic)
+
+                }
             }
         }else if(resultCode == Const.PICK_CROP_IMAGE && data != null){
 
@@ -343,7 +341,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
                     }
 
                     override fun data(data: String) {
-                    //uploadPhotoByUri(data,PickedPhotoAdapter.Photo.UPDATE)
+                        //uploadPhotoByUri(data,PickedPhotoAdapter.Photo.UPDATE)
 
                     }
 
@@ -361,8 +359,6 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
         }
     }
-
-
 
     override fun initProgress() {
         progressLay.visibility = View.VISIBLE

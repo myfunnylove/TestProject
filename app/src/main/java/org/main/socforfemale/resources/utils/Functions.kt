@@ -20,6 +20,11 @@ import android.widget.Toast
 import android.os.Build
 import android.view.WindowManager
 import android.graphics.Point
+import android.os.Bundle
+import org.json.JSONException
+import org.json.JSONObject
+
+
 
 
 /**
@@ -186,5 +191,15 @@ object Functions {
     }
 
 
-
+    @Throws(JSONException::class)
+    fun jsonToBundle(jsonObject: JSONObject): Bundle {
+        val bundle = Bundle()
+        val iter = jsonObject.keys()
+        while (iter.hasNext()) {
+            val key = iter.next() as String
+            val value = jsonObject.getString(key)
+            bundle.putString(key, value)
+        }
+        return bundle
+    }
 }

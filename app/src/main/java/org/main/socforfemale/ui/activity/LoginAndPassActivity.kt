@@ -60,7 +60,7 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -192,7 +192,10 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
         }
     }
 
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
+
+    }
     fun AppCompatEditText.setLoginResult(drawable:Int = 0){
         if(drawable != 0){
             val drawableCompat = VectorDrawableCompat.create(resources,drawable,this.context.theme)
@@ -226,6 +229,8 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
         signUp.isEnabled = true
 
     }
+
+
 
     override fun onBackPressed() {
         super.onBackPressed()

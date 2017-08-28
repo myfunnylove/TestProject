@@ -97,7 +97,7 @@ class SignActivity : BaseActivity() ,Viewer{
 
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -181,6 +181,9 @@ class SignActivity : BaseActivity() ,Viewer{
 
     }
 
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    }
 
     override fun getLayout(): Int {
         return R.layout.activity_sign

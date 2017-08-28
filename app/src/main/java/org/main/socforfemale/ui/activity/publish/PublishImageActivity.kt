@@ -1,5 +1,6 @@
 package org.main.socforfemale.ui.activity.publish
 
+import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
@@ -60,5 +61,9 @@ class PublishImageActivity :BaseActivity(){
         }
 
         return true
+    }
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
     }
 }

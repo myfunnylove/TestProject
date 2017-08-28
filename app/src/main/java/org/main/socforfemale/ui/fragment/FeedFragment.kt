@@ -197,7 +197,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.UN_FOLLOW)
             go.putExtra(FollowActivity.TYPE, FollowActivity.PROFIL_T)
             go.putExtras(bundle)
-            startActivity(go)
+            startActivityForResult(go,Const.FOLLOW)
         }else{
             connectActivity!!.goNext(Const.PROFIL_PAGE,"")
         }

@@ -3,6 +3,7 @@ package org.main.socforfemale.ui.activity
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -46,6 +47,7 @@ import javax.inject.Inject
  */
 class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
+
     var postId    = -1
     @Inject
     lateinit var presenter:Presenter
@@ -71,7 +73,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     override fun initView() {
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -349,6 +351,9 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
                     }
                 })
                 .start()
+    }
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 }
 

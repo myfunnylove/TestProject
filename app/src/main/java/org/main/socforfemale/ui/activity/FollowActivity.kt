@@ -1,9 +1,11 @@
 package org.main.socforfemale.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.widget.Toast
 import com.google.gson.Gson
 import org.json.JSONObject
 import org.main.socforfemale.R
@@ -29,6 +31,8 @@ import org.main.socforfemale.ui.fragment.SearchFragment
 import javax.inject.Inject
 
 import kotlinx.android.synthetic.main.activity_follow.*
+import org.main.socforfemale.resources.utils.Functions
+import org.main.socforfemale.resources.utils.Prefs
 
 class FollowActivity : BaseActivity(), GoNext,Viewer {
 
@@ -56,16 +60,16 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     var profilFragment:ProfileFragment? = null
     var followersFragment:FFFFragment?  = null
     var userID                          = ""
-    override fun getLayout(): Int {
-        return R.layout.activity_follow
-    }
+    lateinit var jsUserData:JSONObject
+
+    override fun getLayout(): Int = R.layout.activity_follow
 
     override fun initView() {
         Const.TAG = "FollowActivity"
 
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model()))
+                .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
@@ -110,7 +114,6 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             } else
                 transaction!!.add(R.id.container, profilFragment, ProfileFragment.TAG)
 
-            log.d("close profil logic: ${intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST || (intent.extras.getInt("close",-1) == 0 && intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST)}")
            if (intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST || (intent.extras.getInt("close",-1) == 0 && intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST)){
                val reqObj = JSONObject()
                reqObj.put("user_id",user.userId)
@@ -192,6 +195,26 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             Const.TO_FOLLOWERS -> showFragment(FOLLOWERS)
 
             Const.TO_FOLLOWING -> showFragment(FOLLOWING)
+
+            Const.PROFIL_PAGE -> {
+                val reqObj = JSONObject()
+                reqObj.put("user_id", user.userId)
+                reqObj.put("session", user.session)
+                reqObj.put("user",    userID)
+                reqObj.put("start",   data)
+                reqObj.put("end",     end)
+
+                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+             }
+
+            Const.PROFIL_PAGE_OTHER ->{
+                jsUserData = JSONObject(data)
+                val bundle = Functions.jsonToBundle(jsUserData)
+                intent.putExtras(bundle)
+
+                showFragment(PROFIL_T)
+            }
         }
     }
 
@@ -271,9 +294,20 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
 
             this.finish()
-        }else{
+        }else if(Prefs.Builder().getUser().session != ""){
 
             super.onBackPressed()
+        }else{
+            setResult(Const.SESSION_OUT)
+            this.finish()
         }
+    }
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Const.SESSION_OUT || resultCode == Const.SESSION_OUT){
+            setResult(Const.SESSION_OUT)
+            finish()
+        }
+
     }
 }

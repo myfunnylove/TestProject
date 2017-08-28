@@ -217,7 +217,7 @@ class SearchFragment : BaseFragment(), AdapterClicker{
            bundle.putString(ProfileFragment.F_TYPE,type)
            go.putExtra(FollowActivity.TYPE,FollowActivity.PROFIL_T)
            go.putExtras(bundle)
-           startActivity(go)
+           startActivityForResult(go,Const.TO_FAIL)
        }else{
            connectActivity!!.goNext(Const.PROFIL_PAGE,"")
        }

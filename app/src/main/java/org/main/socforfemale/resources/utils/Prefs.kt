@@ -15,6 +15,7 @@ object Prefs {
     private var prefs:SharedPreferences? = null
 
     private val USER = "user"
+
     fun Builder():Prefs{
         if (prefs == null) prefs = PreferenceManager.getDefaultSharedPreferences(Base.get)
 
@@ -39,5 +40,10 @@ object Prefs {
         return Gson().fromJson(user,User::class.java)
         else
             return User("","","","","","N","","","","","",-1)
+    }
+    fun clearUser(){
+
+        val user = User("","","","","","N","","","","","",-1)
+        setUser(user)
     }
 }

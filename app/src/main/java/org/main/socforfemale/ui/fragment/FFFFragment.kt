@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.adapter.FollowAdapter
 import org.main.socforfemale.base.Base
@@ -176,28 +178,39 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         val user = adapter!!.users.get(position)
 
         if (user.userId != this.user.userId){
+
             val bundle = Bundle()
+            val js = JSONObject()
+
             bundle.putString("username",user.username)
             bundle.putString("photo",   user.photo150)
             bundle.putString("userId",  user.userId)
+            js.put("username",user.username)
+            js.put("photo",   user.photo150)
+            js.put("userId",  user.userId)
+
             if (user.follow == 0 && user.request == 0){
 
                 log.d("${user.userId} -> ${user.username}ga follow qilinmagan")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
 
             }else if (user.follow == 1 && user.request == 0){
 
                 log.d("${user.userId} -> ${user.username}ga follow qilingan")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.UN_FOLLOW)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.UN_FOLLOW)
 
             }else if (user.follow == 0 && user.request == 1){
 
                 log.d("${user.userId} -> ${user.username}ga zapros tashalgan")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
 
             } else{
                 log.d("${user.userId} -> ${user.username}da xato holat ")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
 
             }
 
@@ -206,7 +219,12 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
             go.putExtra(FollowActivity.TYPE, FollowActivity.PROFIL_T)
             go.putExtra("close",user.close)
             go.putExtras(bundle)
-            startActivity(go)
+            js.put("close",user.close)
+//            startActivityForResult(go,Const.TO_FAIL)
+
+
+            connectActivity!!.goNext(Const.PROFIL_PAGE_OTHER,js.toString())
+
         }else{
             connectActivity!!.goNext(Const.PROFIL_PAGE,"")
         }

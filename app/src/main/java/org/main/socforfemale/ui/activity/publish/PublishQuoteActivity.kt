@@ -1,5 +1,6 @@
 package org.main.socforfemale.ui.activity.publish
 
+import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
@@ -84,5 +85,9 @@ class PublishQuoteActivity :BaseActivity(){
         }
 
         return true
+    }
+
+    override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
     }
 }
