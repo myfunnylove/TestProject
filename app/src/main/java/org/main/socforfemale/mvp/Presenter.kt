@@ -111,7 +111,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                 when(response.res){
 
                                     "0"    -> view.onSuccess(cmd,Http.getResponseData(response.prms))
-                                    "1996" -> view.onFailure(cmd,Base.get.resources.getString(R.string.error_no_type))
+                                    "1996" -> view.onFailure("",Base.get.resources.getString(R.string.error_no_type))
                                     "96"   -> {
                                         val sesion = SessionOut.Builder(context)
                                                 .setErrorCode(96)
@@ -122,7 +122,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                          if (response.message != "null")
                                               view.onFailure(cmd,response.message)
                                          else
-                                              view.onFailure(cmd,Base.get.resources.getString(R.string.error_something))
+                                              view.onFailure("",Base.get.resources.getString(R.string.error_something))
                                      }
 
                                 }
@@ -133,11 +133,11 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                     log.e(fail.toString())
                                                   view.hideProgress()
                                when (fail) {
-                                   is SocketTimeoutException ->  view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
-                                   is UnknownHostException ->    view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
-                                   is HttpException ->           view.onFailure(cmd,Base.get.resources.getString(R.string.internet_conn_error))
+                                   is SocketTimeoutException ->  view.onFailure("",Base.get.resources.getString(R.string.internet_conn_error))
+                                   is UnknownHostException ->    view.onFailure("",Base.get.resources.getString(R.string.internet_conn_error))
+                                   is HttpException ->           view.onFailure("",Base.get.resources.getString(R.string.internet_conn_error))
                                    else -> {
-                                       view.onFailure(cmd,Base.get.resources.getString(R.string.error_something))
+                                       view.onFailure("",Base.get.resources.getString(R.string.error_something))
                                    }
                                }
                              })

@@ -333,14 +333,16 @@ public class MusicController extends FrameLayout {
      */
     public void show(int timeout) {
         if (!mShowing && mAnchor != null) {
-            setProgress();
-            if (mPauseButton != null) {
-                mPauseButton.requestFocus();
-            }
-            disableUnsupportedButtons();
-            updateFloatingWindowLayout();
-            mWindowManager.addView(this, mDecorLayoutParams);
-            mShowing = true;
+          try{
+              setProgress();
+              if (mPauseButton != null) {
+                  mPauseButton.requestFocus();
+              }
+              disableUnsupportedButtons();
+              updateFloatingWindowLayout();
+              mWindowManager.addView(this, mDecorLayoutParams);
+              mShowing = true;
+          }catch (Exception e){}
         }
         updatePausePlay();
 
