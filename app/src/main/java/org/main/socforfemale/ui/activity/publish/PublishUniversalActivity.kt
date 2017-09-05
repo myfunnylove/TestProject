@@ -35,6 +35,7 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
+import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import java.io.File
@@ -390,7 +391,8 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
         log.d("from $from result: $result")
         loadedImagesIds  = ArrayList()
         loadedAudioIds  = ArrayList()
-        hideSoftKeyboard(this)
+        Functions.hideSoftKeyboard(this)
+
         commentText!!.hideKeyboard()
         setResult(Const.PICK_UNIVERSAL)
         this.finish()
@@ -413,17 +415,10 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
     override fun onBackPressed() {
         commentText.hideKeyboard()
-        hideSoftKeyboard(this)
+        Functions.hideSoftKeyboard(this)
         super.onBackPressed()
     }
 
-    fun hideSoftKeyboard(activity: Activity) {
-        val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (inputMethodManager.isActive) {
-            if (activity.currentFocus != null) {
-                inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
-            }
-        }
-    }
+
 
 }

@@ -6,5 +6,5 @@ package org.main.socforfemale.pattern.signInUp
 interface AuthorizeConnector {
 
     fun onSuccess(idUser:String,token:String)
-    fun onFailure()
+    fun onFailure(message:String = "")
 }

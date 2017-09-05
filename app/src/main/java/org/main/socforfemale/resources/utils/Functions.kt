@@ -21,6 +21,10 @@ import android.os.Build
 import android.view.WindowManager
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -201,5 +205,90 @@ object Functions {
             bundle.putString(key, value)
         }
         return bundle
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager.isActive) {
+            if (activity.currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+            }
+        }
+    }
+
+    var EditTelephoneCodeWatcher: TextWatcher = object : TextWatcher {
+        // int len = 0;
+        internal var text = ""
+        internal var editingBefore = false
+        internal var editingOnChanged = false
+        internal var editingAfter = false
+
+        override fun afterTextChanged(str: Editable) {
+            if (!editingAfter && editingBefore && editingOnChanged) {
+                editingAfter = true
+                str.replace(0, str.length, text)
+                // str.append(text);
+
+
+                editingBefore = false
+                editingOnChanged = false
+                editingAfter = false
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            if (!editingBefore) {
+                editingBefore = true
+                // text = clearText(s.toString());
+
+            }
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int,
+                                   count: Int) {
+            val d = " "
+            if (!editingOnChanged && editingBefore) {
+                editingOnChanged = true
+                text = clearText(s.toString())
+                if (text.length == 3 || text.length == 4
+                        || text.length == 5) {
+                    text = text.substring(0, 2) + d+text.substring(2, text.length)
+                } else if (text.length == 6) {
+                    text = text.substring(0, 2) + d + text.substring(2, text.length - 1) + d+text.substring(text.length - 1, text.length)
+                } else if (text.length == 7) {
+                    text = text.substring(0, 2) + d + text.substring(2, text.length - 2) + d +text.substring(text.length - 2, text.length)
+                } else if (text.length == 8 || text.length == 9) {
+                    text = text.substring(0, 2) + d + text.substring(2, 5) + d+text.substring(5, 7) + d+text.substring(7, text.length)
+                }
+
+
+            }
+
+        }
+    }
+
+    fun clearText(s: String): String {
+        var s = s
+        s = s.replace("-".toRegex(), "")
+        s = s.replace(" ".toRegex(), "")
+        s = s.trim { it <= ' ' }
+        return s
+    }
+
+    fun clearText(edit: EditText): String {
+        var s = edit.text.toString()
+        s = s.replace("-".toRegex(), "")
+        s = s.replace(" ".toRegex(), "")
+        s = s.trim { it <= ' ' }
+        return s
+    }
+
+    fun clearEdit(edit: EditText): String {
+        var s = edit.text.toString()
+        s = s.replace("-".toRegex(), "")
+        s = s.replace(" ".toRegex(), "")
+        s = s.trim { it <= ' ' }
+        return s
     }
 }

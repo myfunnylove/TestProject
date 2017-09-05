@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -145,6 +146,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
 
+                hideSoftKeyboard()
 
                 when (p0!!.position) {
 
@@ -658,6 +660,16 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                 .setDuration(300)
                 .setStartDelay(300)
     }
+    fun hideSoftKeyboard() {
+        val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager.isActive) {
+            if (this.currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, 0)
+            }
+        }
+    }
+
+
 
 }
 

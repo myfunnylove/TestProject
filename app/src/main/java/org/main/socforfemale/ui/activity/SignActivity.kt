@@ -18,6 +18,7 @@ import org.main.socforfemale.model.User
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.Const
+import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
 import javax.inject.Inject
 
@@ -107,7 +108,7 @@ class SignActivity : BaseActivity() ,Viewer{
         val phoneEnb = VectorDrawableCompat.create(resources,R.drawable.phone_select,selectPhone.context.theme)
         val mailDis  = VectorDrawableCompat.create(resources,R.drawable.email,selectPhone.context.theme)
         val mailEnb  = VectorDrawableCompat.create(resources,R.drawable.email_select,selectPhone.context.theme)
-
+        phone.addTextChangedListener(Functions.EditTelephoneCodeWatcher)
         selectPhone.setOnClickListener {
             signMode = PHONE_MODE
 

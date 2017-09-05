@@ -63,7 +63,7 @@ public class SessionOut {
     public void out(){
 
         Prefs.INSTANCE.Builder()
-                .clearUser();
+                      .clearUser();
 
         context.startActivityForResult(new Intent(context, LoginActivity.class), Const.INSTANCE.getSESSION_OUT());
 

@@ -113,8 +113,10 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                     transaction!!.show(profilFragment)
             } else
                 transaction!!.add(R.id.container, profilFragment, ProfileFragment.TAG)
-
+            log.d("json chiqdi")
+            log.d(intent.extras.toString())
            if (intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST || (intent.extras.getInt("close",-1) == 0 && intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST)){
+           log.d("if ishladi")
                val reqObj = JSONObject()
                reqObj.put("user_id",user.userId)
                reqObj.put("session",user.session)
@@ -210,6 +212,8 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
             Const.PROFIL_PAGE_OTHER ->{
                 jsUserData = JSONObject(data)
+                log.d("json kirishdan oldin")
+                log.json(jsUserData.toString())
                 val bundle = Functions.jsonToBundle(jsUserData)
                 intent.putExtras(bundle)
 

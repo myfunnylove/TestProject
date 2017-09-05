@@ -1,18 +1,10 @@
 package org.main.socforfemale.ui.activity
 
 import android.content.Intent
-import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import com.facebook.*
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
-import com.vk.sdk.VKAccessToken
-import com.vk.sdk.VKCallback
-import com.vk.sdk.VKSdk
-import com.vk.sdk.api.*
+import com.facebook.CallbackManager
 import kotlinx.android.synthetic.main.activity_login.*
-import org.json.JSONArray
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
@@ -21,16 +13,12 @@ import org.main.socforfemale.base.Http
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
-import org.main.socforfemale.model.User
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.pattern.signInUp.*
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
-import org.main.socforfemale.resources.utils.log
-import java.util.*
 import javax.inject.Inject
 
 
@@ -43,6 +31,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
     lateinit var facebookoAuth:FacebookoAuth
     lateinit var vkAuth:VKoAuth
+    lateinit var simpleAuth:SimpleoAuth
     lateinit var signBridge:SignBridgeConnector
 
 
@@ -74,6 +63,7 @@ class LoginActivity : BaseActivity(), Viewer {
         Const.TAG = "LoginACtivity"
 
         if (Base.get.prefs.getUser().session == "") {
+
             DaggerMVPComponent
                     .builder()
                     .mVPModule(MVPModule(this, Model(),this))
@@ -82,71 +72,26 @@ class LoginActivity : BaseActivity(), Viewer {
                     .inject(this)
 
 
-            Functions.checkPermissions(this) /*CHECK PERMISSION*/
-
-            facebookoAuth = FacebookoAuth.Builder(CallbackManager.Factory.create(),this,
-                    object : AuthorizeConnector{
-                        override fun onSuccess(idUser: String, token: String) {
-
-                            val sendObj = JSONObject()
-                            sendObj.put("fb_id", idUser)
-                            sendObj.put("token", token)
-
-                            presenter.requestAndResponse(sendObj, Http.CMDS.FB_ORQALI_LOGIN)
-                        }
+            Functions.checkPermissions(this)
 
 
-                        override fun onFailure() {
+            //FACEBOOK OAUTH2 BUILDER INITIALIZE
+            facebookoAuth = FacebookoAuth.Builder(CallbackManager.Factory.create(),this,fb)
+                                         .build()
 
-                            onFailure(Http.CMDS.FB_ORQALI_LOGIN, resources.getString(R.string.error_no_type))
+            //VKONTAKTE OAUTH2 BUILDER INITIALIZE
+            vkAuth = VKoAuth.Builder(this, vk)
+                            .build()
 
-                        }
-
-                    }
-                    ).build()
-
-
-            vkAuth = VKoAuth.Builder(this, object : AuthorizeConnector{
-
-                override fun onSuccess(idUser: String, token: String) {
-                        val sendObj = JSONObject()
-                        sendObj.put("vk_id",idUser)
-                        sendObj.put("token", token)
-
-                        presenter.requestAndResponse(sendObj, Http.CMDS.VK_ORQALI_LOGIN)
-                }
-
-                override fun onFailure() {
-                    onFailure(Http.CMDS.VK_ORQALI_LOGIN, resources.getString(R.string.error_no_type))
-
-                }
-
-
-
-            }).build()
-
-
+            //SIMPLE AUTH BUILDER INITIALIZE
+            simpleAuth = SimpleoAuth.Builder(this,sm,login,pass)
+                                    .build()
 
             logIn.setOnClickListener {
 
-                username = login.text.toString()
-                password = pass.text.toString()
+                signBridge = SignBridge(simpleAuth)
+                signBridge.initialize().tryAuthorize()
 
-                if (username.length < 6) {
-
-                    loginLay.error = resources.getString(R.string.username_field_less_5)
-
-                } else if (password.length < 5) {
-
-                    passLay.error = resources.getString(R.string.password_field_less_5)
-
-                } else {
-
-                    val obj = JSONObject()
-                    obj.put("username", username)
-                    obj.put("password", password)
-                    presenter.requestAndResponse(obj, Http.CMDS.LOGIN_PAYTI)
-                }
             }
 
 
@@ -253,7 +198,9 @@ class LoginActivity : BaseActivity(), Viewer {
 
     override fun onStop() {
         super.onStop()
-        signBridge.onDestroy()
+        try{
+            signBridge.onDestroy()
+        }catch (e:Exception){}
     }
 
     private fun disableAllElements() {
@@ -261,10 +208,10 @@ class LoginActivity : BaseActivity(), Viewer {
         loginLay.isEnabled      = false
         loginLay.isErrorEnabled = false
         passLay.isEnabled       = false
-        passLay.isErrorEnabled = false
-        loginVk.isEnabled = false
-        loginFb.isEnabled = false
-        signUp.isEnabled = false
+        passLay.isErrorEnabled  = false
+        loginVk.isEnabled       = false
+        loginFb.isEnabled       = false
+        signUp.isEnabled        = false
 
     }
 
@@ -277,6 +224,73 @@ class LoginActivity : BaseActivity(), Viewer {
         signUp.isEnabled = true
         loginVk.isEnabled = true
         loginFb.isEnabled = true
+    }
+
+
+    /*
+    *
+    *
+    *   LISTENERS
+    *
+    *
+    * */
+
+    val fb = object : AuthorizeConnector{
+        override fun onSuccess(idUser: String, token: String) {
+
+            val sendObj = JSONObject()
+            sendObj.put("fb_id", idUser)
+            sendObj.put("token", token)
+
+            presenter.requestAndResponse(sendObj, Http.CMDS.FB_ORQALI_LOGIN)
+        }
+
+
+        override fun onFailure(message: String) {
+
+            if(message.isEmpty()) onFailure(Http.CMDS.VK_ORQALI_LOGIN, resources.getString(R.string.error_no_type))
+            else onFailure(Http.CMDS.FB_ORQALI_LOGIN, message)
+
+        }
+
+    }
+
+    val vk = object : AuthorizeConnector{
+
+        override fun onSuccess(idUser: String, token: String) {
+            val sendObj = JSONObject()
+            sendObj.put("vk_id",idUser)
+            sendObj.put("token", token)
+
+            presenter.requestAndResponse(sendObj, Http.CMDS.VK_ORQALI_LOGIN)
+        }
+
+        override fun onFailure(message: String) {
+            if(message.isEmpty()) onFailure(Http.CMDS.VK_ORQALI_LOGIN, resources.getString(R.string.error_no_type))
+            else onFailure(Http.CMDS.VK_ORQALI_LOGIN, message)
+
+        }
+
+
+
+    }
+
+    val sm = object :AuthorizeConnector{
+        override fun onSuccess(idUser: String, token: String) {
+            val obj = JSONObject()
+            obj.put("username", idUser)
+            obj.put("password", token)
+            presenter.requestAndResponse(obj, Http.CMDS.LOGIN_PAYTI)
+        }
+
+        override fun onFailure(message: String) {
+            if (message == resources.getString(R.string.username_field_less_5)){
+                loginLay.error = message
+            }else{
+                passLay.error = message
+            }
+        }
+
     }
 }
 

@@ -1,5 +1,6 @@
 package org.main.socforfemale.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
@@ -10,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -221,6 +223,7 @@ class SearchFragment : BaseFragment(), AdapterClicker{
        }else{
            connectActivity!!.goNext(Const.PROFIL_PAGE,"")
        }
+
     }
 
     override fun data(data: String) {
@@ -243,6 +246,10 @@ class SearchFragment : BaseFragment(), AdapterClicker{
                     }else{
                         connectActivity!!.donGo(res)
                     }
+                }else{
+                    adapter!!.users.clear()
+                    adapter!!.notifyDataSetChanged()
+                    list.adapter = adapter
                 }
             }
 
@@ -259,12 +266,38 @@ class SearchFragment : BaseFragment(), AdapterClicker{
     override fun onResume() {
         super.onResume()
         log.d("onresume")
+        search.showKeyboard()
+
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        log.d("onHiddenChanged ")
+        if(hidden){
+            search.hideKeyboard()
+
+        }else{
+            search.showKeyboard()
+
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
     override fun onStart() {
         super.onStart()
         log.d("onresume")
 
     }
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
 
+    fun View.hideKeyboard() {
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
 }

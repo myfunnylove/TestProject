@@ -176,18 +176,21 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
     }
     override fun click(position: Int) {
         val user = adapter!!.users.get(position)
+        val bundle = Bundle()
+        val js = JSONObject()
+
+        bundle.putString("username",user.username)
+        bundle.putString("photo",   user.photo150)
+        bundle.putString("userId",  user.userId)
+        js.put("username",user.username)
+        js.put("photo",   user.photo150)
+        js.put("userId",  user.userId)
 
         if (user.userId != this.user.userId){
 
-            val bundle = Bundle()
-            val js = JSONObject()
 
-            bundle.putString("username",user.username)
-            bundle.putString("photo",   user.photo150)
-            bundle.putString("userId",  user.userId)
-            js.put("username",user.username)
-            js.put("photo",   user.photo150)
-            js.put("userId",  user.userId)
+
+
 
             if (user.follow == 0 && user.request == 0){
 
@@ -220,13 +223,20 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
             go.putExtra("close",user.close)
             go.putExtras(bundle)
             js.put("close",user.close)
-//            startActivityForResult(go,Const.TO_FAIL)
+            startActivityForResult(go,Const.TO_FAIL)
 
 
-            connectActivity!!.goNext(Const.PROFIL_PAGE_OTHER,js.toString())
+//            connectActivity!!.goNext(Const.PROFIL_PAGE_OTHER,js.toString())
 
         }else{
-            connectActivity!!.goNext(Const.PROFIL_PAGE,"")
+            val go = Intent(activity, FollowActivity::class.java)
+            bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.SETTINGS)
+
+            go.putExtra(FollowActivity.TYPE, FollowActivity.PROFIL_T)
+            go.putExtra("close",user.close)
+            go.putExtras(bundle)
+            js.put("close",user.close)
+            startActivityForResult(go,Const.TO_FAIL)
         }
 
     }

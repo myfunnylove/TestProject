@@ -120,7 +120,7 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
             ImageViewer.Builder(context,images)
                     .setFormatter(object : ImageViewer.Formatter<Image>{
                         override fun format(t: Image?): String {
-                            return Http.BASE_URL+t!!.image640
+                            return Http.BASE_URL+t!!.image
                         }
 
                     })

@@ -117,28 +117,39 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="OR" />
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/loginVk"
-                android:layout_width="match_parent"
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_gravity="center"
+               android:gravity="center"
+               >
+               <android.support.v7.widget.AppCompatImageView
+                   android:id="@+id/loginVk"
+                   android:layout_width="50dp"
 
-                android:layout_height="50dp"
-                android:theme="@style/VkBtn"
-                app:srcCompat="@drawable/vk"
+                   android:layout_height="50dp"
+                   android:padding="8dp"
+                   app:srcCompat="@drawable/vk"
+                   android:background="@drawable/border_style"
+                   android:layout_marginRight="8dp"
+                   />
+               <android.support.v7.widget.AppCompatImageView
+                   android:id="@+id/loginFb"
+                   android:layout_width="50dp"
 
-                />
+                   android:layout_height="50dp"
+                   android:padding="8dp"
+                   app:srcCompat="@drawable/facebook"
+                   android:background="@drawable/border_style"
+                   android:layout_marginLeft="8dp"
+
+                   />
+           </LinearLayout>
 
 
 
 
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/loginFb"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:theme="@style/FaceBookBtn"
-                app:srcCompat="@drawable/facebook"
-
-                />
 
 
             <TextView
@@ -157,12 +168,11 @@
             <TextView
                 android:id="@+id/signUp"
                 style="@style/NormalText"
-                android:textColor="@color/asbestos"
+                android:textColor="@color/material_grey_500"
 
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:layout_gravity="bottom"
                 android:text="SIGN UP FOR ACCOUNT"

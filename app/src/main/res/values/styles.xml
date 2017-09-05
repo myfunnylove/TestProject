@@ -42,7 +42,7 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionBarTheme">@style/DrawerArrowStyle</item>
         <item name="android:actionMenuTextColor">@color/asbestos</item>
-
+        <item name="colorControlHighlight">@color/asbestos</item>
         <item name="actionMenuTextColor">@color/asbestos</item>
     </style>
 
