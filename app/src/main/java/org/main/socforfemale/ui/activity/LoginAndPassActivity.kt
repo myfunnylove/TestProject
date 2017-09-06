@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatEditText
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import com.squareup.picasso.Picasso
 import org.main.socforfemale.R
 import org.main.socforfemale.base.BaseActivity
@@ -88,16 +89,16 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
             if (!isLoginFree){
 
-                loginLay.error = resources.getString(R.string.username_not_free_error)
-
+                Toast.makeText(this,resources.getString(R.string.username_not_free_error),Toast.LENGTH_SHORT).show();
             }else if(username.length < 6){
 
-                loginLay.error = resources.getString(R.string.username_field_less_5)
+                Toast.makeText(this,resources.getString(R.string.username_field_less_5),Toast.LENGTH_SHORT).show();
+
                 login.setLoginResult(R.drawable.close_circle_outline)
 
             }else if(password.length < 5){
 
-                passLay.error = resources.getString(R.string.password_field_less_5)
+                Toast.makeText(this,resources.getString(R.string.password_field_less_5),Toast.LENGTH_SHORT).show();
 
             }else{
                 val obj = JSONObject()
@@ -209,11 +210,11 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
     private fun disableAllElements() {
 
-        loginLay.isEnabled = false
-        loginLay.isErrorEnabled = false
-
-        passLay.isEnabled = false
-        passLay.isErrorEnabled = false
+//        loginLay.isEnabled = false
+//        loginLay.isErrorEnabled = false
+//
+//        passLay.isEnabled = false
+//        passLay.isErrorEnabled = false
 
 
 
@@ -221,11 +222,11 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
     }
     private fun enableAllElements() {
 
-        loginLay.isEnabled = true
-        loginLay.isErrorEnabled = true
-
-        passLay.isEnabled = true
-        passLay.isErrorEnabled = true
+//        loginLay.isEnabled = true
+//        loginLay.isErrorEnabled = true
+//
+//        passLay.isEnabled = true
+//        passLay.isErrorEnabled = true
         signUp.isEnabled = true
 
     }

@@ -22,7 +22,9 @@ import android.view.WindowManager
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
+import android.text.method.NumberKeyListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import org.json.JSONException
@@ -216,7 +218,7 @@ object Functions {
         }
     }
 
-    var EditTelephoneCodeWatcher: TextWatcher = object : TextWatcher {
+    var EditCardWatcher: TextWatcher = object : TextWatcher {
         // int len = 0;
         internal var text = ""
         internal var editingBefore = false
@@ -251,20 +253,16 @@ object Functions {
             if (!editingOnChanged && editingBefore) {
                 editingOnChanged = true
                 text = clearText(s.toString())
-                if (text.length == 3 || text.length == 4
-                        || text.length == 5) {
-                    text = text.substring(0, 2) + d+text.substring(2, text.length)
-                } else if (text.length == 6) {
-                    text = text.substring(0, 2) + d + text.substring(2, text.length - 1) + d+text.substring(text.length - 1, text.length)
-                } else if (text.length == 7) {
-                    text = text.substring(0, 2) + d + text.substring(2, text.length - 2) + d +text.substring(text.length - 2, text.length)
-                } else if (text.length == 8 || text.length == 9) {
-                    text = text.substring(0, 2) + d + text.substring(2, 5) + d+text.substring(5, 7) + d+text.substring(7, text.length)
+                if (text.length > 4 && text.length <= 8) {
+                    text = "${text.substring(0, 4)}$d${text.substring(4, text.length)}"
+                } else if (text.length > 8 && text.length <= 12) {
+
+                    text =   "${text.substring(0, 4)}$d${text.substring(4, 8)}$d${text.substring(8, text.length)}"
+                } else if (text.length > 12 && text.length <= 16) {
+                    text = "${text.substring(0, 4)}$d${text.substring(4, 8)}$d${text.substring(8, 12)}$d${text.substring(12, text.length)}"
                 }
 
-
             }
-
         }
     }
 
@@ -290,5 +288,16 @@ object Functions {
         s = s.replace(" ".toRegex(), "")
         s = s.trim { it <= ' ' }
         return s
+    }
+
+    var EditCardKey: NumberKeyListener = object : NumberKeyListener() {
+
+        override fun getInputType(): Int {
+            return InputType.TYPE_CLASS_NUMBER
+        }
+
+        override fun getAcceptedChars(): CharArray {
+            return charArrayOf(' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
+        }
     }
 }

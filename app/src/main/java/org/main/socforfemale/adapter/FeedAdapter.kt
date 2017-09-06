@@ -562,19 +562,23 @@ class FeedAdapter(context: Context,
             h.follow.tag  = FOLLOW_TYPE
             h.follow.text = FOLLOW_TYPE
 
-
-            Glide.with(ctx)
+            Picasso.with(ctx)
                     .load(postUser!!.photo)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
 
-                    .into(object : SimpleTarget<Bitmap>(100,100){
-                        override fun onResourceReady(resource: Bitmap?, glideAnimation: GlideAnimation<in Bitmap>?) {
-                            h.avatar.setImageBitmap(resource)
-                        }
-
-                    })
+                    .into(h.avatar)
+//            Glide.with(ctx)
+//                    .load(postUser!!.photo)
+//                    .asBitmap()
+////                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
+//                    .into(h.avatar)
+////                    .into(object : SimpleTarget<Bitmap>(100,100){
+////                        override fun onResourceReady(resource: Bitmap?, glideAnimation: GlideAnimation<in Bitmap>?) {
+////                            h.avatar.setImageBitmap(resource)
+////                        }
+////
+////                    })
 
             h.username.text  = postUser.username
             h.posts.text  =    feeds.postlarSoni

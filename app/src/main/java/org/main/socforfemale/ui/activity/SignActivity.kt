@@ -19,6 +19,7 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
+import org.main.socforfemale.resources.utils.JavaCodes
 import org.main.socforfemale.resources.utils.Prefs
 import javax.inject.Inject
 
@@ -57,16 +58,15 @@ class SignActivity : BaseActivity() ,Viewer{
 
         if(from == Http.CMDS.TELEFONNI_JONATISH){
 
-            phoneLay.isEnabled    = false
-            mailLay.isEnabled     = false
+
             selectMail.isEnabled  = false
             selectPhone.isEnabled = false
-            smsCodeLay.visibility = View.VISIBLE
+            smsCode.visibility = View.VISIBLE
             signMode = SMS_MODE
         }else if(from == Http.CMDS.SMSNI_JONATISH){
 
-            phoneLay.isEnabled    = false
-            mailLay.isEnabled     = false
+            phone.isEnabled    = false
+            mail.isEnabled     = false
             selectMail.isEnabled  = false
             selectPhone.isEnabled = false
 
@@ -108,7 +108,9 @@ class SignActivity : BaseActivity() ,Viewer{
         val phoneEnb = VectorDrawableCompat.create(resources,R.drawable.phone_select,selectPhone.context.theme)
         val mailDis  = VectorDrawableCompat.create(resources,R.drawable.email,selectPhone.context.theme)
         val mailEnb  = VectorDrawableCompat.create(resources,R.drawable.email_select,selectPhone.context.theme)
-        phone.addTextChangedListener(Functions.EditTelephoneCodeWatcher)
+        phone.addTextChangedListener(JavaCodes.EditTelephoneCodeWatcher)
+        phone.setKeyListener(Functions.EditCardKey)
+
         selectPhone.setOnClickListener {
             signMode = PHONE_MODE
 
@@ -116,8 +118,8 @@ class SignActivity : BaseActivity() ,Viewer{
             selectPhone.setImageDrawable(phoneEnb)
             selectMail.setImageDrawable(mailDis)
 
-            mailLay.visibility = View.GONE
-            phoneLay.visibility = View.VISIBLE
+            phone.visibility = View.VISIBLE
+            mail.visibility = View.GONE
         }
 
         selectMail.setOnClickListener {
@@ -126,23 +128,23 @@ class SignActivity : BaseActivity() ,Viewer{
             selectMail.setImageDrawable(mailEnb)
             selectPhone.setImageDrawable(phoneDis)
 
-            phoneLay.visibility = View.GONE
-            mailLay.visibility = View.VISIBLE
+            phone.visibility = View.GONE
+            mail.visibility = View.VISIBLE
         }
 
         signUp.setOnClickListener{
 
 
             if(signMode == PHONE_MODE){
-                if (phone.text.toString().length != 9){
+                if (Functions.clearEdit(phone).length != 9){
 
-                    phoneLay.error = resources.getString(R.string.error_incorrect_phone)
+                    phone.error = resources.getString(R.string.error_incorrect_phone)
 
 
                 }else{
 
                     val sendObject = JSONObject()
-                    phoneStr = "998${phone.text.toString()}"
+                    phoneStr = "998${Functions.clearEdit(phone)}"
                     sendObject.put("phone",phoneStr)
 
                     presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
@@ -152,7 +154,7 @@ class SignActivity : BaseActivity() ,Viewer{
             }else if(signMode == SMS_MODE){
 
                 if (smsCode.text.toString().length != 6){
-                    smsCodeLay.error = resources.getString(R.string.sms_code_error)
+                    smsCode.error = resources.getString(R.string.sms_code_error)
                 }else{
                     val sendObject = JSONObject()
 
@@ -167,7 +169,7 @@ class SignActivity : BaseActivity() ,Viewer{
             }else{
                 if (!mail.text.toString().contains("@")){
 
-                    mailLay.error = resources.getString(R.string.error_incorrect_mail)
+                    mail.error = resources.getString(R.string.error_incorrect_mail)
                 }else{
                     val sendObject = JSONObject()
                     phoneStr = mail.text.toString()
@@ -193,14 +195,14 @@ class SignActivity : BaseActivity() ,Viewer{
     }
     private fun disableAllElements() {
 
-        phoneLay.isEnabled = false
-        phoneLay.error = ""
+        phone.isEnabled = false
+//        phone.error = ""
 
-        smsCodeLay.isEnabled = false
-        smsCodeLay.error = ""
+        smsCode.isEnabled = false
+//        smsCode.error = ""
 
-        mailLay.isEnabled = false
-        mailLay.error = ""
+        mail.isEnabled = false
+//        mail.error = ""
 
         selectPhone.isEnabled = false
         selectMail.isEnabled = false
@@ -208,13 +210,13 @@ class SignActivity : BaseActivity() ,Viewer{
     }
     private fun enableAllElements() {
 
-        phoneLay.isEnabled = true
-        phoneLay.error = ""
-        smsCodeLay.isEnabled = true
-        smsCodeLay.error = ""
+        phone.isEnabled = true
+//        phone.error = ""
+        smsCode.isEnabled = true
+//        smsCode.error = ""
 
-        mailLay.isEnabled = true
-        mailLay.error = ""
+        mail.isEnabled = true
+//        mail.error = ""
         selectPhone.isEnabled = true
         selectMail.isEnabled = true
         signUp.isEnabled = true
