@@ -11,11 +11,10 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import org.main.socforfemale.R
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.Comment
 import org.main.socforfemale.resources.customviews.CircleImageView
-import org.main.socforfemale.resources.utils.log
 
 /**
  * Created by Michaelan on 7/10/2017.

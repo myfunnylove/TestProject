@@ -3,7 +3,6 @@ package org.main.socforfemale.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatImageButton
@@ -17,17 +16,13 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.animation.GlideAnimation
-import com.bumptech.glide.request.target.SimpleTarget
 import com.google.gson.Gson
 import com.nineoldandroids.animation.AnimatorSet
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.*
@@ -55,7 +50,7 @@ import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 
-class FeedAdapter(context: Context,
+class FeedAdapter(context: Activity,
                   feedsMap: PostList,
 
                   adapterClicker: AdapterClicker,
@@ -610,7 +605,7 @@ class FeedAdapter(context: Context,
 
                     log.d("request data $reqObj")
 
-                    model.responseCall(Http.getRequestData(reqObj,Http.CMDS.FOLLOW))
+                    model.responseCall(Http.getRequestData(reqObj, Http.CMDS.FOLLOW))
                             .enqueue(object : retrofit2.Callback<ResponseData> {
                                 override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                                     log.d("follow on fail $t")
@@ -679,7 +674,7 @@ class FeedAdapter(context: Context,
 
                     val goSettingActivity = Intent(ctx,SettingsActivity::class.java)
 
-                    ctx.startActivity(goSettingActivity)
+                    ctx.startActivityForResult(goSettingActivity,Const.FROM_MAIN_ACTIVITY)
                 }
             }
         }

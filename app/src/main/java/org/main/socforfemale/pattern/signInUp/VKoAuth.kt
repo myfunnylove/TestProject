@@ -9,7 +9,6 @@ import com.vk.sdk.api.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
 import org.main.socforfemale.resources.utils.log
 
 /**

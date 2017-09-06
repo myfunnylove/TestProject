@@ -14,7 +14,7 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.PhotoUpload
 import org.main.socforfemale.model.ProgressRequestBody

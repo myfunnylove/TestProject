@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.model.Image
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.resources.zoomimageview.ImageViewer

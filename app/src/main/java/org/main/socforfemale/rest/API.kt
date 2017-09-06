@@ -1,4 +1,4 @@
-package org.main.socforfemale.connectors
+package org.main.socforfemale.rest
 
 import io.reactivex.Observable
 import okhttp3.MultipartBody

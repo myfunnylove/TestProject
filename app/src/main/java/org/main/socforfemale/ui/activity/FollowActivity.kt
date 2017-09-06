@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.widget.Toast
 import com.google.gson.Gson
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
@@ -150,7 +149,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
             obj.put("start",  MainActivity.startFollowers)
             obj.put("end",    MainActivity.endFollowers)
-            presenter.requestAndResponse(obj,Http.CMDS.GET_FOLLOWERS)
+            presenter.requestAndResponse(obj, Http.CMDS.GET_FOLLOWERS)
 
         }else if (int == FOLLOWING){
             userID = intent.extras.getString("userId")
@@ -174,7 +173,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             obj.put("session",user.session)
             obj.put("start",  MainActivity.startFollowing)
             obj.put("end",    MainActivity.endFollowing)
-            presenter.requestAndResponse(obj,Http.CMDS.GET_FOLLOWING)
+            presenter.requestAndResponse(obj, Http.CMDS.GET_FOLLOWING)
 
         }
             transaction!!.addToBackStack("")

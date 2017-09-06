@@ -12,7 +12,7 @@ import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
@@ -20,7 +20,9 @@ import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.SessionOut
 import org.main.socforfemale.resources.utils.log
+import org.main.socforfemale.ui.fragment.YesNoFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,7 +84,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
             val js = JSONObject()
             js.put("session",Base.get.prefs.getUser().session)
             js.put("user_id",Base.get.prefs.getUser().userId)
-            model.responseCall(Http.getRequestData(js,Http.CMDS.CLOSE_PROFIL))
+            model.responseCall(Http.getRequestData(js, Http.CMDS.CLOSE_PROFIL))
                     .enqueue(object :Callback<ResponseData>{
                         override fun onResponse(call: Call<ResponseData>?, response: Response<ResponseData>?) {
                             log.d("close profil $response")
@@ -104,7 +106,25 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
                     })
          }
+        quit.setOnClickListener {
+                val dialog = YesNoFragment.instance()
+                        dialog.setDialogClickListener(object : YesNoFragment.DialogClickListener{
+                            override fun click(whichButton: Int) {
 
+                                if (whichButton == YesNoFragment.NO){
+                                    dialog.dismiss()
+                                }else{
+                                    val sesion = SessionOut.Builder(this@SettingsActivity)
+                                            .setErrorCode(96)
+                                            .build()
+                                    sesion.out()
+                                }
+                            }
+
+                        })
+                dialog.show(supportFragmentManager,YesNoFragment.TAG)
+
+        }
     }
 
 
@@ -131,7 +151,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
           jsObject.put("gender", map.get(gender.selectedItemPosition))
 
 
-          presenter.requestAndResponse(jsObject,Http.CMDS.CHANGE_USER_SETTINGS)
+          presenter.requestAndResponse(jsObject, Http.CMDS.CHANGE_USER_SETTINGS)
       }
         return true
     }

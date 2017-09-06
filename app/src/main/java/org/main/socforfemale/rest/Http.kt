@@ -1,19 +1,7 @@
-package org.main.socforfemale.base
+package org.main.socforfemale.rest
 
 import android.util.Base64
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import okhttp3.Cache
-import okhttp3.CacheControl
-import okhttp3.OkHttpClient
 import org.json.JSONObject
-import org.main.socforfemale.connectors.API
-import org.main.socforfemale.resources.utils.Functions
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.util.concurrent.TimeUnit
 
 
 /**

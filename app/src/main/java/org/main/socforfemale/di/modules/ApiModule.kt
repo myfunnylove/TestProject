@@ -5,8 +5,8 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import org.main.socforfemale.base.Http
-import org.main.socforfemale.connectors.API
+import org.main.socforfemale.rest.Http
+import org.main.socforfemale.rest.API
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,6 +31,6 @@ class ApiModule {
                 .build()
     }
     @Provides
-    fun getAPIClient(retrofit: Retrofit):API = retrofit.create(API::class.java)
+    fun getAPIClient(retrofit: Retrofit): API = retrofit.create(API::class.java)
 
 }

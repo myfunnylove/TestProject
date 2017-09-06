@@ -10,7 +10,7 @@ import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
@@ -166,7 +166,7 @@ class LoginActivity : BaseActivity(), Viewer {
     override fun onSuccess(from: String, result: String) {
 
 //        if(from  == Http.CMDS.LOGIN_PAYTI){
-
+//        Toast.makeText(this,":OK",Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity().javaClass))
         this.finish()
 //        }else if (from == Http.CMDS.FB_ORQALI_LOGIN){
