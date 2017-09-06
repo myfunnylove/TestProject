@@ -3,6 +3,7 @@ package org.main.socforfemale.ui.activity
 import android.content.Intent
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
 import com.facebook.CallbackManager
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
@@ -205,10 +206,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
     private fun disableAllElements() {
 
-        loginLay.isEnabled      = false
-        loginLay.isErrorEnabled = false
-        passLay.isEnabled       = false
-        passLay.isErrorEnabled  = false
+
         loginVk.isEnabled       = false
         loginFb.isEnabled       = false
         signUp.isEnabled        = false
@@ -217,10 +215,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
     private fun enableAllElements() {
 
-        loginLay.isEnabled = true
-        loginLay.isErrorEnabled = true
-        passLay.isEnabled = true
-        passLay.isErrorEnabled = true
+
         signUp.isEnabled = true
         loginVk.isEnabled = true
         loginFb.isEnabled = true
@@ -284,11 +279,7 @@ class LoginActivity : BaseActivity(), Viewer {
         }
 
         override fun onFailure(message: String) {
-            if (message == resources.getString(R.string.username_field_less_5)){
-                loginLay.error = message
-            }else{
-                passLay.error = message
-            }
+            Toast.makeText(Base.get.context,message,Toast.LENGTH_SHORT).show()
         }
 
     }

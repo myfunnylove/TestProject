@@ -32,12 +32,12 @@
     </style>
     <style name="AppTheme.LOGIN" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/asbestos</item>
         <item name="colorPrimaryDark">@color/asbestos</item>
         <item name="colorAccent">@color/asbestos</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/clouds</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:typeface">serif</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionBarTheme">@style/DrawerArrowStyle</item>
@@ -49,8 +49,8 @@
     <style name="AppTheme.SETTINGS" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/asbestos</item>
-        <item name="colorAccent">@color/asbestos</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/clouds</item>
@@ -124,6 +124,13 @@
     </style>
     <!--Material Button-->
     <!--TextStyle-->
+
+    <style name="LogoText">
+        <item name="android:textColor">@color/headerTextColor</item>
+        <item name="fontPath">font/KaushanScript-Regular.otf</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
     <style name="HeaderText">
 
         <item name="android:textSize">@dimen/headerTextSize</item>

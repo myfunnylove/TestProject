@@ -67,6 +67,7 @@ class Base : Application (){
 
     override fun onCreate() {
         super.onCreate()
+        MultiDex.install(this)
 
         get = this
         DaggerAppComponent
@@ -86,7 +87,6 @@ class Base : Application (){
 
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        MultiDex.install(context)
 
 
         Logger.addLogAdapter(AndroidLogAdapter())

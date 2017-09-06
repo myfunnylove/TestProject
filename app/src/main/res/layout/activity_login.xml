@@ -3,17 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/logo"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        app:srcCompat="@drawable/image"
-        />
 
 
 
@@ -21,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
        android:layout_below="@+id/logo">
 
         <LinearLayout
@@ -32,16 +26,13 @@
             >
 
             <TextView
-                android:id="@+id/title"
-                style="@style/HeaderText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="100dp"
+                style="@style/LogoText"
+                android:text="App Name"
                 android:gravity="center"
-                android:text="WELCOME"
                 />
+
 
             <TextView
                 android:id="@+id/errorText"
@@ -49,46 +40,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/loginLay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="USER NAME"
-                android:textColorHint="@color/asbestos"
-                >
+
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/login"
                     style="@style/NormalText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:inputType="text"
+                    android:paddingLeft="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/username"
+                    android:textColorHint="@color/material_grey_400"
+                    android:textColor="@color/normalTextColor"
+                    android:background="@drawable/edittext_bg"
                     />
 
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/passLay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="PASSWORD"
-                android:textColorHint="@color/asbestos">
+
+
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/pass"
                     style="@style/NormalText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:inputType="textPassword"
+                    android:paddingLeft="6dp"
 
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/password"
+                    android:textColorHint="@color/material_grey_400"
+                    android:textColor="@color/normalTextColor"
+
+                    android:background="@drawable/edittext_bg"
+                    android:layout_marginTop="8dp"
                     />
-            </android.support.design.widget.TextInputLayout>
+
             <TextView
                 style="@style/NormalText"
-                android:textSize="12sp"
+                android:textSize="14sp"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,8 +97,9 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Log IN"
-
-                android:theme="@style/ButtonUnpressed" />
+                android:background="@drawable/button_bg"
+                android:textColor="@color/white"
+                />
 
             <TextView
                 style="@style/NormalText"
