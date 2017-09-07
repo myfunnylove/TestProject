@@ -14,7 +14,7 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.ProgressRequestBody
 import org.main.socforfemale.model.ResponseData
@@ -23,7 +23,6 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.imageuploadmask.ImageUploadMask
 import org.main.socforfemale.resources.customviews.imageuploadmask.ShapeMask
 import org.main.socforfemale.resources.utils.CustomAnim
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.publish.PublishUniversalActivity
 import retrofit2.Call

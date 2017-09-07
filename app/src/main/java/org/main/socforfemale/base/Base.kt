@@ -19,12 +19,11 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig
 import com.facebook.imagepipeline.core.ImagePipelineConfig
-import org.main.socforfemale.connectors.API
+import org.main.socforfemale.rest.API
 import org.main.socforfemale.di.DaggerAppComponent
 import org.main.socforfemale.di.modules.ApiModule
 import org.main.socforfemale.di.modules.ContextModule
 import org.main.socforfemale.di.modules.NetworkModule
-import org.main.socforfemale.model.User
 import org.main.socforfemale.resources.utils.Prefs
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class Base : Application (){
 
 
     @Inject
-    lateinit var APIClient:API
+    lateinit var APIClient: API
 
     @Inject
     lateinit var context:Context

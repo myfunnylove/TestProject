@@ -1,6 +1,5 @@
 package org.main.socforfemale.mvp
 
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatEditText
 import com.google.gson.Gson
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -14,7 +13,7 @@ import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.model.UserInfo
 import org.main.socforfemale.pattern.SessionOut
 import org.main.socforfemale.resources.utils.Const
@@ -46,7 +45,8 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
 
                  Observable.just(model.response(Http.getRequestData(data,cmd)))
                            .subscribeOn(Schedulers.io())
-                           .flatMap({res -> res})
+
+                            .flatMap({res -> res})
                             .flatMap({
                              res ->
 
@@ -64,15 +64,17 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                      reqObj.put("user_id",user.userId)
                                      reqObj.put("user",   user.userId)
                                      reqObj.put("session",user.session)
-                                 log.d("http zapros $cmd resultat: $res")
 
-                                        model.response(Http.getRequestData(reqObj,Http.CMDS.USER_INFO))
+
+                                     log.d("http zapros $cmd resultat: $res")
+                                     log.d("send data for user info data: ${reqObj}")
+                                        model.response(Http.getRequestData(reqObj, Http.CMDS.USER_INFO))
                                     }else{
                                         Observable.just(res)
                                     }
                          })
                          .flatMap({infoUser ->
-                             log.d("flatmap ishladi: ${Http.getResponseData(infoUser.prms)}")
+                             log.d("flatmap ishladi: \n RES: ${infoUser.res} \n IN PRM: ${Http.getResponseData(infoUser.prms)}")
                              if (infoUser.res == "0" && (cmd == Http.CMDS.LOGIN_PAYTI || cmd == Http.CMDS.FB_ORQALI_LOGIN || cmd == Http.CMDS.VK_ORQALI_LOGIN )){
 
 
@@ -95,22 +97,16 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                            .observeOn(AndroidSchedulers.mainThread())
                            .subscribe({
                                 response ->
+                               log.d("CMD : ${cmd} \n RES: ${response.res} \n IN PRM ${Http.getResponseData(response.prms)}")
 
-                               log.v("RESPONSE ===========>")
-                               log.v("FROM CMD : ")
-                               log.e(cmd)
-                               log.v("DATA : ")
-                               log.json(response.toString())
-                               log.v("IN PRM: ")
-                               log.e(Http.getResponseData(response.prms))
-                               log.v("RESPONSE ===========;")
+
 
                              view.hideProgress()
 
 
                                 when(response.res){
 
-                                    "0"    -> view.onSuccess(cmd,Http.getResponseData(response.prms))
+                                    "0"    -> view.onSuccess(cmd, Http.getResponseData(response.prms))
                                     "1996" -> view.onFailure("",Base.get.resources.getString(R.string.error_no_type))
                                     "96"   -> {
                                         val sesion = SessionOut.Builder(context)
@@ -159,7 +155,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                  }
                 .flatMap { data ->
                     log.d("Data : befor decrypt -> $data")
-                    model.response(Http.getRequestData(data,Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH)) }
+                    model.response(Http.getRequestData(data, Http.CMDS.LOGIN_YOQLIGINI_TEKSHIRISH)) }
                 .cache()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ( {
@@ -202,7 +198,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                 .subscribe({
                     result ->log.d("${result}")
                     if (result.res == "0"){
-                        view.onSuccess("${Const.PICK_IMAGE}",Http.getResponseData(result.prms))
+                        view.onSuccess("${Const.PICK_IMAGE}", Http.getResponseData(result.prms))
                     }
                 },{
                     err -> log.d(err.toString())
@@ -226,7 +222,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                     reqObj.put("user",   user.userId)
                     reqObj.put("session",user.session)
 
-                    model.response(Http.getRequestData(reqObj,Http.CMDS.USER_INFO))
+                    model.response(Http.getRequestData(reqObj, Http.CMDS.USER_INFO))
                  }
 
                 .observeOn(AndroidSchedulers.mainThread())
@@ -240,7 +236,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                         user.userName    = userInfo.info.username
                         user.profilPhoto = userInfo.info.photo150
                         Base.get.prefs.setUser(user)
-                        view.onSuccess(Http.CMDS.CHANGE_AVATAR,Http.getResponseData(result.prms))
+                        view.onSuccess(Http.CMDS.CHANGE_AVATAR, Http.getResponseData(result.prms))
                     }
                 },{
                     err -> log.d(err.toString())

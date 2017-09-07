@@ -17,13 +17,12 @@ import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.model.Users
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.CircleImageView
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.MainActivity
 import org.main.socforfemale.ui.fragment.FFFFragment
@@ -121,7 +120,7 @@ class FollowAdapter(context:Context,
 
             log.d("request data $reqObj")
 
-            model.responseCall(Http.getRequestData(reqObj,Http.CMDS.FOLLOW))
+            model.responseCall(Http.getRequestData(reqObj, Http.CMDS.FOLLOW))
                     .enqueue(object : Callback<ResponseData>{
                         override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                             log.d("follow on fail $t")

@@ -25,7 +25,7 @@ import org.main.socforfemale.adapter.PickedPhotoAdapter
 import org.main.socforfemale.adapter.PickedSongAdapter
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
@@ -36,7 +36,6 @@ import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import java.io.File
 import javax.inject.Inject

@@ -22,10 +22,9 @@ import org.main.socforfemale.mvp.Viewer
 import kotlinx.android.synthetic.main.activity_comment.*
 import org.json.JSONObject
 import org.main.socforfemale.adapter.CommentAdapter
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.model.Comments
 import org.main.socforfemale.mvp.Presenter
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -105,7 +104,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
             obj.put("user_id",user.userId)
             obj.put("session",user.session)
-            presenter.requestAndResponse(obj,Http.CMDS.GET_COMMENT_LIST)
+            presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
         }else{
 
             list.visibility           = View.GONE
@@ -198,7 +197,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
                     obj.put("order",  "ASC")
                     obj.put("user_id",user.userId)
                     obj.put("session",user.session)
-                    presenter.requestAndResponse(obj,Http.CMDS.GET_COMMENT_LIST)
+                    presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
                 }
             }
 
@@ -245,7 +244,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
             obj.put("order",  "ASC")
             obj.put("user_id",user.userId)
             obj.put("session",user.session)
-            presenter.requestAndResponse(obj,Http.CMDS.GET_COMMENT_LIST)
+            presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
 
         }else if (from == Http.CMDS.GET_COMMENT_LIST){
             val comment = Gson().fromJson<Comments>(result,Comments::class.java)
@@ -305,7 +304,7 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
         obj.put("user_id",user.userId)
         obj.put("session",user.session)
         commentText.text.clear()
-        presenter.requestAndResponse(obj,Http.CMDS.WRITE_COMMENT)
+        presenter.requestAndResponse(obj, Http.CMDS.WRITE_COMMENT)
     }
 
     override fun onBackPressed() {

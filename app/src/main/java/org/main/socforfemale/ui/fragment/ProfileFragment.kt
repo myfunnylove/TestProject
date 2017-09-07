@@ -19,7 +19,7 @@ import org.main.socforfemale.adapter.FeedAdapter
 import org.main.socforfemale.adapter.PostAudioGridAdapter
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseFragment
-import org.main.socforfemale.base.Http
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.bgservice.MusicController
 import org.main.socforfemale.bgservice.MusicService
 import org.main.socforfemale.connectors.AdapterClicker
@@ -29,7 +29,6 @@ import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.MainActivity
 import kotlin.properties.Delegates
