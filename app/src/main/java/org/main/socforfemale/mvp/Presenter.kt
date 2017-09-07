@@ -228,6 +228,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result ->
+                    log.d("FROM UPLOAD AVATAR")
                     log.d("$result")
                     log.d(Http.getResponseData(result.prms))
                     if (result.res == "0"){

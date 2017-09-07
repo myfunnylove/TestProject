@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -62,17 +64,15 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
                     })
         }
     }
-    override fun getItemCount(): Int {
-        return images.size
-    }
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemCount(): Int = images.size
+    override fun getItemId(position: Int): Long = position.toLong()
     override fun onBindViewHolder(h: Holder?, i: Int) {
         val img = images.get(i)
 
       //  var dimenId = -1
         val itemView = h!!.itemView
+
+
 
         //if(i == 0)  dimenId = R.dimen.staggered_child_xlarge else   dimenId = R.dimen.staggered_child_small
 //        if (i % 3 == 0)
@@ -95,6 +95,26 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
         //if (isVertical) params.width = size else  params.height = size
 
 
+        if ((images.size > 2 && images.size != 3)&& i >= 1){
+            log.d("params: ${h.container.layoutParams.height}")
+            val p = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,200)
+            p.height = 200
+            h.container.layoutParams = p
+            params.height = 200
+        }
+        else if (images.size == 3 && i >= 1){
+            log.d("params: ${h.container.layoutParams.height}")
+            val p = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,400)
+            p.height = 400
+            h.container.layoutParams = p
+            params.height = 400
+        }
+        else{
+            val p = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,600)
+            p.height = 600
+            h.container.layoutParams = p
+            params.height = 600
+        }
 
         itemView.layoutParams = params
 
@@ -114,6 +134,8 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
 
             h.photo.tag = Http.BASE_URL+img.image640
         }
+
+
 
         h.photo.setOnClickListener {
 
@@ -143,7 +165,7 @@ class PostPhotoGridAdapter(ctx:Context,list:ArrayList<Image>) : RecyclerView.Ada
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
 
-
+        var container:RelativeLayout = view.findViewById(R.id.container) as RelativeLayout
         var photo:AppCompatImageView = view.findViewById(R.id.photo) as AppCompatImageView
     }
 }

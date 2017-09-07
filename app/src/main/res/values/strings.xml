@@ -58,4 +58,5 @@
     <string name="saved">SAVED</string>
     <string name="unknown">UNKNOWN</string>
     <string name="sms_code">SMS CODE</string>
+    <string name="added_to_favorite">ADDED TO FAVORITE LIST</string>
 </resources>

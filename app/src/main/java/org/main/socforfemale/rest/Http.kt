@@ -48,6 +48,7 @@ object Http {
         val CHANGE_POST                = "26"
         val CHANGE_USER_SETTINGS       = "27"
         val CLOSE_PROFIL               = "31"
+        val ADD_SONG_TO_PLAYLIST       = "33"
     }
 
 

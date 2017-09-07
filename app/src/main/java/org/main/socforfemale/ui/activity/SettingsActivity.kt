@@ -106,7 +106,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
                     })
          }
-        quit.setOnClickListener {
+        quitLay.setOnClickListener {
                 val dialog = YesNoFragment.instance()
                         dialog.setDialogClickListener(object : YesNoFragment.DialogClickListener{
                             override fun click(whichButton: Int) {
@@ -114,6 +114,18 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                 if (whichButton == YesNoFragment.NO){
                                     dialog.dismiss()
                                 }else{
+                                    MainActivity.start          = 0
+                                    MainActivity.end            = 20
+                                    MainActivity.startFeed      = 0
+                                    MainActivity.endFeed        = 20
+                                    MainActivity.startFollowers = 0
+                                    MainActivity.endFollowers   = 20
+                                    MainActivity.startFollowing = 0
+                                    MainActivity.endFollowing   = 20
+                                    MainActivity.MY_POSTS_STATUS = MainActivity.NEED_UPDATE
+                                    MainActivity.FEED_STATUS = MainActivity.NEED_UPDATE
+                                    MainActivity.COMMENT_POST_UPDATE = 0
+                                    MainActivity.COMMENT_COUNT = 0
                                     val sesion = SessionOut.Builder(this@SettingsActivity)
                                             .setErrorCode(96)
                                             .build()

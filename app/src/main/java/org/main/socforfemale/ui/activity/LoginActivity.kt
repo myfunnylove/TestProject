@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import com.facebook.CallbackManager
+import com.vk.sdk.util.VKUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import org.main.socforfemale.R
@@ -20,6 +21,7 @@ import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.pattern.signInUp.*
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
+import org.main.socforfemale.resources.utils.log
 import javax.inject.Inject
 
 
@@ -62,7 +64,7 @@ class LoginActivity : BaseActivity(), Viewer {
 
     override fun initView() {
         Const.TAG = "LoginACtivity"
-
+        log.d("FINGERPRINT: ${VKUtil.getCertificateFingerprint(this, this.getPackageName()).get(0)}")
         if (Base.get.prefs.getUser().session == "") {
 
             DaggerMVPComponent

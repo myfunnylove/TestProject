@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.bgservice.MusicService
@@ -65,25 +66,27 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
             player.playClick(audios,i)
         }
 
-        h.duration.text = audio.duration
+        h.addFavorite.setOnClickListener {
+            Toast.makeText(context,context.resources.getString(R.string.added_to_favorite),Toast.LENGTH_SHORT).show()
+        }
         h.title.text    = URLDecoder.decode(audio.artist,"UTF-8")
         h.songName.text = URLDecoder.decode(audio.title,"UTF-8")
+        h.duration.text = "(${audio.duration})"
     }
 
-    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): Holder {
-
-        return Holder(inflater.inflate(R.layout.res_post_audio_item,p0,false))
-    }
+    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): Holder =
+            Holder(inflater.inflate(R.layout.res_post_audio_item,p0,false))
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
 
 
         var container:ViewGroup = view.findViewById(R.id.container) as ViewGroup
         var title:TextView = view.findViewById(R.id.title) as TextView
+        var duration:TextView = view.findViewById(R.id.duration) as TextView
         var songName:TextView = view.findViewById(R.id.songName) as TextView
         var play:AppCompatImageView = view.findViewById(R.id.play) as AppCompatImageView
 
-        var duration:TextView = view.findViewById(R.id.duration) as TextView
+        var addFavorite:AppCompatImageView = view.findViewById(R.id.addFavorite) as AppCompatImageView
 
     }
 
