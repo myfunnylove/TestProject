@@ -119,15 +119,10 @@ class FeedAdapter(context: Context,
         }
     }
 
-    override fun getItemCount(): Int {
-
-        return feeds.posts.size
-    }
+    override fun getItemCount(): Int = feeds.posts.size
 
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun onCreateViewHolder(p0: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
 

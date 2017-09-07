@@ -60,8 +60,9 @@ public class MusicController extends FrameLayout {
     StringBuilder mFormatBuilder;
     Formatter mFormatter;
     private ImageButton mPauseButton;
-    private ImageButton mFfwdButton;
-    private ImageButton mRewButton;
+//    private ImageButton mFfwdButton;
+
+    private ImageButton playlistButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private CharSequence mPlayDescription;
@@ -241,20 +242,20 @@ public class MusicController extends FrameLayout {
             mPauseButton.setOnClickListener(mPauseListener);
         }
 
-        mFfwdButton = (ImageButton) v.findViewById(R.id.ffwd);
-        if (mFfwdButton != null) {
-            mFfwdButton.setOnClickListener(mFfwdListener);
-            if (!mFromXml) {
-                mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
-            }
-        }
+//        mFfwdButton = (ImageButton) v.findViewById(R.id.ffwd);
+//        if (mFfwdButton != null) {
+//            mFfwdButton.setOnClickListener(mFfwdListener);
+//            if (!mFromXml) {
+//                mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
+//            }
+//        }
 
-        mRewButton = (ImageButton) v.findViewById(R.id.rew);
-        if (mRewButton != null) {
-            mRewButton.setOnClickListener(mRewListener);
-            if (!mFromXml) {
-                mRewButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
-            }
+        playlistButton = (ImageButton) v.findViewById(R.id.playlist);
+        if (playlistButton != null) {
+//            playlistButton.setOnClickListener(mRewListener);
+//            if (!mFromXml) {
+//                playlistButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
+//            }
         }
 
         // By default these are hidden. They will be enabled when setPrevNextListeners() is called
@@ -301,12 +302,12 @@ public class MusicController extends FrameLayout {
             if (mPauseButton != null && !mPlayer.canPause()) {
                 mPauseButton.setEnabled(false);
             }
-            if (mRewButton != null && !mPlayer.canSeekBackward()) {
-                mRewButton.setEnabled(false);
+            if (playlistButton != null) {
+                playlistButton.setEnabled(false);
             }
-            if (mFfwdButton != null && !mPlayer.canSeekForward()) {
-                mFfwdButton.setEnabled(false);
-            }
+//            if (mFfwdButton != null && !mPlayer.canSeekForward()) {
+//                mFfwdButton.setEnabled(false);
+//            }
             // TODO What we really should do is add a canSeek to the MediaPlayerControl interface;
             // this scheme can break the case when applications want to allow seek through the
             // progress bar but disable forward/backward buttons.
@@ -605,12 +606,12 @@ public class MusicController extends FrameLayout {
         if (mPauseButton != null) {
             mPauseButton.setEnabled(enabled);
         }
-        if (mFfwdButton != null) {
-            mFfwdButton.setEnabled(enabled);
-        }
-        if (mRewButton != null) {
-            mRewButton.setEnabled(enabled);
-        }
+//        if (mFfwdButton != null) {
+//            mFfwdButton.setEnabled(enabled);
+//        }
+//        if (playlistButton != null) {
+//            playlistButton.setEnabled(enabled);
+//        }
         if (mNextButton != null) {
             mNextButton.setEnabled(enabled && mNextListener != null);
         }

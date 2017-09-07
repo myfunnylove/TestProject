@@ -33,22 +33,14 @@
         android:orientation="horizontal"
         android:paddingTop="4dip">
 
+
+
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_weight="1"
             app:srcCompat="@drawable/mc_skip_previous"
-            android:background="@android:color/transparent"
-            />
-
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/rew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/mc_prev"
             android:background="@android:color/transparent"
             />
 
@@ -62,20 +54,20 @@
             />
 
         <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/ffwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/mc_next"
-            android:background="@android:color/transparent"
-            />
-
-        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/mc_skip_next"
+            android:background="@android:color/transparent"
+            />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/playlist_play"
             android:background="@android:color/transparent"
             />
 
