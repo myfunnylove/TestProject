@@ -46,7 +46,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
     override fun getLayout(): Int = R.layout.activity_settings
 
     override fun initView() {
-
+        log.d("close profile: ${userData.close}")
         DaggerMVPComponent
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))

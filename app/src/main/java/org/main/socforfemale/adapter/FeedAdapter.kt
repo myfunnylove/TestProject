@@ -34,6 +34,7 @@ import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.CommentActivity
 import org.main.socforfemale.ui.activity.MainActivity
+import org.main.socforfemale.ui.activity.SettingsActivity
 import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.FeedFragment
 import org.main.socforfemale.ui.fragment.MyProfileFragment
@@ -667,7 +668,7 @@ class FeedAdapter(context: Activity,
                             })
                 }else{
 
-                    val goSettingActivity = Intent(ctx,SettingsActivity::class.java)
+                    val goSettingActivity = Intent(ctx, SettingsActivity::class.java)
 
                     ctx.startActivityForResult(goSettingActivity,Const.FROM_MAIN_ACTIVITY)
                 }
