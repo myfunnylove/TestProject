@@ -402,7 +402,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
        if (controller == null){
            controller = MusicController(activity)
            //set previous and next button listeners
-           controller!!.setPrevNextListeners(View.OnClickListener { playNext() }, View.OnClickListener { playPrev() })
+           controller!!.setPrevNextListeners({ playNext() }, { playPrev() })
            //set and show
            controller!!.setMediaPlayer(this)
            controller!!.setAnchorView(rootView.findViewById(R.id.listFeed))
@@ -418,6 +418,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             playbackPaused = false
         }
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
             if (FeedFragment.cachedSongAdapters != null) {
                 FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
@@ -434,6 +436,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             playbackPaused = false
         }
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
 
             if (FeedFragment.cachedSongAdapters != null) {
@@ -493,13 +497,17 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     }
 
     override fun playClick(listSong: ArrayList<Audio>, position: Int) {
+
             if (musicSrv != null){
+                log.d("PLAYIN SONG ${musicSrv!!.isPng}")
 
                 if(musicSrv!!.isPng){
-
+                    log.d("PLAYIN SONG in fragment  2 -> ${listSong.get(position).middlePath == MusicService.PLAYING_SONG_URL}")
                     if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         pause()
                     }else{
+                        controller!!.setLoading(true);
+
                         musicSrv!!.setList(listSong)
                         musicSrv!!.setSong(position)
                         musicSrv!!.playSong()
@@ -511,13 +519,20 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
 //                        controller!!.show()
                     }
                 }else{
-                    musicSrv!!.setList(listSong)
-                    musicSrv!!.setSong(position)
-                    musicSrv!!.playSong()
-                    log.d("playbak is paused $playbackPaused")
-                    if (playbackPaused){
-                        setController()
-                        playbackPaused = false
+
+                    if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
+                        start()
+                    }else{
+                        controller!!.setLoading(true);
+
+                        musicSrv!!.setList(listSong)
+                        musicSrv!!.setSong(position)
+                        musicSrv!!.playSong()
+                        log.d("playbak is paused $playbackPaused")
+                        if (playbackPaused){
+                            setController()
+                            playbackPaused = false
+                        }
                     }
 //                    controller!!.show()
 

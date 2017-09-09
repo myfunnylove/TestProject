@@ -50,14 +50,25 @@
             android:background="@android:color/transparent"
             />
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/pause"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/mc_pause"
-            android:background="@android:color/transparent"
-            />
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/mc_pause"
+                android:background="@android:color/transparent"
+                />
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/next"

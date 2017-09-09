@@ -494,6 +494,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        controller!!.setLoading(false);
 
     }
 
@@ -525,7 +526,10 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
             setController()
             playbackPaused = false
         }
+
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
             if (FeedFragment.cachedSongAdapters != null) {
                 FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
@@ -542,6 +546,8 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
             playbackPaused = false
         }
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
 
             if (FeedFragment.cachedSongAdapters != null) {
@@ -608,6 +614,8 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
                 if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                     pause()
                 }else{
+                    controller!!.setLoading(true);
+
                     musicSrv!!.setList(listSong)
                     musicSrv!!.setSong(position)
                     musicSrv!!.playSong()
@@ -619,13 +627,20 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 //                        controller!!.show()
                 }
             }else{
-                musicSrv!!.setList(listSong)
-                musicSrv!!.setSong(position)
-                musicSrv!!.playSong()
-                log.d("playbak is paused $playbackPaused")
-                if (playbackPaused){
-                    setController()
-                    playbackPaused = false
+
+                if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
+                    start()
+                }else{
+                    controller!!.setLoading(true);
+
+                    musicSrv!!.setList(listSong)
+                    musicSrv!!.setSong(position)
+                    musicSrv!!.playSong()
+                    log.d("playbak is paused $playbackPaused")
+                    if (playbackPaused){
+                        setController()
+                        playbackPaused = false
+                    }
                 }
 //                    controller!!.show()
 

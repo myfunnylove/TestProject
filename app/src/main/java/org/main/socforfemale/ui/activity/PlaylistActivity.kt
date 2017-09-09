@@ -62,6 +62,8 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     @Inject
     lateinit var presenter:Presenter
 
+    lateinit var adapter:PostAudioGridAdapter
+
     override fun initProgress() {
 
     }
@@ -75,10 +77,12 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     override fun onSuccess(from: String, result: String) {
         log.d("from $from result $result")
 
-        val features = Gson().fromJson(result,Features::class.java)
+       val features = Gson().fromJson(result,Features::class.java)
 
-       val adapter =  PostAudioGridAdapter(this,features.audios,this,model)
-        emptyContainer.visibility = View.GONE
+        adapter =  PostAudioGridAdapter(this,features.audios,this,model)
+       emptyContainer.visibility = View.GONE
+        setController()
+        controller!!.show()
         list.adapter = adapter
     }
 
@@ -133,15 +137,18 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
         try{
 
             if (musicSrv != null){
-
+                log.d("PLAYIN SONG ${musicSrv!!.isPng}")
                 if(musicSrv!!.isPng){
 
                     if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         pause()
                     }else{
+                        controller!!.setLoading(true);
+
                         musicSrv!!.setList(listSong)
                         musicSrv!!.setSong(position)
                         musicSrv!!.playSong()
+
                         log.d("playbak is paused $playbackPaused")
                         if (playbackPaused){
                             setController()
@@ -150,46 +157,35 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
 //                        controller!!.show()
                     }
                 }else{
-                    musicSrv!!.setList(listSong)
-                    musicSrv!!.setSong(position)
-                    musicSrv!!.playSong()
-                    log.d("playbak is paused $playbackPaused")
-                    if (playbackPaused){
-                        setController()
-                        playbackPaused = false
+                    controller!!.setLoading(false);
+
+                    if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
+                        start()
+                    }else{
+                        controller!!.setLoading(true);
+
+                        musicSrv!!.setList(listSong)
+                        musicSrv!!.setSong(position)
+                        musicSrv!!.playSong()
+                        log.d("playbak is paused $playbackPaused")
+                        if (playbackPaused){
+                            setController()
+                            playbackPaused = false
+                        }
                     }
 //                    controller!!.show()
 
                 }
 
-//                if (!musicSrv!!.isPng || MusicService.PLAYING_SONG_URL != listSong.get(position).middlePath){
-//                     musicSrv!!.setList(listSong)
-//                     musicSrv!!.setSong(position)
-//                     musicSrv!!.playSong()
-//                    log.d("playbak is paused $playbackPaused")
-//                    if (playbackPaused){
-//                        setController()
-//                        playbackPaused = false
-//                    }
-//                    controller!!.show()
-//                }else{
-//
-//                    pause()
-//                }
+
             }else{
                 Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_something), Toast.LENGTH_SHORT).show()
             }
 
-            if (FeedFragment.playedSongPosition != -1 ){
-                log.d("position $position => ${FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()}")
 
-                FeedFragment.cachedSongAdapters!!.get(position)!!.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
 
-            }else{
 
-                FeedFragment.cachedSongAdapters!!.get(position)!!.notifyDataSetChanged()
-
-            }
 
             FeedFragment.playedSongPosition = position
         }catch (e :Exception){
@@ -252,15 +248,21 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        controller!!.setLoading(false);
+
+        adapter.notifyDataSetChanged()
 
     }
 
     override fun seekTo(pos: Int) {
         musicSrv!!.seek(pos)
+
     }
 
     override fun start() {
         musicSrv!!.go()
+        adapter.notifyDataSetChanged()
+
     }
 
 
@@ -271,7 +273,7 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
             controller!!.setPrevNextListeners(View.OnClickListener { playNext() }, View.OnClickListener { playPrev() })
             //set and show
             controller!!.setMediaPlayer(this)
-            controller!!.setAnchorView(findViewById(R.id.listFeed))
+            controller!!.setAnchorView(findViewById(R.id.playlistRoot))
             controller!!.setEnabled(true)
         }
     }
@@ -283,11 +285,14 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
             setController()
             playbackPaused = false
         }
+        controller!!.setLoading(true);
+
         controller!!.show()
         try {
-            if (FeedFragment.cachedSongAdapters != null) {
-                FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
-            }
+
+            adapter.notifyDataSetChanged()
+
+
         } catch (e: Exception) {
 
         }
@@ -299,12 +304,14 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
             setController()
             playbackPaused = false
         }
+        controller!!.setLoading(true);
+
         controller!!.show()
         try {
 
-            if (FeedFragment.cachedSongAdapters != null) {
-                FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
-            }
+            adapter.notifyDataSetChanged()
+
+
         } catch (e: Exception) {
 
         }
@@ -332,9 +339,8 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
             if (MusicService.CONTROL_PRESSED != -1){
                 try {
 
-                    if (FeedFragment.cachedSongAdapters != null) {
-                        FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
-                    }
+                    adapter.notifyDataSetChanged()
+
                     MusicService.CONTROL_PRESSED = -1
                 } catch (e: Exception) {
 
