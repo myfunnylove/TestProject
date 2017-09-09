@@ -79,7 +79,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
             onBackPressed()
 
         }
-        switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+        switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
         switchCloseAccount.setOnCheckedChangeListener{view, isChecked ->
             val js = JSONObject()
             js.put("session",Base.get.prefs.getUser().session)
@@ -88,11 +88,12 @@ class SettingsActivity : BaseActivity() ,Viewer{
                     .enqueue(object :Callback<ResponseData>{
                         override fun onResponse(call: Call<ResponseData>?, response: Response<ResponseData>?) {
                             log.d("close profil $response")
-
                             try{
                                if (response!!.body()!!.res == "0"){
                                    val user = Base.get.prefs.getUser()
-                                   user.close = !user.close
+                                   log.d("closed :${user.close}")
+
+                                   user.close = if(user.close == 1) 0 else 1
                                    Base.get.prefs.setUser(user)
                                }
                            }catch (e:Exception){}

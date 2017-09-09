@@ -74,7 +74,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                     }
                          })
                          .flatMap({infoUser ->
-                             log.d("flatmap ishladi: \n RES: ${infoUser.res} \n IN PRM: ${Http.getResponseData(infoUser.prms)}")
+                             log.d("flatmap ishladi: RES: ${infoUser.res} IN PRM: ${Http.getResponseData(infoUser.prms)}")
                              if (infoUser.res == "0" && (cmd == Http.CMDS.LOGIN_PAYTI || cmd == Http.CMDS.FB_ORQALI_LOGIN || cmd == Http.CMDS.VK_ORQALI_LOGIN )){
 
 
@@ -84,6 +84,8 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                  val userInfo     = Gson().fromJson<UserInfo>(Http.getResponseData(infoUser.prms),UserInfo::class.java)
                                  user.userName    = userInfo.info.username
                                  user.profilPhoto = if (userInfo.info.photo150.isNullOrEmpty()) "" else userInfo.info.photo150
+                                 user.close       = userInfo.info.close
+
                                  Base.get.prefs.setUser(user)
                                  Observable.just(infoUser)
                              }else{

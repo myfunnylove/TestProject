@@ -30,6 +30,7 @@ import org.main.socforfemale.ui.fragment.SearchFragment
 import javax.inject.Inject
 
 import kotlinx.android.synthetic.main.activity_follow.*
+import kotlinx.android.synthetic.main.user_profil_header.*
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
 
@@ -47,7 +48,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
         var start     = 0
         var end       = 40
 
-
+        var SHOW_POST = ""
     }
 
     var manager:FragmentManager?        = null
@@ -114,47 +115,36 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 transaction!!.add(R.id.container, profilFragment, ProfileFragment.TAG)
             log.d("json chiqdi")
             log.d(intent.extras.toString())
-           if (intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST || (intent.extras.getInt("close",-1) == 0 && intent.extras.getString(ProfileFragment.F_TYPE) != ProfileFragment.REQUEST)){
-           log.d("if ishladi")
-               val reqObj = JSONObject()
-               reqObj.put("user_id",user.userId)
-               reqObj.put("session",user.session)
-               reqObj.put("user",   userID)
-               reqObj.put("start",  start)
-               reqObj.put("end",    end)
 
 
-               presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
-           }
-        }else if (int == FOLLOWERS ){
-            userID = intent.extras.getString("userId")
-            val header = Bundle()
-            header.putString("header", Base.get.resources.getString(R.string.followers))
-            if (followersFragment == null){
-                followersFragment = FFFFragment.newInstance(header)
-                followersFragment!!.connect(this)
+
+            /*PROFILGA STATUS QO'YISH JARAYONI*/
+            when(intent.extras.getString(ProfileFragment.F_TYPE)){
+
+                ProfileFragment.REQUEST ->   SHOW_POST = ProfileFragment.REQUEST
+                ProfileFragment.CLOSE   ->   SHOW_POST = ProfileFragment.CLOSE
+                else -> SHOW_POST = ""
             }
-            if (profilFragment != null && profilFragment!!.isAdded && !profilFragment!!.isHidden) transaction!!.hide(profilFragment)
-            if (followersFragment!!.isAdded) {
-                if (followersFragment!!.isHidden)
-                    transaction!!.show(followersFragment)
-            } else
-                transaction!!.add(R.id.container, followersFragment, FFFFragment.TAG)
 
-//            transaction!!.add(R.id.container,followersFragment,FFFFragment.TAG)
-            val obj = JSONObject()
-            obj.put("user_id",user.userId)
-            obj.put("session",user.session)
-            obj.put("user",   userID)
 
-            obj.put("start",  MainActivity.startFollowers)
-            obj.put("end",    MainActivity.endFollowers)
-            presenter.requestAndResponse(obj, Http.CMDS.GET_FOLLOWERS)
+            val reqObj = JSONObject()
+            reqObj.put("user_id",user.userId)
+            reqObj.put("session",user.session)
+            reqObj.put("user",   userID)
+            reqObj.put("start",  start)
+            reqObj.put("end",    end)
 
-        }else if (int == FOLLOWING){
+
+            presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+        }else {
+
             userID = intent.extras.getString("userId")
             val header = Bundle()
-            header.putString("header", Base.get.resources.getString(R.string.following))
+
+            /*GET FOLLOWERS OR FOLLOWING*/
+            header.putString("header", if (int == FOLLOWING) Base.get.resources.getString(R.string.following) else Base.get.resources.getString(R.string.followers))
+
             if (followersFragment == null){
                 followersFragment = FFFFragment.newInstance(header)
                 followersFragment!!.connect(this)
@@ -173,7 +163,10 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             obj.put("session",user.session)
             obj.put("start",  MainActivity.startFollowing)
             obj.put("end",    MainActivity.endFollowing)
-            presenter.requestAndResponse(obj, Http.CMDS.GET_FOLLOWING)
+
+
+            /*GET FOLLOWERS OR FOLLOWING*/
+            presenter.requestAndResponse(obj, if (int == FOLLOWING) Http.CMDS.GET_FOLLOWING else Http.CMDS.GET_FOLLOWERS)
 
         }
             transaction!!.addToBackStack("")
@@ -236,57 +229,81 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
     override fun onSuccess(from: String, result: String) {
 
-        if (from == Http.CMDS.MY_POSTS){
-            try{
-                val postList: PostList = Gson().fromJson(result, PostList::class.java)
 
-                profilFragment!!.initFF(postList)
-                if (postList.posts.size > 0){
-                    profilFragment!!.swapPosts(postList)
-                }else{
-                    profilFragment!!.failedGetList()
+        when(from){
+            Http.CMDS.MY_POSTS -> {
+                                    when(SHOW_POST){
 
-                }
+                                        ProfileFragment.REQUEST -> {
+                                            val postList: PostList = Gson().fromJson(result, PostList::class.java)
 
-            }catch (e:Exception){
+                                            profilFragment!!.initFF(postList)
+                                            profilFragment!!.failedGetList(ProfileFragment.REQUEST)
+                                        }
 
-                profilFragment!!.failedGetList()
+                                        ProfileFragment.CLOSE -> {
+                                            val postList: PostList = Gson().fromJson(result, PostList::class.java)
 
+                                            profilFragment!!.initFF(postList)
+                                            profilFragment!!.failedGetList(ProfileFragment.FOLLOW)
+                                        }
+                                        else -> {
+                                            try{
+                                                val postList: PostList = Gson().fromJson(result, PostList::class.java)
+
+                                                profilFragment!!.initFF(postList)
+                                                if (postList.posts.size > 0){
+                                                    profilFragment!!.swapPosts(postList)
+                                                }else{
+                                                    profilFragment!!.failedGetList()
+
+                                                }
+
+                                            }catch (e:Exception){
+
+                                                profilFragment!!.failedGetList()
+
+                                            }
+                                        }
+                                    }
             }
-        }else if (from == Http.CMDS.GET_FOLLOWERS){
 
-            val follow = Gson().fromJson<Followers>(result, Followers::class.java)
+            Http.CMDS.GET_FOLLOWERS -> {
+                                        val follow = Gson().fromJson<Followers>(result, Followers::class.java)
 
 
-            log.d("followersla olindi -> ${follow.users}")
-            if(manager!!.findFragmentByTag(FFFFragment.TAG) != null){
+                                        log.d("followersla olindi -> ${follow.users}")
+                                        if(manager!!.findFragmentByTag(FFFFragment.TAG) != null){
 
-                followersFragment!!.swapList(follow.users)
-                FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
-                log.d("get followers -> ${FFFFragment.followersCount}")
+                                            followersFragment!!.swapList(follow.users)
+                                            FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
+                                            log.d("get followers -> ${FFFFragment.followersCount}")
+                                        }
             }
+            Http.CMDS.GET_FOLLOWING -> {
+                                        val follow = Gson().fromJson<Following>(result, Following::class.java)
+
+
+                                        log.d("followingla olindi -> ${follow.users}")
+                                        if(manager!!.findFragmentByTag(FFFFragment.TAG) != null){
+
+                                            followersFragment!!.swapList(follow.users)
+                                            FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
+                                            log.d("get following -> ${FFFFragment.followersCount}")
+
+                                        }
+            }
+
         }
-        else if (from == Http.CMDS.GET_FOLLOWING){
-
-            val follow = Gson().fromJson<Following>(result, Following::class.java)
 
 
-            log.d("followingla olindi -> ${follow.users}")
-            if(manager!!.findFragmentByTag(FFFFragment.TAG) != null){
-
-                followersFragment!!.swapList(follow.users)
-                FFFFragment.followersCount = MyProfileFragment.FOLLOWING.toInt()
-                log.d("get following -> ${FFFFragment.followersCount}")
-
-            }
-        }
     }
 
     override fun onFailure(from: String, message: String, erroCode: String) {
 
 
         when(from ){
-            Http.CMDS.MY_POSTS -> profilFragment!!.closeLoadMore()
+            Http.CMDS.MY_POSTS -> profilFragment!!.failedGetList()
             Http.CMDS.GET_FOLLOWING     -> Handler().postDelayed({followersFragment!!.failedGetList(message)},1500)
             Http.CMDS.GET_FOLLOWERS     -> Handler().postDelayed({followersFragment!!.failedGetList(message)},1500)
         }

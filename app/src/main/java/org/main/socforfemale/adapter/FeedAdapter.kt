@@ -230,6 +230,7 @@ class FeedAdapter(context: Activity,
                             })
                 }
             }else{
+
                 h.quote.visibility     = View.VISIBLE
                 h.quote.text           = post.quote.text
                 h.quoteEdit.visibility = View.GONE
