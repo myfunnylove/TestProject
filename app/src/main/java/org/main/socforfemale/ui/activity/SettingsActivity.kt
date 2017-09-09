@@ -95,12 +95,15 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                    user.close = !user.close
                                    Base.get.prefs.setUser(user)
                                }
-                           }catch (e:Exception){}
+                           }catch (e:Exception){
+                                switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+                            }
 
                         }
 
                         override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                             log.d("close profil fail $t")
+                            switchCloseAccount.isChecked = Base.get.prefs.getUser().close
 
                         }
 
@@ -114,6 +117,8 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                 if (whichButton == YesNoFragment.NO){
                                     dialog.dismiss()
                                 }else{
+                                    dialog.dismiss()
+
                                     MainActivity.start          = 0
                                     MainActivity.end            = 20
                                     MainActivity.startFeed      = 0
@@ -131,6 +136,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                             .build()
                                     sesion.out()
                                 }
+
                             }
 
                         })
