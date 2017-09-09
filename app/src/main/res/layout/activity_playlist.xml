@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/clouds"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/headerlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+             android:text="@string/my_playlist"
+            style="@style/HeaderText"
+            android:padding="16dp"
+            android:textColor="@color/asbestos"
+            />
+        <View
+            android:layout_width="200dp"
+            android:layout_height="0.50dp"
+            android:layout_gravity="center"
+            android:background="@color/silver"
+            android:layout_marginBottom="6dp"
+            />
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/commentBoxLay"
+        android:layout_below="@+id/headerlay"
+        />
+
+    <LinearLayout
+        android:id="@+id/progressLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80dddddd"
+        android:gravity="center"
+        android:layout_above="@+id/commentBoxLay"
+        android:layout_below="@+id/headerlay"
+
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/emptyContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+
+        >
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/res_circle_bg"
+            android:padding="16dp"
+            app:srcCompat="@drawable/playlist_play_white" />
+
+        <TextView
+            android:id="@+id/searchResult"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/silver" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/commentBoxLay"
+        >
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

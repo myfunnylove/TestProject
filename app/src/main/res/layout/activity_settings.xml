@@ -79,7 +79,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name"
+                    android:text="@string/name"
 
                     android:textColor="@color/asbestos"
                     android:textSize="12sp" />
@@ -93,7 +93,7 @@
                     android:maxLines="1"
                     android:inputType="text"
                     android:textColor="@color/headerTextColor"
-                    android:background="@android:color/transparent" />
+                     />
 
                 <View
                     android:layout_width="match_parent"
@@ -114,7 +114,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/username"
+                    android:text="@string/username"
 
 
                     android:textColor="@color/asbestos"
@@ -129,7 +129,7 @@
                     android:maxLines="1"
                     android:inputType="text"
                     android:textColor="@color/headerTextColor"
-                    android:background="@android:color/transparent" />
+                     />
 
                 <View
                     android:layout_width="match_parent"

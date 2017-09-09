@@ -276,7 +276,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
             val emptyPost = ArrayList<Posts>()
             emptyPost.add(oldpostList!!.posts.get(0))
             val postList = PostList(emptyPost, FOLLOWERS, FOLLOWING,oldpostList!!.postlarSoni)
-            postAdapter = FeedAdapter(activity,postList,this,this,true,FOLLOW_TYPE,postUser)
+            postAdapter = FeedAdapter(activity,postList,this,this,true,error,postUser)
             postView.visibility = View.VISIBLE
             postView.adapter = postAdapter
         }

@@ -22,5 +22,6 @@ interface MVPComponent {
     fun inject(settingsActivity: SettingsActivity)
     fun inject(publishUniversalActivity: PublishUniversalActivity)
     fun inject(loginAndPassActivity: LoginAndPassActivity)
+    fun inject(playlistActivity: PlaylistActivity)
 
 }

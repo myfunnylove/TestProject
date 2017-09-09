@@ -119,6 +119,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
 
             />
+        <activity
+            android:name=".ui.activity.PlaylistActivity"
+            android:theme="@style/CommentActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+
+            />
         <service android:name=".bgservice.MusicService" />
     </application>
 

@@ -34,6 +34,7 @@ import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.CommentActivity
 import org.main.socforfemale.ui.activity.MainActivity
+import org.main.socforfemale.ui.activity.PlaylistActivity
 import org.main.socforfemale.ui.activity.SettingsActivity
 import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.FeedFragment
@@ -93,7 +94,10 @@ class FeedAdapter(context: Activity,
         val ACCELERATE_INTERPOLATOR    = AccelerateInterpolator()
         val OVERSHOOT_INTERPOLATOR     = OvershootInterpolator(4f)
         val likeAnimations             = HashMap<RecyclerView.ViewHolder,AnimatorSet>()
-
+        var avatarUpdated              = -1
+        var SHOW_PROGRESS              = 1
+        var HIDE_PROGRESS              = 0
+        var CANCEL_PROGRESS            = 2
     }
 
 
@@ -362,7 +366,7 @@ class FeedAdapter(context: Activity,
 
                         }
 
-                    })
+                    },model)
                      FeedFragment.cachedSongAdapters!!.put(i,adapter)
 //            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
 //                override fun getSpanSize(i: Int): Int {
@@ -553,6 +557,32 @@ class FeedAdapter(context: Activity,
             h.follow.tag  = FOLLOW_TYPE
             h.follow.text = FOLLOW_TYPE
 
+            if(FOLLOW_TYPE == ProfileFragment.SETTINGS){
+                h.playlist.visibility = View.VISIBLE
+                h.playlist.setOnClickListener{
+
+                    val goCommentActivity = Intent(ctx, PlaylistActivity::class.java)
+
+                    val startingLocation = IntArray(2)
+//                    h.playlist.getLocationOnScreen(startingLocation)
+//                    goCommentActivity.putExtra(CommentActivity.LOCATION, startingLocation[1])
+                    if (activity != null){
+                        activity!!.startActivityForResult(goCommentActivity,Const.GO_PLAY_LIST)
+                        activity!!.overridePendingTransition(0, 0)
+                    }else{
+                        ctx.startActivity(goCommentActivity)
+                    }
+                }
+            }else{
+                h.playlist.visibility = View.GONE
+
+            }
+            if (avatarUpdated == SHOW_PROGRESS){
+                h.progress.visibility = View.VISIBLE
+
+            }else{
+                h.progress.visibility = View.GONE
+            }
             Picasso.with(ctx)
                     .load(postUser!!.photo)
                     .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
@@ -677,6 +707,11 @@ class FeedAdapter(context: Activity,
     }
 
 
+    fun swapPhotoProgress(status:Int){
+        avatarUpdated = status
+        notifyItemChanged(0)
+    }
+
     fun swapFirstItem(postList: PostList){
         disableAnimation = false
         feeds.posts.add(0,postList.posts.get(0))
@@ -732,29 +767,20 @@ class FeedAdapter(context: Activity,
     class ProfileHeaderHolder(rootView:View) : RecyclerView.ViewHolder(rootView){
 
 
-        var followersLay    by Delegates.notNull<LinearLayout>()
-        var followingLay    by Delegates.notNull<LinearLayout>()
-        var avatar          by Delegates.notNull<AppCompatImageView>()
-        var followers       by Delegates.notNull<TextView>()
-        var following       by Delegates.notNull<TextView>()
-        var username        by Delegates.notNull<TextView>()
-        var firstName       by Delegates.notNull<TextView>()
-        var posts           by Delegates.notNull<TextView>()
-        var follow          by Delegates.notNull<Button>()
+
+            val   followersLay = rootView.findViewById(R.id.followersLay) as LinearLayout
+            val   followingLay = rootView.findViewById(R.id.followingLay) as LinearLayout
+            val   playlist     = rootView.findViewById(R.id.playlist)   as AppCompatImageView
+            val   avatar       = rootView.findViewById(R.id.avatar)       as AppCompatImageView
+            val   followers    = rootView.findViewById(R.id.followers)    as TextView
+            val   following    = rootView.findViewById(R.id.following)    as TextView
+            val   username     = rootView.findViewById(R.id.username)     as TextView
+            val   firstName    = rootView.findViewById(R.id.firstName)    as TextView
+            val   posts        = rootView.findViewById(R.id.posts)        as TextView
+            val   follow       = rootView.findViewById(R.id.follow)       as Button
+        val   progress     = rootView.findViewById(R.id.progressUpdateAvatar)       as ProgressBar
 
 
-        init {
-            followersLay = rootView.findViewById(R.id.followersLay) as LinearLayout
-            followingLay = rootView.findViewById(R.id.followingLay) as LinearLayout
-            avatar       = rootView.findViewById(R.id.avatar)       as AppCompatImageView
-            followers    = rootView.findViewById(R.id.followers)    as TextView
-            following    = rootView.findViewById(R.id.following)    as TextView
-            username     = rootView.findViewById(R.id.username)     as TextView
-            firstName    = rootView.findViewById(R.id.firstName)    as TextView
-            posts        = rootView.findViewById(R.id.posts)        as TextView
-            follow       = rootView.findViewById(R.id.follow)       as Button
-
-        }
     }
 
     fun updateProfilPhoto(path: String) {
@@ -765,6 +791,7 @@ class FeedAdapter(context: Activity,
 
 
         }
+        avatarUpdated = HIDE_PROGRESS
         notifyDataSetChanged()
 
 

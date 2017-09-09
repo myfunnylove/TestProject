@@ -627,4 +627,8 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
         }
     }
 
+    fun createProgressForAvatar(status: Int) {
+        postAdapter!!.swapPhotoProgress(status)
+    }
+
 }

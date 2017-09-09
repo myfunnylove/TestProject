@@ -211,7 +211,13 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
 
-            }else{
+            }
+            else if(user.close == 1){
+                log.d("${user.userId} -> ${user.username} ga zapros tashalgan")
+                bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.CLOSE)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.CLOSE)
+            }
+            else{
                 log.d("${user.userId} -> ${user.username} da xato holat ")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)

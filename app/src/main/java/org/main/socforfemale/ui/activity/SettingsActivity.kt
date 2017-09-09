@@ -98,7 +98,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                }
                            }catch (e:Exception){
                                 switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
-                            }
+                           }
 
                         }
 

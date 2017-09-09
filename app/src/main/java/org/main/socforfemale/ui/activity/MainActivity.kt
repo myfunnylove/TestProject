@@ -17,6 +17,7 @@ import me.iwf.photopicker.PhotoPicker
 import okhttp3.MultipartBody
 import org.json.JSONObject
 import org.main.socforfemale.R
+import org.main.socforfemale.adapter.FeedAdapter
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
@@ -42,7 +43,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity(), GoNext, Viewer {
 
 
-    var profilFragment:       MyProfileFragment?      = null
+    var profilFragment:       MyProfileFragment?    = null
     var searchFragment:       SearchFragment?       = null
     var notificationFragment: NotificationFragment? = null
     var feedFragment:         FeedFragment?         = null
@@ -112,7 +113,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
         setFragment(Const.FEED_FR)
 
         val reqObj = JSONObject()
-        reqObj.put("user_id", user.userId)
+        reqObj.put("user_id" , user.userId)
         reqObj.put("session", user.session)
         reqObj.put("start",   startFeed)
         reqObj.put("end",     endFeed)
@@ -486,6 +487,12 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
                 log.d("lastfragment -> ${lastFragment}")
                 log.d("profil followers count -> ${FFFFragment.followersCount}")
+                if (requestCode == Const.CHANGE_AVATAR){
+                    try{
+                        profilFragment!!.createProgressForAvatar(FeedAdapter.CANCEL_PROGRESS);
+                    }catch (e:Exception){}
+                }
+
                 if  (lastFragment == 4 && FFFFragment.followersCount != -1 && profilFragment != null ){
                     MyProfileFragment.FOLLOWING = FFFFragment.followersCount.toString()
                     profilFragment!!.postAdapter!!.updateFollowersCount()
@@ -571,7 +578,9 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
             Http.CMDS.CHANGE_AVATAR -> {
 
                 user = Base.get.prefs.getUser()
-
+                try{
+                profilFragment!!.createProgressForAvatar(FeedAdapter.HIDE_PROGRESS);
+                }catch (e:Exception){}
                 profilFragment!!.setAvatar(user.profilPhoto)
             }
 
@@ -624,7 +633,9 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     }
 
     private fun String.uploadAvatar() {
-
+        try{
+            profilFragment!!.createProgressForAvatar(FeedAdapter.SHOW_PROGRESS);
+        }catch (e:Exception){}
         val reqFile = ProgressRequestBody(File(this), object : ProgressRequestBody.UploadCallbacks {
 
             override fun onProgressUpdate(percentage: Int) {
