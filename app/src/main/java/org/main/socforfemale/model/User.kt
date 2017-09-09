@@ -31,7 +31,7 @@ data class User (
         @SerializedName("signType")
         var signType:Int ,// facebook = 0, vkontakte = 1,sms = 2
         @SerializedName("close")
-        var close:Boolean = false // close 1 open 0
+        var close:Int = 0 // close 1 open 0
 
 )
 

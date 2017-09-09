@@ -1,5 +1,6 @@
 package org.main.socforfemale.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -185,7 +187,6 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         js.put("username",user.username)
         js.put("photo",   user.photo150)
         js.put("userId",  user.userId)
-
         if (user.userId != this.user.userId){
 
 
@@ -194,24 +195,24 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
 
             if (user.follow == 0 && user.request == 0){
 
-                log.d("${user.userId} -> ${user.username}ga follow qilinmagan")
-                bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
-                js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
+                log.d("${user.userId} -> ${user.username} ga follow qilinmagan")
+                bundle.putString(ProfileFragment.F_TYPE, if(user.close == 1) ProfileFragment.CLOSE else ProfileFragment.FOLLOW)
+                js.put(ProfileFragment.F_TYPE, if(user.close == 1) ProfileFragment.CLOSE else ProfileFragment.FOLLOW)
 
             }else if (user.follow == 1 && user.request == 0){
 
-                log.d("${user.userId} -> ${user.username}ga follow qilingan")
+                log.d("${user.userId} -> ${user.username} ga follow qilingan")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.UN_FOLLOW)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.UN_FOLLOW)
 
             }else if (user.follow == 0 && user.request == 1){
 
-                log.d("${user.userId} -> ${user.username}ga zapros tashalgan")
+                log.d("${user.userId} -> ${user.username} ga zapros tashalgan")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
 
-            } else{
-                log.d("${user.userId} -> ${user.username}da xato holat ")
+            }else{
+                log.d("${user.userId} -> ${user.username} da xato holat ")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
 
@@ -293,5 +294,26 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
             }
         }
     }
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        log.d("onHiddenChanged ")
+        if(hidden){
+            search.hideKeyboard()
 
+        }else{
+            search.showKeyboard()
+
+        }
+    }
+
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun View.hideKeyboard() {
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
 }

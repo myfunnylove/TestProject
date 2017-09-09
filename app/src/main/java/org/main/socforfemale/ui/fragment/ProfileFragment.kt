@@ -63,6 +63,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
         val UN_FOLLOW    = Base.get.resources.getString(R.string.unfollow)
         val REQUEST      = Base.get.resources.getString(R.string.request)
         val SETTINGS     = Base.get.resources.getString(R.string.settings)
+        val CLOSE        = Base.get.resources.getString(R.string.closedAccaunt)
         val F_TYPE       = "fType"
         var FOLLOW_TYPE  = ""
 
@@ -80,6 +81,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
         var cachedSongAdapters:HashMap<Int, PostAudioGridAdapter>? = null
         var playedSongPosition  = -1
+
     }
 
     fun connect(connActivity: GoNext){
@@ -227,44 +229,65 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
     fun failedGetList(error:String = ""){
+        log.e("ProfileFragment => method => failedGetList errorCode => $error")
         progressLay.visibility = View.GONE
-
-        swipeRefreshLayout.isRefreshing = false
-
-                log.e("ProfileFragment => method => failedGetList errorCode => $error")
-                if (postAdapter != null && postAdapter!!.feeds.posts.size != 0){
-                    log.e("list bor lekin xatolik shundo ozini qoldiramiz")
-                    emptyContainer.visibility = View.GONE
-                    postView.visibility       = View.VISIBLE
+        emptyContainer.visibility = View.GONE
+        postView.visibility       = View.VISIBLE
 
 
-                }else{
-                    log.e("list null yoki list bom bosh")
-                    val emptyPost = ArrayList<Posts>()
-                    emptyPost.add(Posts("-1",Quote("","",""),ArrayList<Audio>(),ArrayList<Image>(),"0","0","","", PostUser("","","http")))
-                    val postList: PostList = PostList(emptyPost,"0","0","0")
-                    postAdapter = FeedAdapter(activity,postList,this,this,true,FOLLOW_TYPE,PostUser("","","http"))
-                    postView.adapter = postAdapter
 
-//                    val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error, errorImg.context.theme)
-//                    val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.account_light,          errorImg.context.theme)
-//                    if (error == ""){
-//                        errorImg.setImageDrawable(defaultErrorIcon)
-//                    }else{
-//                        errorImg.setImageDrawable(connectErrorIcon)
-//
-//                    }
-//                    errorText.text = error
-//                    emptyContainer.visibility = View.VISIBLE
-//                    postView.visibility = View.GONE
-                }
+        if (error == ""){
 
+            swipeRefreshLayout.isRefreshing = false
+            swipeRefreshLayout.isEnabled = true
+
+            if (postAdapter == null || postAdapter!!.feeds.posts.size == 0){
+
+                log.e("list null yoki list bom bosh")
+                val emptyPost = ArrayList<Posts>()
+                emptyPost.add(Posts("-1",Quote("","",""),ArrayList<Audio>(),ArrayList<Image>(),"0","0","","", PostUser("","","http")))
+                val postList: PostList = PostList(emptyPost,"0","0","0")
+                postAdapter = FeedAdapter(activity,postList,this,this,true,FOLLOW_TYPE,PostUser("","","http"))
+                postView.adapter = postAdapter
+
+
+
+            }
+
+        }else { /* REQUEST OR CLOSE RPOFILE*/
+
+            swipeRefreshLayout.isEnabled = false
+            var photo ="http"
+            try{
+                photo = if (arguments!!.getString("photo").startsWith("http")) arguments.getString("photo") else Http.BASE_URL+arguments.getString("photo")
+            }catch (e:Exception){
+
+            }
+            FOLLOWERS = oldpostList!!.followers
+            FOLLOWING = oldpostList!!.following
+            val postUser = PostUser(arguments.getString("userId"),arguments.getString("username"),photo)
+
+            oldpostList!!.posts.forEach { post ->
+
+
+                post.user = postUser
+
+            }
+            val emptyPost = ArrayList<Posts>()
+            emptyPost.add(oldpostList!!.posts.get(0))
+            val postList = PostList(emptyPost, FOLLOWERS, FOLLOWING,oldpostList!!.postlarSoni)
+            postAdapter = FeedAdapter(activity,postList,this,this,true,FOLLOW_TYPE,postUser)
+            postView.visibility = View.VISIBLE
+            postView.adapter = postAdapter
+        }
 
     }
 
     fun initFF(postList: PostList){
-        FOLLOWERS = postList.followers
-        FOLLOWING = postList.following
+
+        oldpostList = postList
+        FOLLOWERS = oldpostList!!.followers
+        FOLLOWING = oldpostList!!.following
 
 //        followers.text = if(FOLLOWERS == "") "0" else FOLLOWERS
 //        following.text = if(FOLLOWING == "") "0" else FOLLOWING
@@ -300,7 +323,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
                 }
             }
-            var postUser:PostUser = PostUser(arguments.getString("userId"),arguments.getString("username"),photo)
+            val postUser = PostUser(arguments.getString("userId"),arguments.getString("username"),photo)
 
             postList.posts.forEach { post ->
 
@@ -367,16 +390,16 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
     }
 
-    fun closeLoadMore() {
-        if (oldpostList == null || oldpostList!!.posts.size <= 0){
-            postView.visibility = View.GONE
-            emptyContainer.visibility = View.VISIBLE
-        }
-        log.d("hide load more")
-        scroll!!.resetState()
-
-//        postView.setPullLoadMoreCompleted()
-    }
+//    fun closeLoadMore() {
+//        if (oldpostList == null || oldpostList!!.posts.size <= 0){
+//            postView.visibility = View.GONE
+//            emptyContainer.visibility = View.VISIBLE
+//        }
+//        log.d("hide load more")
+//        scroll!!.resetState()
+//
+////        postView.setPullLoadMoreCompleted()
+//    }
 
     internal enum class State {
         EXPANDED,
