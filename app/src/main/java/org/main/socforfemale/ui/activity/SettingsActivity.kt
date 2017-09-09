@@ -97,14 +97,14 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                    Base.get.prefs.setUser(user)
                                }
                            }catch (e:Exception){
-                                switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+                                switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
                             }
 
                         }
 
                         override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                             log.d("close profil fail $t")
-                            switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+                            switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
 
                         }
 
