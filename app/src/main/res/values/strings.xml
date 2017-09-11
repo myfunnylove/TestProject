@@ -61,4 +61,6 @@
     <string name="added_to_favorite">ADDED TO FAVORITE LIST</string>
     <string name="my_playlist">MY PLAYLIST</string>
     <string name="post">CREATE POST</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="Sign_up">SIGN UP</string>
 </resources>

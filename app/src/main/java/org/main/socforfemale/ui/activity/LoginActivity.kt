@@ -13,11 +13,13 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.ErrorConnection
 import org.main.socforfemale.pattern.signInUp.*
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
@@ -40,7 +42,8 @@ class LoginActivity : BaseActivity(), Viewer {
 
     @Inject
     lateinit var presenter:Presenter
-
+    @Inject
+    lateinit var errorConn: ErrorConnection
 
 
     companion object {
@@ -71,6 +74,7 @@ class LoginActivity : BaseActivity(), Viewer {
                     .builder()
                     .mVPModule(MVPModule(this, Model(),this))
                     .presenterModule(PresenterModule())
+                    .errorConnModule(ErrorConnModule(this,false))
                     .build()
                     .inject(this)
 
@@ -92,21 +96,22 @@ class LoginActivity : BaseActivity(), Viewer {
 
             logIn.setOnClickListener {
 
-                signBridge = SignBridge(simpleAuth)
-                signBridge.initialize().tryAuthorize()
+                simpleAuth.authorizeWithThisBridge()
 
             }
 
 
             loginVk.setOnClickListener {
-                signBridge = SignBridge(vkAuth)
-                signBridge.initialize().tryAuthorize()
+
+
+                vkAuth.authorizeWithThisBridge()
+
             }
 
 
             loginFb.setOnClickListener {
-                signBridge = SignBridge(facebookoAuth)
-                signBridge.initialize().tryAuthorize()
+
+                facebookoAuth.authorizeWithThisBridge()
 
             }
 
@@ -285,6 +290,23 @@ class LoginActivity : BaseActivity(), Viewer {
         }
 
     }
+
+    fun SocialNetwork.authorizeWithThisBridge(){
+        errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+            override fun connected() {
+                signBridge = SignBridge(this@authorizeWithThisBridge)
+                signBridge.initialize().tryAuthorize()
+            }
+
+            override fun disconnected() {
+                Toast.makeText(this@LoginActivity,resources.getString(R.string.internet_conn_error),Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+
+    }
+
 }
 
 

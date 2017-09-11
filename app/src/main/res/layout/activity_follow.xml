@@ -48,6 +48,7 @@
             />
 
 
+        <include layout="@layout/res_error_connection_lay"/>
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

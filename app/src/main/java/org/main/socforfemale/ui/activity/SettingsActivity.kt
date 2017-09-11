@@ -17,12 +17,14 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.ErrorConnection
 import org.main.socforfemale.pattern.SessionOut
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
@@ -47,6 +49,9 @@ class SettingsActivity : BaseActivity() ,Viewer{
     @Inject
     lateinit var presenter:Presenter
 
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     override fun getLayout(): Int = R.layout.activity_settings
 
     override fun initView() {
@@ -55,6 +60,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,false))
                 .build()
                 .inject(this)
 
@@ -167,15 +173,31 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
 
       if (changed || map.get(gender.selectedItemPosition) != Base.get.prefs.getUser().gender){
-          val jsObject = JSONObject()
-          jsObject.put("user_id",Base.get.prefs.getUser().userId)
-          jsObject.put("session",Base.get.prefs.getUser().session)
-          jsObject.put("username",username.text.toString())
-          jsObject.put("name",name.text.toString())
-          jsObject.put("gender", map.get(gender.selectedItemPosition))
+
+          errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+              override fun connected() {
+                  log.d("connected")
+
+                  val jsObject = JSONObject()
+                  jsObject.put("user_id",Base.get.prefs.getUser().userId)
+                  jsObject.put("session",Base.get.prefs.getUser().session)
+                  jsObject.put("username",username.text.toString())
+                  jsObject.put("name",name.text.toString())
+                  jsObject.put("gender", map.get(gender.selectedItemPosition))
 
 
-          presenter.requestAndResponse(jsObject, Http.CMDS.CHANGE_USER_SETTINGS)
+                  presenter.requestAndResponse(jsObject, Http.CMDS.CHANGE_USER_SETTINGS)
+
+              }
+
+              override fun disconnected() {
+                  log.d("disconnected")
+
+                    Toast.makeText(this@SettingsActivity,resources.getString(R.string.internet_conn_error),Toast.LENGTH_SHORT).show()
+              }
+
+          })
+
       }
         return true
     }

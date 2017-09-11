@@ -39,19 +39,7 @@
 
             />
 
-        <LinearLayout
-            android:id="@+id/progressLay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#80dddddd"
-            android:gravity="center"
 
-            android:visibility="gone">
-
-            <ProgressBar
-                android:layout_width="45dp"
-                android:layout_height="45dp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/emptyContainer"
@@ -93,7 +81,20 @@
 
         </LinearLayout>
 
+        <include layout="@layout/res_error_connection_lay"/>
+        <LinearLayout
+            android:id="@+id/progressLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|center_horizontal"
 
+            >
+
+            <ProgressBar
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
     </RelativeLayout>
 
 

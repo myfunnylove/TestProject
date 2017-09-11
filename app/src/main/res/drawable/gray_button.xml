@@ -5,19 +5,21 @@
 
     <item android:state_selected="false">
         <shape>
+            <corners android:radius="@dimen/five"/>
             <solid
-                android:color="@color/colorAccent" />
+                android:color="@color/silver" />
         </shape>
     </item>
 
 
     <item android:state_selected="true">
         <shape>
+            <corners android:radius="@dimen/five"/>
 
 
 
             <solid
-                android:color="@color/colorAccentDark" />
+                android:color="@color/asbestos" />
         </shape>
     </item>
 

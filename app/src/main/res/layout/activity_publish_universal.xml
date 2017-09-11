@@ -102,6 +102,9 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp" />
         </LinearLayout>
+
+        <include layout="@layout/res_error_connection_lay"/>
+
     </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -176,37 +179,39 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp">
 
-                <TextView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/textSize1"
                     style="@style/HeaderText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TEXT SIZE"
+                    app:srcCompat="@drawable/format_size"
                     android:textSize="14sp" />
 
-                <TextView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/textSize2"
 
                     style="@style/HeaderText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TEXT SIZE"
-                    android:textSize="17sp" />
+                    app:srcCompat="@drawable/format_size"
 
-                <TextView
+                    />
+
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/textSize3"
 
                     style="@style/HeaderText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TEXT SIZE"
-                    android:textSize="20sp" />
+                    app:srcCompat="@drawable/format_size"
+
+                     />
 
             </LinearLayout>
 

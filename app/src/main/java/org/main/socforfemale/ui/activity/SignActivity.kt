@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Handler
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.view.View
+import android.widget.Toast
 import org.main.socforfemale.R
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.mvp.Viewer
@@ -12,11 +13,13 @@ import org.json.JSONObject
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.User
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
+import org.main.socforfemale.pattern.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.JavaCodes
@@ -32,6 +35,8 @@ class SignActivity : BaseActivity() ,Viewer{
 
     @Inject
     lateinit var presenter:Presenter
+    @Inject
+    lateinit var errorConn: ErrorConnection
 
     var phoneStr:String      = ""
     var smsStr:  String      = ""
@@ -99,6 +104,7 @@ class SignActivity : BaseActivity() ,Viewer{
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,false))
                 .build()
                 .inject(this)
         signMode = PHONE_MODE
@@ -134,49 +140,64 @@ class SignActivity : BaseActivity() ,Viewer{
         signUp.setOnClickListener{
 
 
-            if(signMode == PHONE_MODE){
-                if (Functions.clearEdit(phone).length != 9){
-
-                    phone.error = resources.getString(R.string.error_incorrect_phone)
 
 
-                }else{
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
 
-                    val sendObject = JSONObject()
-                    phoneStr = "998${Functions.clearEdit(phone)}"
-                    sendObject.put("phone",phoneStr)
+                    if(signMode == PHONE_MODE){
+                        if (Functions.clearEdit(phone).length != 9){
 
-                    presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
+                            phone.error = resources.getString(R.string.error_incorrect_phone)
+
+
+                        }else{
+
+                            val sendObject = JSONObject()
+                            phoneStr = "998${Functions.clearEdit(phone)}"
+                            sendObject.put("phone",phoneStr)
+
+                            presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
+                        }
+
+
+                    }else if(signMode == SMS_MODE){
+
+                        if (smsCode.text.toString().length != 6){
+                            smsCode.error = resources.getString(R.string.sms_code_error)
+                        }else{
+                            val sendObject = JSONObject()
+
+                            smsStr = smsCode.text.toString()
+
+                            sendObject.put("phone",phoneStr)
+                            sendObject.put("sms",smsStr)
+
+
+                            presenter!!.requestAndResponse(sendObject, Http.CMDS.SMSNI_JONATISH)
+                        }
+                    }else{
+                        if (!mail.text.toString().contains("@")){
+
+                            mail.error = resources.getString(R.string.error_incorrect_mail)
+                        }else{
+                            val sendObject = JSONObject()
+                            phoneStr = mail.text.toString()
+                            sendObject.put("phone",phoneStr)
+
+                            presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
+                        }
+                    }
+
+
                 }
 
+                override fun disconnected() {
+                    Toast.makeText(this@SignActivity,resources.getString(R.string.internet_conn_error), Toast.LENGTH_SHORT).show()
 
-            }else if(signMode == SMS_MODE){
-
-                if (smsCode.text.toString().length != 6){
-                    smsCode.error = resources.getString(R.string.sms_code_error)
-                }else{
-                    val sendObject = JSONObject()
-
-                    smsStr = smsCode.text.toString()
-
-                    sendObject.put("phone",phoneStr)
-                    sendObject.put("sms",smsStr)
-
-
-                    presenter!!.requestAndResponse(sendObject, Http.CMDS.SMSNI_JONATISH)
                 }
-            }else{
-                if (!mail.text.toString().contains("@")){
 
-                    mail.error = resources.getString(R.string.error_incorrect_mail)
-                }else{
-                    val sendObject = JSONObject()
-                    phoneStr = mail.text.toString()
-                    sendObject.put("phone",phoneStr)
-
-                    presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
-                }
-            }
+            })
 
         }
 

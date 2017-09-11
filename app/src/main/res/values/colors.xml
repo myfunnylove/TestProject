@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryDark">#494949</color>
     <color name="colorAccent">#e94c6f</color>
+    <color name="colorAccentDark">#b43b56</color>
     <color name="normalTextColor">#858585</color>
     <color name="headerTextColor">#494949</color>
     <color name="background">#fff</color>

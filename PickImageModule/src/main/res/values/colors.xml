@@ -9,7 +9,7 @@
   <color name="__picker_text_40">#505050</color>
   <color name="__picker_text_80">#505050</color>
   <color name="__picker_text_120">#787878</color>
-  <color name="__picker_item_photo_border_selected">#00B8A9</color>
+  <color name="__picker_item_photo_border_selected">#e94c6f</color>
   <color name="__picker_item_photo_border_n">#33ffffff</color>
   <color name="__picker_colorPrimary">@color/__picker_white</color>
   <color name="__picker_colorPrimaryDark">#363636</color>
@@ -18,8 +18,8 @@
   <color name="__picker_headerTextColor">#363636</color>
   <color name="__picker_background">#fff</color>
   <color name="__picker_white">#fff</color>
-  <color name="__picker_sky">@color/__picker_palette1.1</color>
-  <color name="__picker_sky_light">#70C1B3</color>
+  <color name="__picker_sky">#e94c6f</color>
+  <color name="__picker_sky_light">#e94c6f</color>
   <color name="__picker_turquoise">#1abc9c</color>
   <color name="__picker_greenSea">#16a085</color>
   <color name="__picker_emerald">#2ecc71</color>

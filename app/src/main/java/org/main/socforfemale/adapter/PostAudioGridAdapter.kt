@@ -40,7 +40,7 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
 
     val player                     = musicPlayerListener
     val notFeatured                = VectorDrawableCompat.create(Base.get.resources,R.drawable.plus,context.theme)
-    val featured                   = VectorDrawableCompat.create(Base.get.resources,R.drawable.added,context.theme);
+    val featured                   = VectorDrawableCompat.create(Base.get.resources,R.drawable.playlist_remove,context.theme);
 
 
     val featureMap                 = mapOf<Int,VectorDrawableCompat>( 0 to notFeatured!!,1 to featured!! )

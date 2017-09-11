@@ -501,6 +501,7 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+    <include layout="@layout/res_error_connection_lay"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

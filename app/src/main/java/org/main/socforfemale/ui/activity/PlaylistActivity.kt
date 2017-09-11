@@ -22,6 +22,7 @@ import org.main.socforfemale.bgservice.MusicController
 import org.main.socforfemale.bgservice.MusicService
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.Audio
@@ -29,6 +30,7 @@ import org.main.socforfemale.model.Features
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.rest.Http
@@ -62,6 +64,9 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     @Inject
     lateinit var presenter:Presenter
 
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     lateinit var adapter:PostAudioGridAdapter
 
     override fun initProgress() {
@@ -69,13 +74,17 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     }
 
     override fun showProgress() {
+        progressLay.visibility = View.VISIBLE
     }
 
     override fun hideProgress() {
+        progressLay.visibility = View.GONE
+
     }
 
     override fun onSuccess(from: String, result: String) {
         log.d("from $from result $result")
+        progressLay.visibility = View.GONE
 
        val features = Gson().fromJson(result,Features::class.java)
 
@@ -88,6 +97,7 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
 
     override fun onFailure(from: String, message: String, erroCode: String) {
         log.d("from $from result $message errorCode $erroCode")
+        progressLay.visibility = View.GONE
 
     }
 
@@ -96,8 +106,9 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     override fun initView() {
         DaggerMVPComponent
                 .builder()
-                .mVPModule(MVPModule(this, Model(),this))
+                .mVPModule(MVPModule(this, Model(), this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,true))
                 .build()
                 .inject(this)
         setSupportActionBar(toolbar)
@@ -115,11 +126,25 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
         list.layoutManager = LinearLayoutManager(this)
         list.setHasFixedSize(true)
 
-        val js = JSONObject()
-        js.put("user_id", user.userId)
-        js.put("session", user.session)
 
-        presenter.requestAndResponse(js,Http.CMDS.GET_PLAYLIST)
+        errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+            override fun connected() {
+                log.d("connected")
+
+                val js = JSONObject()
+                js.put("user_id", user.userId)
+                js.put("session", user.session)
+                presenter.requestAndResponse(js, Http.CMDS.GET_PLAYLIST)
+
+            }
+
+            override fun disconnected() {
+                log.d("disconnected")
+
+
+            }
+
+        })
     }
 
     override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {

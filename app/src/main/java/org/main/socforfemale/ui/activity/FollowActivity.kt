@@ -13,6 +13,7 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.Followers
@@ -21,6 +22,7 @@ import org.main.socforfemale.model.PostList
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
@@ -54,6 +56,10 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
     @Inject
     lateinit var presenter:Presenter
+
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     var user                            = Base.get.prefs.getUser()
     var profilFragment:ProfileFragment? = null
     var followersFragment:FFFFragment?  = null
@@ -69,6 +75,7 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,true))
                 .build()
                 .inject(this)
         setSupportActionBar(toolbar)
@@ -141,15 +148,30 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             }
 
 
-            val reqObj = JSONObject()
-            reqObj.put("user_id",user.userId)
-            reqObj.put("session",user.session)
-            reqObj.put("user",   userID)
-            reqObj.put("start",  start)
-            reqObj.put("end",    end)
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    log.d("connected")
+                    val reqObj = JSONObject()
+                    reqObj.put("user_id",user.userId)
+                    reqObj.put("session",user.session)
+                    reqObj.put("user",   userID)
+                    reqObj.put("start",  start)
+                    reqObj.put("end",    end)
 
 
-            presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                }
+
+                override fun disconnected() {
+                    log.d("disconnected")
+
+
+                }
+
+            })
+
+
+
 
         }else {
 
@@ -171,17 +193,29 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 transaction!!.add(R.id.container, followersFragment, FFFFragment.TAG)
 
 //            transaction!!.add(R.id.container,followersFragment,FFFFragment.TAG)
-            val obj = JSONObject()
-            obj.put("user_id",user.userId)
-            obj.put("user",   userID)
-            obj.put("session",user.session)
-            obj.put("start",  MainActivity.startFollowing)
-            obj.put("end",    MainActivity.endFollowing)
+
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    log.d("connected")
+                    val obj = JSONObject()
+                    obj.put("user_id",user.userId)
+                    obj.put("user",   userID)
+                    obj.put("session",user.session)
+                    obj.put("start",  MainActivity.startFollowing)
+                    obj.put("end",    MainActivity.endFollowing)
 
 
-            /*GET FOLLOWERS OR FOLLOWING*/
-            presenter.requestAndResponse(obj, if (int == FOLLOWING) Http.CMDS.GET_FOLLOWING else Http.CMDS.GET_FOLLOWERS)
+                    /*GET FOLLOWERS OR FOLLOWING*/
+                    presenter.requestAndResponse(obj, if (int == FOLLOWING) Http.CMDS.GET_FOLLOWING else Http.CMDS.GET_FOLLOWERS)
+                }
 
+                override fun disconnected() {
+                    log.d("disconnected")
+
+
+                }
+
+            })
         }
             transaction!!.addToBackStack("")
             transaction!!.commit()
@@ -190,14 +224,28 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     override fun goNext(to: Int, data: String) {
         when(to){
             Const.REFRESH_PROFILE_FEED ->{
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("user",    userID)
-                reqObj.put("start",   data)
-                reqObj.put("end",     end)
 
-                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        log.d("connected")
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("user",    userID)
+                        reqObj.put("start",   data)
+                        reqObj.put("end",     end)
+
+                        presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    }
+
+                    override fun disconnected() {
+                        log.d("disconnected")
+
+
+                    }
+
+                })
             }
 
             Const.TO_FOLLOWERS -> showFragment(FOLLOWERS)
@@ -205,14 +253,27 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             Const.TO_FOLLOWING -> showFragment(FOLLOWING)
 
             Const.PROFIL_PAGE -> {
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("user",    userID)
-                reqObj.put("start",   data)
-                reqObj.put("end",     end)
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        log.d("connected")
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("user",    userID)
+                        reqObj.put("start",   data)
+                        reqObj.put("end",     end)
 
-                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                        presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    }
+
+                    override fun disconnected() {
+                        log.d("disconnected")
+
+
+                    }
+
+                })
+
 
              }
 

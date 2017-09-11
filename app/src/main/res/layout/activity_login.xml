@@ -9,6 +9,7 @@
 
 
 
+    <include layout="@layout/res_error_connection_lay"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Log IN"
+                android:text="@string/Sign_in"
                 android:background="@drawable/button_bg"
                 android:textColor="@color/white"
                 />
@@ -188,4 +189,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp" />
     </LinearLayout>
+    <include layout="@layout/res_error_connection_lay"/>
+
 </RelativeLayout>
+

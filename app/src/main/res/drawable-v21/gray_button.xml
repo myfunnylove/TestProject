@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/colorAccentDark">
+    android:color="@color/silver">
 
 
 
-    <item android:state_pressed="false" >
+    <item android:state_pressed="true">
         <shape android:shape="rectangle">
+            <corners android:radius="@dimen/five" />
 
-
-            <solid android:color="@color/colorAccent"/>
-
+            <solid android:color="@color/asbestos" />
 
 
         </shape>
     </item>
-
 </ripple>
