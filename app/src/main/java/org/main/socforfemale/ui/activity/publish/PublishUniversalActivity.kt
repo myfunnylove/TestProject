@@ -64,9 +64,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
         var loading:Boolean = false
 
     }
-    override fun getLayout(): Int {
-       return R.layout.activity_publish_universal
-    }
+    override fun getLayout(): Int = R.layout.activity_publish_universal
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_publish,menu)
@@ -117,10 +115,15 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
     }
     override fun initView() {
         Const.TAG = "PublishUniversalActivity"
-
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.post))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+
+            onBackPressed()
+
+        }
         toolbar.setNavigationOnClickListener {
 
             onBackPressed()

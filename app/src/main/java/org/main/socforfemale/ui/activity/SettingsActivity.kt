@@ -1,10 +1,13 @@
 package org.main.socforfemale.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -21,6 +24,7 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.pattern.SessionOut
+import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.fragment.YesNoFragment
 import retrofit2.Call
@@ -54,7 +58,15 @@ class SettingsActivity : BaseActivity() ,Viewer{
                 .build()
                 .inject(this)
 
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.settings))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
 
         name.setText("${userData.first_name} ${userData.last_name}")
         username.setText(userData.userName)
@@ -71,14 +83,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
         name.addTextChangedListener(textwatcher)
         username.addTextChangedListener(textwatcher)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
 
-            onBackPressed()
-
-        }
         switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
         switchCloseAccount.setOnCheckedChangeListener{view, isChecked ->
             val js = JSONObject()
@@ -221,5 +226,26 @@ class SettingsActivity : BaseActivity() ,Viewer{
     override fun onStop() {
         changed = false
         super.onStop()
+    }
+
+
+    override fun onBackPressed() {
+        username.hideKeyboard()
+        name.hideKeyboard()
+
+        Functions.hideSoftKeyboard(this)
+
+        super.onBackPressed()
+    }
+
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun View.hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 }

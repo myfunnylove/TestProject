@@ -80,7 +80,9 @@
         android:id="@+id/audios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true" />
+        android:fillViewport="true"
+
+        />
 
     <FrameLayout
         android:layout_width="match_parent"

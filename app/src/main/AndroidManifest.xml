@@ -54,7 +54,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.FollowActivity" />
+        <activity android:name=".ui.activity.FollowActivity"
+            />
         <activity
             android:name=".ui.activity.MainActivity"
 
@@ -108,7 +109,6 @@
         />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:theme="@style/AppTheme.SETTINGS"
             android:windowSoftInputMode="adjustResize|stateHidden"
 
             />

@@ -1,101 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     >
 
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/appbar"
-        android:fillViewport="true"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/clickContainer"
-            android:background="@color/white"
-            >
-
-
-
-            <EditText
-                android:id="@+id/commentText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:elevation="5dp"
-
-                android:gravity="left|top"
-                android:hint="add comment"
-                android:padding="16dp"
-                android:textColor="@color/headerTextColor"
-                android:textColorHint="@color/asbestos"
-                tools:targetApi="lollipop" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/viewImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/viewMusic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-
-                />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/actionMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/appbar"
-        android:layout_alignParentRight="true"
-
-        app:fab_labelStyle="@style/menu_labels_style"
-        app:fab_labelsPosition="left"
-
-        app:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_addButtonColorPressed="@color/colorPrimary"
-
-        >
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/publishMusic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorPrimary"
-            app:fab_title="Add Music"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/publishImage"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorPrimary"
-            app:fab_title="Add Image"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/editQuote"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_title="Edit Quote size"
-            />
-
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -103,97 +13,220 @@
         android:layout_alignParentBottom="true"
 
         >
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:titleTextAppearance="@style/ToolbarTextAppearance.Title"
+            app:subtitleTextAppearance="@style/ToolbarTextAppearance.Subtitle"
+            style="@style/DrawerArrowStyle"
+            app:title="@string/post"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+        >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:id="@+id/clickContainer"
+
+        >
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+
+                <EditText
+                    android:id="@+id/commentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:elevation="5dp"
+
+                    android:gravity="left|top"
+                    android:hint="add comment"
+                    android:padding="16dp"
+                    android:textColor="@color/headerTextColor"
+                    android:textColorHint="@color/asbestos"
+                    tools:targetApi="lollipop" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/viewImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/viewMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+
+                    />
+            </LinearLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/progressLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80dddddd"
+            android:gravity="center"
+
+            android:visibility="gone"
+            >
+
+            <ProgressBar
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
+        </LinearLayout>
+    </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right">
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/actionMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/quoteSettings"
+            android:layout_alignParentRight="true"
+
+            android:layout_margin="16dp"
+            app:fab_addButtonColorNormal="@color/colorAccent"
+
+            app:fab_addButtonColorPressed="@color/colorPrimary"
+            app:fab_labelStyle="@style/menu_labels_style"
+            app:fab_labelsPosition="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/publishMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorPrimary"
+                app:fab_title="Add Music" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/publishImage"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorPrimary"
+                app:fab_title="Add Image" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/editQuote"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_title="Edit Quote size" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
         <LinearLayout
             android:id="@+id/quoteSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:animateLayoutChanges="true"
-            >
+            android:visibility="gone"
+            android:orientation="vertical">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.15dp"
-                android:background="@color/silver"/>
+                android:background="@color/silver" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                >
+                android:orientation="horizontal"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
                 <TextView
                     android:id="@+id/textSize1"
+                    style="@style/HeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TEXT SIZE"
                     android:gravity="center"
-                    style="@style/HeaderText"
-                    android:textSize="14sp"
-                    />
+                    android:text="TEXT SIZE"
+                    android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/textSize2"
 
+                    style="@style/HeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TEXT SIZE"
                     android:gravity="center"
-                    style="@style/HeaderText"
-                    android:textSize="17sp"
-                    />
+                    android:text="TEXT SIZE"
+                    android:textSize="17sp" />
+
                 <TextView
                     android:id="@+id/textSize3"
 
+                    style="@style/HeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TEXT SIZE"
                     android:gravity="center"
-                    style="@style/HeaderText"
-                    android:textSize="20sp"
-                    />
+                    android:text="TEXT SIZE"
+                    android:textSize="20sp" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
 
-                android:background="@color/clouds"/>
+                android:background="@color/clouds" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/colorList"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                />
+                android:orientation="horizontal" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
 
-                android:background="@color/clouds"/>
+                android:background="@color/clouds" />
         </LinearLayout>
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout
-        android:id="@+id/progressLay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#80dddddd"
-        android:gravity="center"
-
-        android:visibility="gone"
-        >
-
-        <ProgressBar
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

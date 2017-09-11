@@ -6,11 +6,11 @@ import android.os.Handler
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_follow.*
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.MVPModule
@@ -22,17 +22,15 @@ import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
 import org.main.socforfemale.resources.utils.Const
+import org.main.socforfemale.resources.utils.Functions
+import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.MyProfileFragment
 import org.main.socforfemale.ui.fragment.ProfileFragment
 import org.main.socforfemale.ui.fragment.SearchFragment
 import javax.inject.Inject
-
-import kotlinx.android.synthetic.main.activity_follow.*
-import kotlinx.android.synthetic.main.user_profil_header.*
-import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
 
 class FollowActivity : BaseActivity(), GoNext,Viewer {
 
@@ -74,7 +72,21 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 .build()
                 .inject(this)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+
+        if (intent.getIntExtra(TYPE,-1) == PROFIL_T){
+            supportActionBar!!.setTitle(intent.extras.getString("username"))
+
+        }
+        else if (intent.getIntExtra(TYPE,-1) == FOLLOWING){
+
+            supportActionBar!!.setTitle(resources.getString(R.string.following))
+
+        }else if (intent.getIntExtra(TYPE,-1) == FOLLOWERS){
+            supportActionBar!!.setTitle(resources.getString(R.string.followers))
+
+        }
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
 
@@ -91,6 +103,8 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
         if (manager == null) manager = supportFragmentManager
 
         transaction = manager!!.beginTransaction()
+
+
         if (int == LIST_T){
 
             val searchFragment = SearchFragment.newInstance()

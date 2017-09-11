@@ -44,7 +44,11 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
     var list: RecyclerView     by Delegates.notNull<RecyclerView>()
     var errorImg               by Delegates.notNull<AppCompatImageView>()
     var errorText              by Delegates.notNull<TextView>()
-    var header                 by Delegates.notNull<TextView>()
+    var emptyContainer         by Delegates.notNull<LinearLayout>()
+    var searchLay              by Delegates.notNull<LinearLayout>()
+
+
+    var headerText = ""
     //var progressLay    by Delegates.notNull<ViewGroup>()
     val pattern = "^[\\p{L}0-9]*$"
 
@@ -79,7 +83,6 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         connectActivity = connActivity
 
     }
-    var emptyContainer by Delegates.notNull<LinearLayout>()
     override fun getFragmentView(): Int {
         return R.layout.fragment_search
     }
@@ -92,14 +95,16 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
         errorImg       = rootView.findViewById(R.id.errorImg)       as AppCompatImageView
         errorText      = rootView.findViewById(R.id.errorText)      as TextView
-        header         = rootView.findViewById(R.id.header)         as TextView
+
 //        searchResult   = rootView.findViewById(R.id.searchResult)   as TextView
         list           = rootView.findViewById(R.id.list)           as RecyclerView
         search         = rootView.findViewById(R.id.search)         as EditText
+        searchLay      = rootView.findViewById(R.id.searchLay)         as LinearLayout
 
+        searchLay.visibility = View.GONE
         list.layoutManager = LinearLayoutManager(activity)
         list.setHasFixedSize(true)
-        header.text = arguments.getString("header","")
+        headerText = arguments.getString("header","")
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
         val drawableCompat = VectorDrawableCompat.create(activity.resources,R.drawable.search,search.context.theme)
         search.setCompoundDrawablesWithIntrinsicBounds(drawableCompat,null,null,null)
@@ -256,7 +261,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         super.onResume()
         log.d("Onresume $OZGARGAN_USERNI_IDSI $QAYSI_HOLATGA_OZGARDI")
 
-         if (adapter != null && header.text.toString() == Base.get.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
+         if (adapter != null && headerText == Base.get.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
         if (OZGARGAN_USERNI_IDSI != -1 && adapter != null){
             when(QAYSI_HOLATGA_OZGARDI){
                 ProfileFragment.REQUEST ->{

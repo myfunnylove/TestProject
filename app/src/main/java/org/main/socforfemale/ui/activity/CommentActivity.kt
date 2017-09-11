@@ -3,6 +3,7 @@ package org.main.socforfemale.ui.activity
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -27,6 +28,7 @@ import org.main.socforfemale.model.Comments
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.log
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
@@ -76,7 +78,15 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.headerComment))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
         Const.TAG = "CommentActivity"
         drawingStartLocation = intent.getIntExtra(LOCATION,0)
 
@@ -310,7 +320,8 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     override fun onBackPressed() {
         start = 0
         end = 10
-
+        commentText.hideKeyboard()
+        Functions.hideSoftKeyboard(this)
         commentAdapter = null
         contentRoot.animate()
                 .translationY(Functions.getScreenHeight(this).toFloat())
@@ -353,6 +364,17 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     }
 
     override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun View.hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 }
 

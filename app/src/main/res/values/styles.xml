@@ -39,8 +39,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:typeface">serif</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="actionBarTheme">@style/DrawerArrowStyle</item>
+
         <item name="android:actionMenuTextColor">@color/asbestos</item>
         <item name="colorControlHighlight">@color/asbestos</item>
         <item name="actionMenuTextColor">@color/asbestos</item>
@@ -55,18 +54,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/clouds</item>
         <item name="android:typeface">serif</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="actionBarTheme">@style/DrawerArrowStyle</item>
+
         <item name="android:actionMenuTextColor">@color/sky</item>
 
-    </style>
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">@color/sky</item>
-        <item name="android:textColorPrimary">@color/sky</item>
-        <item name="android:textColorSecondary">@color/sky</item>
-        <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/sky</item>
-        <item name="android:textColor">@color/sky</item>
     </style>
 
 
@@ -166,4 +156,31 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+
+
+    <!--TOOLBAR-->
+    <style name="ToolbarTextAppearance">
+        <item name="android:textColor">@color/headerTextColor</item>
+        <!--<item name="android:shadowDx">1</item>-->
+        <!--<item name="android:shadowDy">1</item>-->
+        <!--<item name="android:shadowRadius">2</item>-->
+        <!--<item name="android:shadowColor">@color/headerTextColor</item>-->
+    </style>
+
+    <style name="ToolbarTextAppearance.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Subtitle">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DrawerArrowStyle" >
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
+        <item name="navigationIcon">@drawable/arrow_left</item>
+    </style>
+
 </resources>

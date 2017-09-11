@@ -80,7 +80,7 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
        val features = Gson().fromJson(result,Features::class.java)
 
         adapter =  PostAudioGridAdapter(this,features.audios,this,model)
-       emptyContainer.visibility = View.GONE
+        emptyContainer.visibility = View.GONE
         setController()
         controller!!.show()
         list.adapter = adapter
@@ -100,7 +100,15 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
                 .presenterModule(PresenterModule())
                 .build()
                 .inject(this)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.my_playlist))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
         Const.TAG = "PlaylistActivity"
 
 
