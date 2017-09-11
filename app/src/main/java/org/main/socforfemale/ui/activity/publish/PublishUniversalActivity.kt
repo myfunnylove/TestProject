@@ -431,6 +431,9 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
 
     override fun onBackPressed() {
+        imageAdapter == null
+        songAdapter == null
+        loading = false
         commentText.hideKeyboard()
         Functions.hideSoftKeyboard(this)
         super.onBackPressed()
