@@ -1,15 +1,10 @@
 package org.main.socforfemale.ui.activity
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.*
 import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.view.ViewTreeObserver
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_comment.*
@@ -30,7 +25,7 @@ import org.main.socforfemale.model.Features
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.ErrorConnection
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.rest.Http

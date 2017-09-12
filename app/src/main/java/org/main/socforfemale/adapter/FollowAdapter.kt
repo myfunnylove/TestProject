@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
+import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -79,7 +80,7 @@ class FollowAdapter(context:Context,
 
         Picasso.with(ctx)
                 .load(photo)
-                .error(R.drawable.account)
+                .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account_select,null))
                 .into(h.img)
 
        if (which == 0 && user.userId != Base.get.prefs.getUser().userId){

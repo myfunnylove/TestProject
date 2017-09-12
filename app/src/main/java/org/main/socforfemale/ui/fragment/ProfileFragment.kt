@@ -27,6 +27,7 @@ import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
+import org.main.socforfemale.pattern.builder.EmptyContainer
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
@@ -38,9 +39,6 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
 
-    var emptyContainer         by Delegates.notNull<LinearLayout>()
-    var errorImg               by Delegates.notNull<AppCompatImageView>()
-    var errorText              by Delegates.notNull<TextView>()
     var postView               by Delegates.notNull<RecyclerView>()
     var progressLay            by Delegates.notNull<ViewGroup>()
     var swipeRefreshLayout     by Delegates.notNull<SwipeRefreshLayout>()
@@ -57,6 +55,8 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
     var scroll:EndlessRecyclerViewScrollListener? = null
+    lateinit var emptyContainer: EmptyContainer
+
     companion object {
         var TAG:String   = "ProfileFragment"
         val FOLLOW       = Base.get.resources.getString(R.string.follow)
@@ -66,6 +66,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
         val CLOSE        = Base.get.resources.getString(R.string.closedAccaunt)
         val F_TYPE       = "fType"
         var FOLLOW_TYPE  = ""
+        val EMPTY_POSTS  = Base.get.resources.getString(R.string.error_empty_feed)
 
         fun newInstance(data:Bundle): ProfileFragment {
 
@@ -99,9 +100,7 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
         log.d("init profil fragment")
 
-        emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
-        errorImg       = rootView.findViewById(R.id.errorImg)       as AppCompatImageView
-        errorText      = rootView.findViewById(R.id.errorText)      as TextView
+
         progressLay    = rootView.findViewById(R.id.progressLay)    as ViewGroup
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout)    as SwipeRefreshLayout
 
@@ -109,7 +108,12 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
 
+        emptyContainer = EmptyContainer.Builder()
+                                        .setIcon(R.drawable.account_light)
+                                        .setText(R.string.error_empty_universal)
+                                        .initLayoutForFragment(rootView)
 
+                                        .build()
 
         manager = LinearLayoutManager(Base.get)
         postView.layoutManager = manager
@@ -229,9 +233,9 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
     fun failedGetList(error:String = ""){
-        log.e("ProfileFragment => method => failedGetList errorCode => $error")
+        log.e("ProfileFragment => method => failedGetList errorCode => $error ${oldpostList!!}" )
         progressLay.visibility = View.GONE
-        emptyContainer.visibility = View.GONE
+        emptyContainer.hide()
         postView.visibility       = View.VISIBLE
 
 
@@ -253,6 +257,27 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
 
 
             }
+
+        } else if(error == EMPTY_POSTS){
+
+            swipeRefreshLayout.isEnabled = false
+            var photo ="http"
+            try{
+                photo = if (arguments!!.getString("photo").startsWith("http")) arguments.getString("photo") else Http.BASE_URL+arguments.getString("photo")
+            }catch (e:Exception){
+
+            }
+            FOLLOWERS = oldpostList!!.followers
+            FOLLOWING = oldpostList!!.following
+            val postUser = PostUser(arguments.getString("userId"),arguments.getString("username"),photo)
+
+
+            val emptyPost = ArrayList<Posts>()
+            emptyPost.add(Posts("-1",Quote("","",""),ArrayList<Audio>(),ArrayList<Image>(),"0","0","","", postUser))
+            val postList = PostList(emptyPost, FOLLOWERS, FOLLOWING,oldpostList!!.postlarSoni)
+            postAdapter = FeedAdapter(activity,postList,this,this,true, FOLLOW_TYPE,postUser)
+            postView.visibility = View.VISIBLE
+            postView.adapter = postAdapter
 
         }else { /* REQUEST OR CLOSE RPOFILE*/
 
@@ -304,7 +329,8 @@ class ProfileFragment : BaseFragment() , View.OnClickListener,AdapterClicker,Mus
             swipeRefreshLayout.isRefreshing = false
 
             scroll!!.resetState()
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
+
             progressLay.visibility    = View.GONE
 
             postView.visibility = View.VISIBLE

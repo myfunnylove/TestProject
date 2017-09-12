@@ -24,8 +24,8 @@ import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.ErrorConnection
-import org.main.socforfemale.pattern.SessionOut
+import org.main.socforfemale.pattern.builder.ErrorConnection
+import org.main.socforfemale.pattern.builder.SessionOut
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.fragment.YesNoFragment

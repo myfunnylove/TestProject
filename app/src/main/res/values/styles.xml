@@ -183,4 +183,13 @@
         <item name="navigationIcon">@drawable/arrow_left</item>
     </style>
 
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/material_grey_300</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="CircularProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/headerTextColor</item>
+    </style>
 </resources>

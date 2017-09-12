@@ -41,34 +41,8 @@
 
 
 
-        <LinearLayout
-            android:id="@+id/emptyContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical"
+        <include layout="@layout/res_empty_container"/>
 
-            >
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/appCompatImageView"
-                android:layout_width="105dp"
-                android:layout_height="105dp"
-                android:layout_margin="6dp"
-                android:background="@drawable/res_circle_bg"
-                android:padding="16dp"
-                app:srcCompat="@drawable/playlist_play_white" />
-
-            <TextView
-                android:id="@+id/searchResult"
-                style="@style/HeaderText"
-                android:layout_width="match_parent"
-
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/silver" />
-        </LinearLayout>
 
 
         <LinearLayout
@@ -91,6 +65,8 @@
             >
 
             <ProgressBar
+                android:theme="@style/CircularProgress"
+                style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="16dp" />

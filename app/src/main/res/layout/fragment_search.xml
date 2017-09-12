@@ -34,36 +34,8 @@
         android:layout_below="@+id/searchLay"
         />
 
-    <LinearLayout
-        android:id="@+id/emptyContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
+    <include layout="@layout/res_empty_container"/>
 
-        >
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/errorImg"
-            android:layout_width="105dp"
-            android:layout_height="105dp"
-            android:layout_margin="6dp"
-            android:background="@drawable/res_circle_bg"
-            android:padding="16dp"
-            app:srcCompat="@drawable/search_light" />
-
-        <TextView
-
-            android:id="@+id/errorText"
-            style="@style/HeaderText"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/silver"
-            />
-    </LinearLayout>
 
 
 

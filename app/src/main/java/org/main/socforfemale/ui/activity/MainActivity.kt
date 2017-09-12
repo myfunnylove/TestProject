@@ -30,7 +30,7 @@ import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.ErrorConnection
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
@@ -57,7 +57,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
 
     @Inject
-    lateinit var errorConn:ErrorConnection
+    lateinit var errorConn: ErrorConnection
 
     var user = Base.get.prefs.getUser()
 

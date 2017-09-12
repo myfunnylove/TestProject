@@ -3,8 +3,7 @@ package org.main.socforfemale.di.modules
 import android.support.v7.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
-import org.main.socforfemale.pattern.ErrorConnection
-import javax.inject.Singleton
+import org.main.socforfemale.pattern.builder.ErrorConnection
 
 @Module
 class ErrorConnModule(private val activity: AppCompatActivity,private val isShow :Boolean) {
@@ -21,7 +20,7 @@ class ErrorConnModule(private val activity: AppCompatActivity,private val isShow
 
 
     @Provides
-    fun errorconn(activity: AppCompatActivity,show:Boolean):ErrorConnection{
+    fun errorconn(activity: AppCompatActivity,show:Boolean): ErrorConnection {
 
         return ErrorConnection.Builder(activity)
                               .init()

@@ -2,6 +2,9 @@ package org.main.socforfemale.rest
 
 import android.util.Base64
 import org.json.JSONObject
+import org.main.socforfemale.pattern.cryptDecorator.AppCrypt
+import org.main.socforfemale.pattern.cryptDecorator.B64DecoderCryptDecorator
+import org.main.socforfemale.pattern.cryptDecorator.B64EncoderCryptDecorator
 
 
 /**
@@ -11,7 +14,7 @@ object Http {
 
     val PRMS             = "prms"
     val CMD              = "cmd"
-    public val BASE_URL         = "http://api.maydon.net/new/"
+    public val BASE_URL  = "http://api.maydon.net/new/"
     /*
     *
     *
@@ -24,6 +27,7 @@ object Http {
     *
     * */
     object CMDS{
+
         val TELEFONNI_JONATISH         = "1"
         val SMSNI_JONATISH             = "2"
         val LOGIN_YOQLIGINI_TEKSHIRISH = "3"
@@ -50,6 +54,7 @@ object Http {
         val CLOSE_PROFIL               = "31"
         val ADD_SONG_TO_PLAYLIST       = "32"
         val GET_PLAYLIST               = "33"
+
     }
 
 
@@ -60,14 +65,14 @@ object Http {
 
         val jsObj = JSONObject()
 
-        jsObj.put(PRMS, String(Base64.encode(obj.toString().toByteArray(),0)).replace("\n",""))
+        jsObj.put(PRMS, B64EncoderCryptDecorator(AppCrypt(obj.toString())).getPrm())
         jsObj.put(CMD,cmd)
         jsObj.put("lang","ru")
 
         return jsObj.toString()
     }
 
-    fun getResponseData(prm:String):String = String(Base64.decode(prm,0))
+    fun getResponseData(prm:String):String = B64DecoderCryptDecorator(AppCrypt(prm)).getPrm()
 
 
 

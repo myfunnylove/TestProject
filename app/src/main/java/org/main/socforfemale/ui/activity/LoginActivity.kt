@@ -19,8 +19,8 @@ import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.ErrorConnection
-import org.main.socforfemale.pattern.signInUp.*
+import org.main.socforfemale.pattern.builder.ErrorConnection
+import org.main.socforfemale.pattern.signInUpBridge.*
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log

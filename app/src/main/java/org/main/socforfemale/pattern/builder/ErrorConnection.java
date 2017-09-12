@@ -1,4 +1,4 @@
-package org.main.socforfemale.pattern;
+package org.main.socforfemale.pattern.builder;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.bumptech.glide.util.Util;
 
 import org.main.socforfemale.R;
 import org.main.socforfemale.base.Base;

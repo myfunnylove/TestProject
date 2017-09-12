@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/emptyContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/emptyIcon"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/res_circle_bg"
+        android:padding="16dp"
+        app:srcCompat="@drawable/feed_light" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        style="@style/HeaderText"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Interesting feed will be here"
+        android:textColor="@color/silver" />
+
+</LinearLayout>

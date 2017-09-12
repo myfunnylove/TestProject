@@ -7,6 +7,7 @@ import butterknife.bindView
 import org.main.socforfemale.R
 import org.main.socforfemale.base.BaseFragment
 import org.main.socforfemale.connectors.GoNext
+import org.main.socforfemale.pattern.builder.EmptyContainer
 import kotlin.properties.Delegates
 
 /**
@@ -27,18 +28,25 @@ class NotificationFragment(): BaseFragment(){
         }
     }
     var connectActivity:GoNext?     = null
+    lateinit var emptyContainer:EmptyContainer
+
     fun connect(connActivity: GoNext){
         connectActivity   = connActivity
 
     }
-    var emptyContainer by Delegates.notNull<LinearLayout>()
     override fun getFragmentView(): Int {
         return R.layout.fragment_notification
 
     }
 
     override fun init() {
-        emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
+        emptyContainer = EmptyContainer.Builder()
+                .setIcon(R.drawable.notification_light)
+                .setText(R.string.error_empty_universal)
+                .initLayoutForFragment(rootView)
 
+                .build()
+
+        emptyContainer.show()
     }
 }

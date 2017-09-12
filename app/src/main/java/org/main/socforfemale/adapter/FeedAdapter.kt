@@ -36,10 +36,7 @@ import org.main.socforfemale.ui.activity.CommentActivity
 import org.main.socforfemale.ui.activity.MainActivity
 import org.main.socforfemale.ui.activity.PlaylistActivity
 import org.main.socforfemale.ui.activity.SettingsActivity
-import org.main.socforfemale.ui.fragment.FFFFragment
-import org.main.socforfemale.ui.fragment.FeedFragment
-import org.main.socforfemale.ui.fragment.MyProfileFragment
-import org.main.socforfemale.ui.fragment.ProfileFragment
+import org.main.socforfemale.ui.fragment.*
 import org.ocpsoft.prettytime.PrettyTime
 import retrofit2.Call
 import retrofit2.Callback
@@ -252,7 +249,7 @@ class FeedAdapter(context: Activity,
 
             Picasso.with(ctx)
                     .load(photo)
-                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account_select,null))
                     .into(h.avatar)
 
             if (h.quote.tag == null || h.quote.tag != post.id) {
@@ -517,6 +514,7 @@ class FeedAdapter(context: Activity,
 
                                             feeds.postlarSoni = "${feeds.postlarSoni.toInt()-1}"
                                             feeds.posts.removeAt(i)
+                                            MainActivity.FEED_STATUS = MainActivity.NEED_UPDATE
                                             notifyItemRemoved(i)
                                             notifyItemRangeChanged(i, feeds.posts.size)
                                             notifyItemChanged(0)
@@ -585,7 +583,7 @@ class FeedAdapter(context: Activity,
             }
             Picasso.with(ctx)
                     .load(postUser!!.photo)
-                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account_select,null))
 
                     .into(h.avatar)
 //            Glide.with(ctx)
@@ -642,9 +640,24 @@ class FeedAdapter(context: Activity,
                                         log.d("follow on response $response")
                                         log.d("follow on response ${response.body()!!.res}")
                                         log.d("follow on response ${Http.getResponseData(response.body()!!.prms)}")
+                                        log.d("follow on response ${postUser}")
                                         FFFFragment.OZGARGAN_USERNI_IDSI = postUser.userId.toInt()
                                         if ((h.follow.tag == ProfileFragment.UN_FOLLOW || h.follow.tag == ProfileFragment.REQUEST) && response.body()!!.res == "0"){
                                             h.follow.tag     = ProfileFragment.FOLLOW
+
+                                            /*
+                                            *
+                                            * 12.09.2017
+                                            * Searchdan user follow statusini o'zgartirish
+                                            *
+                                            *
+                                            * */
+
+                                            if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                SearchFragment.choosedUserId = postUser.userId
+                                                SearchFragment.chooseUserFstatus = ProfileFragment.FOLLOW
+                                            }
+
                                             h.follow.text    = ProfileFragment.FOLLOW
                                             FFFFragment.QAYSI_HOLATGA_OZGARDI = ProfileFragment.FOLLOW
                                             ProfileFragment.FOLLOW_TYPE       = ProfileFragment.FOLLOW
@@ -663,6 +676,10 @@ class FeedAdapter(context: Activity,
                                                     h.follow.text = ProfileFragment.REQUEST
                                                     FFFFragment.QAYSI_HOLATGA_OZGARDI = ProfileFragment.REQUEST
                                                     ProfileFragment.FOLLOW_TYPE       = ProfileFragment.REQUEST
+                                                    if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                        SearchFragment.choosedUserId = postUser.userId
+                                                        SearchFragment.chooseUserFstatus = ProfileFragment.REQUEST
+                                                    }
 
 
                                                 }else if (req.optString("request") == "0"){
@@ -674,7 +691,10 @@ class FeedAdapter(context: Activity,
                                                     ProfileFragment.FOLLOW_TYPE       = ProfileFragment.UN_FOLLOW
 
 
-
+                                                    if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                        SearchFragment.choosedUserId = postUser.userId
+                                                        SearchFragment.chooseUserFstatus = ProfileFragment.UN_FOLLOW
+                                                    }
                                                 }
                                                 MainActivity.MY_POSTS_STATUS = MainActivity.FIRST_TIME
 

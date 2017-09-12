@@ -15,7 +15,7 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.model.UserInfo
-import org.main.socforfemale.pattern.SessionOut
+import org.main.socforfemale.pattern.builder.SessionOut
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
 import retrofit2.HttpException

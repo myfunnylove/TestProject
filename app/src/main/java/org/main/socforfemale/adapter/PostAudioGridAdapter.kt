@@ -62,6 +62,7 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
 
         val pauseIcon = VectorDrawableCompat.create(Base.get.resources,PAUSE,h.play.context.theme)
 
+        log.d("after notify ${audio.isFeatured}")
 
        if (audio.isFeatured != -1){
            h.addFavorite.setImageDrawable(featureMap.get(audio.isFeatured))
@@ -104,12 +105,16 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
                                        h.addFavorite.setImageDrawable(featureMap.get(1))
                                        h.addFavorite.tag = featureMap.get(1)
                                        audios.get(h.adapterPosition).isFeatured = 1
+                                       log.d("to notify ${h.adapterPosition}")
+
                                        notifyItemChanged(h.adapterPosition)
+                                       notifyDataSetChanged()
                                    }else{
                                        h.addFavorite.setImageDrawable(featureMap.get(0))
                                        h.addFavorite.tag = featureMap.get(0)
                                        audios.get(h.adapterPosition).isFeatured = 0
                                        notifyItemChanged(h.adapterPosition)
+                                       notifyDataSetChanged()
 
                                    }
 

@@ -40,22 +40,23 @@ object Const {
     val TO_FOLLOWERS = -2;
     val TO_FOLLOWING = -3;
 
-    val PICK_IMAGE      = 4
-    val PICK_AUDIO      = 5
-    val PICK_QUOTE      = 6
-    val PICK_UNIVERSAL  = 7
-    val CHANGE_AVATAR   = 8
-    val PICK_CROP_IMAGE = 9
-    val SEARCH_USER     = 10
-    val FOLLOW          = 11
-    val PROFIL_PAGE     = 12
-    val REFRESH_FEED    = 13
-    val REFRESH_PROFILE_FEED    = 14
-    val GO_COMMENT_ACTIVITY = 15
-    val SESSION_OUT         = 16
-    val PROFIL_PAGE_OTHER   = 17
-    val GO_PLAY_LIST        = 18
-    val TO_FAIL = -1;
+    val PICK_IMAGE                   = 4
+    val PICK_AUDIO                   = 5
+    val PICK_QUOTE                   = 6
+    val PICK_UNIVERSAL               = 7
+    val CHANGE_AVATAR                = 8
+    val PICK_CROP_IMAGE              = 9
+    val SEARCH_USER                  = 10
+    val FOLLOW                       = 11
+    val PROFIL_PAGE                  = 12
+    val REFRESH_FEED                 = 13
+    val REFRESH_PROFILE_FEED         = 14
+    val GO_COMMENT_ACTIVITY          = 15
+    val SESSION_OUT                  = 16
+    val PROFIL_PAGE_OTHER            = 17
+    val GO_PLAY_LIST                 = 18
+    val FROM_SEARCH_TO_PROFIL        = 19
+    val TO_FAIL                      = -1;
 
 
 

@@ -22,7 +22,7 @@ import org.main.socforfemale.model.PostList
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.ErrorConnection
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.Prefs
@@ -330,13 +330,14 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                                                 if (postList.posts.size > 0){
                                                     profilFragment!!.swapPosts(postList)
                                                 }else{
-                                                    profilFragment!!.failedGetList()
+                                                    profilFragment!!.initFF(postList)
+                                                    profilFragment!!.failedGetList(ProfileFragment.EMPTY_POSTS)
 
                                                 }
 
                                             }catch (e:Exception){
 
-                                                profilFragment!!.failedGetList()
+                                                profilFragment!!.failedGetList(e.toString())
 
                                             }
                                         }

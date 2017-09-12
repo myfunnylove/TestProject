@@ -14,35 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/clouds">
 
-        <LinearLayout
-            android:id="@+id/emptyContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/errorImg"
-                android:layout_width="105dp"
-                android:layout_height="105dp"
-                android:layout_margin="6dp"
-                android:background="@drawable/res_circle_bg"
-                android:padding="16dp"
-                app:srcCompat="@drawable/feed_light" />
-
-            <TextView
-                android:id="@+id/errorText"
-                style="@style/HeaderText"
-                android:layout_width="match_parent"
-
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Interesting feed will be here"
-                android:textColor="@color/silver" />
-
-        </LinearLayout>
+        <include layout="@layout/res_empty_container"/>
 
         <!--<org.main.socforfemale.resources.customviews.refreshlayout.RecyclerRefreshLayout-->
         <!--android:id="@+id/refresh_layout"-->
@@ -65,6 +37,8 @@
             >
 
             <ProgressBar
+                android:theme="@style/CircularProgress"
+                style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="16dp" />
