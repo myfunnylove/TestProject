@@ -92,7 +92,7 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
 
                     username = login.text.toString()
-                    password = pass.text.toString()
+                    password =                                                                                                                                                                                                                                                                                    pass.text.toString()
 
                     if (!isLoginFree){
 

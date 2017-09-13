@@ -109,10 +109,6 @@ class SignActivity : BaseActivity() ,Viewer{
                 .inject(this)
         signMode = PHONE_MODE
 
-        val phoneDis = VectorDrawableCompat.create(resources,R.drawable.phone,selectPhone.context.theme)
-        val phoneEnb = VectorDrawableCompat.create(resources,R.drawable.phone_select,selectPhone.context.theme)
-        val mailDis  = VectorDrawableCompat.create(resources,R.drawable.email,selectPhone.context.theme)
-        val mailEnb  = VectorDrawableCompat.create(resources,R.drawable.email_select,selectPhone.context.theme)
         phone.addTextChangedListener(JavaCodes.EditTelephoneCodeWatcher)
         phone.setKeyListener(Functions.EditCardKey)
 
@@ -120,18 +116,16 @@ class SignActivity : BaseActivity() ,Viewer{
             signMode = PHONE_MODE
 
 
-            selectPhone.setImageDrawable(phoneEnb)
-            selectMail.setImageDrawable(mailDis)
-
+            selectPhone.setBackgroundDrawable(resources.getDrawable(R.drawable.sign_edittext_block_top_enabled))
+            selectMail.setBackgroundDrawable(resources.getDrawable(R.drawable.sign_edittext_block_top_disabled))
             phone.visibility = View.VISIBLE
             mail.visibility = View.GONE
         }
 
         selectMail.setOnClickListener {
             signMode = MAIL_MODE
-
-            selectMail.setImageDrawable(mailEnb)
-            selectPhone.setImageDrawable(phoneDis)
+            selectPhone.setBackgroundDrawable(resources.getDrawable(R.drawable.sign_edittext_block_top_disabled))
+            selectMail.setBackgroundDrawable(resources.getDrawable(R.drawable.sign_edittext_block_top_enabled))
 
             phone.visibility = View.GONE
             mail.visibility = View.VISIBLE
@@ -157,7 +151,7 @@ class SignActivity : BaseActivity() ,Viewer{
                             phoneStr = "998${Functions.clearEdit(phone)}"
                             sendObject.put("phone",phoneStr)
 
-                            presenter!!.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
+                            presenter.requestAndResponse(sendObject, Http.CMDS.TELEFONNI_JONATISH)
                         }
 
 

@@ -29,6 +29,7 @@ import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.CircleImageView
 import org.main.socforfemale.resources.customviews.CustomManager
+import org.main.socforfemale.resources.customviews.SGTextView
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
@@ -600,6 +601,7 @@ class FeedAdapter(context: Activity,
 ////                    })
 
             h.username.text  = postUser.username
+            h.username.setStyle("#00000000", "#90CAF9", "#EA80FC", 3f, 35)
             h.posts.text  =    feeds.postlarSoni
 //            h.firstName.text =
 
@@ -794,7 +796,7 @@ class FeedAdapter(context: Activity,
             val   avatar       = rootView.findViewById(R.id.avatar)       as AppCompatImageView
             val   followers    = rootView.findViewById(R.id.followers)    as TextView
             val   following    = rootView.findViewById(R.id.following)    as TextView
-            val   username     = rootView.findViewById(R.id.username)     as TextView
+            val   username     = rootView.findViewById(R.id.username)     as SGTextView
             val   firstName    = rootView.findViewById(R.id.firstName)    as TextView
             val   posts        = rootView.findViewById(R.id.posts)        as TextView
             val   follow       = rootView.findViewById(R.id.follow)       as Button

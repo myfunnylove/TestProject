@@ -5,7 +5,7 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/asbestos</item>
+        <item name="colorPrimaryDark">@color/headerTextColor</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -20,7 +20,7 @@
     </style>
     <style name="PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
         <item name="android:popupBackground">@android:color/white</item>
-      <item name="android:textColorPrimary">@color/normalTextColor</item>
+       <item name="android:textColorPrimary">@color/normalTextColor</item>
         <item name="android:textColorHighlight">@color/normalTextColor</item>
         <item name="android:actionMenuTextColor">@color/normalTextColor</item>
     </style>
@@ -33,7 +33,7 @@
     <style name="AppTheme.LOGIN" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/asbestos</item>
-        <item name="colorPrimaryDark">@color/asbestos</item>
+        <item name="colorPrimaryDark">@color/headerTextColor</item>
         <item name="colorAccent">@color/asbestos</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -48,7 +48,7 @@
     <style name="AppTheme.SETTINGS" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/headerTextColor</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -116,7 +116,7 @@
     <!--TextStyle-->
 
     <style name="LogoText">
-        <item name="android:textColor">@color/headerTextColor</item>
+        <item name="android:textColor">@color/white</item>
         <item name="fontPath">font/KaushanScript-Regular.otf</item>
         <item name="android:textSize">24sp</item>
     </style>
@@ -190,6 +190,6 @@
     </style>
 
     <style name="CircularProgress" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/headerTextColor</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>
