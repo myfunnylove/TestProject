@@ -339,7 +339,6 @@ class FeedAdapter(context: Activity,
                     val manager = CustomManager(ctx, span)
                     val adapter = PostAudioGridAdapter(ctx, post.audios,object :MusicPlayerListener{
                         override fun playClick(listSong: ArrayList<Audio>, position: Int) {
-
                             try{
                                 player.playClick(listSong,position)
 
@@ -352,13 +351,14 @@ class FeedAdapter(context: Activity,
                                     FeedFragment.cachedSongAdapters!!.get(i)!!.notifyDataSetChanged()
 
                                 }else{
-
+                                    log.d("position $i => ${FeedFragment.cachedSongAdapters!!.get(i)} $position")
                                     FeedFragment.cachedSongAdapters!!.get(i)!!.notifyDataSetChanged()
 
                                 }
 
                                 FeedFragment.playedSongPosition = i
                             }catch (e :Exception){
+                                log.d("null 1 ${e}")
 
                             }
 

@@ -131,7 +131,7 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
         h.play.setOnClickListener {
 
 
-
+            log.d("audio clicked => ${audios.get(i)}")
             player.playClick(audios,i)
         }
 

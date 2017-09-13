@@ -171,6 +171,7 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
                     if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         pause()
                     }else{
+                        if(controller == null) setController()
                         controller!!.setLoading(true);
 
                         musicSrv!!.setList(listSong)
@@ -190,6 +191,8 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
                     if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         start()
                     }else{
+
+                        if(controller == null) setController()
                         controller!!.setLoading(true);
 
                         musicSrv!!.setList(listSong)
@@ -276,7 +279,8 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
-        controller!!.setLoading(false);
+        if(controller != null) controller!!.setLoading(false);
+
 
         adapter.notifyDataSetChanged()
 

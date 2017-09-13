@@ -330,7 +330,6 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                                                 if (postList.posts.size > 0){
                                                     profilFragment!!.swapPosts(postList)
                                                 }else{
-                                                    profilFragment!!.initFF(postList)
                                                     profilFragment!!.failedGetList(ProfileFragment.EMPTY_POSTS)
 
                                                 }

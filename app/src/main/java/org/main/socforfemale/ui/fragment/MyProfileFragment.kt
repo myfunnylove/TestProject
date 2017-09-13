@@ -476,6 +476,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        if(controller != null) controller!!.setLoading(false);
 
     }
 
@@ -590,6 +591,14 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
                 if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                     pause()
                 }else{
+                    if(controller == null)
+                    {
+                        setController()
+                        controller!!.show()
+                    }
+                    controller!!.setLoading(true);
+
+
                     musicSrv!!.setList(listSong)
                     musicSrv!!.setSong(position)
                     musicSrv!!.playSong()
@@ -601,6 +610,13 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 //                        controller!!.show()
                 }
             }else{
+                if(controller == null)
+                {
+                    setController()
+                    controller!!.show()
+                }
+                controller!!.setLoading(true);
+
                 musicSrv!!.setList(listSong)
                 musicSrv!!.setSong(position)
                 musicSrv!!.playSong()

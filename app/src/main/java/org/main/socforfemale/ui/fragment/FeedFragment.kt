@@ -375,6 +375,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        if(controller != null) controller!!.setLoading(false);
 
     }
 
@@ -495,6 +496,11 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
                     if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         pause()
                     }else{
+                        if(controller == null)
+                        {
+                            setController()
+                            controller!!.show()
+                        }
                         controller!!.setLoading(true);
 
                         musicSrv!!.setList(listSong)
@@ -505,6 +511,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
                             setController()
                             playbackPaused = false
                         }
+
 //                        controller!!.show()
                     }
                 }else{
@@ -512,6 +519,11 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
                     if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         start()
                     }else{
+                        if(controller == null)
+                        {
+                            setController()
+                            controller!!.show()
+                        }
                         controller!!.setLoading(true);
 
                         musicSrv!!.setList(listSong)
@@ -522,6 +534,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
                             setController()
                             playbackPaused = false
                         }
+
                     }
 //                    controller!!.show()
 
