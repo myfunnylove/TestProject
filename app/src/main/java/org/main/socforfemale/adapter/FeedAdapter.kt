@@ -29,15 +29,15 @@ import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.resources.customviews.CircleImageView
 import org.main.socforfemale.resources.customviews.CustomManager
+import org.main.socforfemale.resources.customviews.SGTextView
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.CommentActivity
 import org.main.socforfemale.ui.activity.MainActivity
-import org.main.socforfemale.ui.fragment.FFFFragment
-import org.main.socforfemale.ui.fragment.FeedFragment
-import org.main.socforfemale.ui.fragment.MyProfileFragment
-import org.main.socforfemale.ui.fragment.ProfileFragment
+import org.main.socforfemale.ui.activity.PlaylistActivity
+import org.main.socforfemale.ui.activity.SettingsActivity
+import org.main.socforfemale.ui.fragment.*
 import org.ocpsoft.prettytime.PrettyTime
 import retrofit2.Call
 import retrofit2.Callback
@@ -92,7 +92,10 @@ class FeedAdapter(context: Activity,
         val ACCELERATE_INTERPOLATOR    = AccelerateInterpolator()
         val OVERSHOOT_INTERPOLATOR     = OvershootInterpolator(4f)
         val likeAnimations             = HashMap<RecyclerView.ViewHolder,AnimatorSet>()
-
+        var avatarUpdated              = -1
+        var SHOW_PROGRESS              = 1
+        var HIDE_PROGRESS              = 0
+        var CANCEL_PROGRESS            = 2
     }
 
 
@@ -247,7 +250,7 @@ class FeedAdapter(context: Activity,
 
             Picasso.with(ctx)
                     .load(photo)
-                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account_select,null))
                     .into(h.avatar)
 
             if (h.quote.tag == null || h.quote.tag != post.id) {
@@ -336,7 +339,6 @@ class FeedAdapter(context: Activity,
                     val manager = CustomManager(ctx, span)
                     val adapter = PostAudioGridAdapter(ctx, post.audios,object :MusicPlayerListener{
                         override fun playClick(listSong: ArrayList<Audio>, position: Int) {
-
                             try{
                                 player.playClick(listSong,position)
 
@@ -349,19 +351,20 @@ class FeedAdapter(context: Activity,
                                     FeedFragment.cachedSongAdapters!!.get(i)!!.notifyDataSetChanged()
 
                                 }else{
-
+                                    log.d("position $i => ${FeedFragment.cachedSongAdapters!!.get(i)} $position")
                                     FeedFragment.cachedSongAdapters!!.get(i)!!.notifyDataSetChanged()
 
                                 }
 
                                 FeedFragment.playedSongPosition = i
                             }catch (e :Exception){
+                                log.d("null 1 ${e}")
 
                             }
 
                         }
 
-                    })
+                    },model)
                      FeedFragment.cachedSongAdapters!!.put(i,adapter)
 //            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
 //                override fun getSpanSize(i: Int): Int {
@@ -512,6 +515,7 @@ class FeedAdapter(context: Activity,
 
                                             feeds.postlarSoni = "${feeds.postlarSoni.toInt()-1}"
                                             feeds.posts.removeAt(i)
+                                            MainActivity.FEED_STATUS = MainActivity.NEED_UPDATE
                                             notifyItemRemoved(i)
                                             notifyItemRangeChanged(i, feeds.posts.size)
                                             notifyItemChanged(0)
@@ -552,9 +556,35 @@ class FeedAdapter(context: Activity,
             h.follow.tag  = FOLLOW_TYPE
             h.follow.text = FOLLOW_TYPE
 
+            if(FOLLOW_TYPE == ProfileFragment.SETTINGS){
+                h.playlist.visibility = View.VISIBLE
+                h.playlist.setOnClickListener{
+
+                    val goCommentActivity = Intent(ctx, PlaylistActivity::class.java)
+
+                    val startingLocation = IntArray(2)
+//                    h.playlist.getLocationOnScreen(startingLocation)
+//                    goCommentActivity.putExtra(CommentActivity.LOCATION, startingLocation[1])
+                    if (activity != null){
+                        activity!!.startActivityForResult(goCommentActivity,Const.GO_PLAY_LIST)
+                        activity!!.overridePendingTransition(0, 0)
+                    }else{
+                        ctx.startActivity(goCommentActivity)
+                    }
+                }
+            }else{
+                h.playlist.visibility = View.GONE
+
+            }
+            if (avatarUpdated == SHOW_PROGRESS){
+                h.progress.visibility = View.VISIBLE
+
+            }else{
+                h.progress.visibility = View.GONE
+            }
             Picasso.with(ctx)
                     .load(postUser!!.photo)
-                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account,null))
+                    .error(VectorDrawableCompat.create(Base.get.resources, R.drawable.account_select,null))
 
                     .into(h.avatar)
 //            Glide.with(ctx)
@@ -571,6 +601,7 @@ class FeedAdapter(context: Activity,
 ////                    })
 
             h.username.text  = postUser.username
+            h.username.setStyle("#00000000", "#90CAF9", "#EA80FC", 3f, 35)
             h.posts.text  =    feeds.postlarSoni
 //            h.firstName.text =
 
@@ -611,9 +642,24 @@ class FeedAdapter(context: Activity,
                                         log.d("follow on response $response")
                                         log.d("follow on response ${response.body()!!.res}")
                                         log.d("follow on response ${Http.getResponseData(response.body()!!.prms)}")
+                                        log.d("follow on response ${postUser}")
                                         FFFFragment.OZGARGAN_USERNI_IDSI = postUser.userId.toInt()
                                         if ((h.follow.tag == ProfileFragment.UN_FOLLOW || h.follow.tag == ProfileFragment.REQUEST) && response.body()!!.res == "0"){
                                             h.follow.tag     = ProfileFragment.FOLLOW
+
+                                            /*
+                                            *
+                                            * 12.09.2017
+                                            * Searchdan user follow statusini o'zgartirish
+                                            *
+                                            *
+                                            * */
+
+                                            if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                SearchFragment.choosedUserId = postUser.userId
+                                                SearchFragment.chooseUserFstatus = ProfileFragment.FOLLOW
+                                            }
+
                                             h.follow.text    = ProfileFragment.FOLLOW
                                             FFFFragment.QAYSI_HOLATGA_OZGARDI = ProfileFragment.FOLLOW
                                             ProfileFragment.FOLLOW_TYPE       = ProfileFragment.FOLLOW
@@ -632,6 +678,10 @@ class FeedAdapter(context: Activity,
                                                     h.follow.text = ProfileFragment.REQUEST
                                                     FFFFragment.QAYSI_HOLATGA_OZGARDI = ProfileFragment.REQUEST
                                                     ProfileFragment.FOLLOW_TYPE       = ProfileFragment.REQUEST
+                                                    if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                        SearchFragment.choosedUserId = postUser.userId
+                                                        SearchFragment.chooseUserFstatus = ProfileFragment.REQUEST
+                                                    }
 
 
                                                 }else if (req.optString("request") == "0"){
@@ -643,7 +693,10 @@ class FeedAdapter(context: Activity,
                                                     ProfileFragment.FOLLOW_TYPE       = ProfileFragment.UN_FOLLOW
 
 
-
+                                                    if(SearchFragment.choosedUserId.isNotEmpty()){
+                                                        SearchFragment.choosedUserId = postUser.userId
+                                                        SearchFragment.chooseUserFstatus = ProfileFragment.UN_FOLLOW
+                                                    }
                                                 }
                                                 MainActivity.MY_POSTS_STATUS = MainActivity.FIRST_TIME
 
@@ -667,7 +720,7 @@ class FeedAdapter(context: Activity,
                             })
                 }else{
 
-                    val goSettingActivity = Intent(ctx,SettingsActivity::class.java)
+                    val goSettingActivity = Intent(ctx, SettingsActivity::class.java)
 
                     ctx.startActivityForResult(goSettingActivity,Const.FROM_MAIN_ACTIVITY)
                 }
@@ -675,6 +728,11 @@ class FeedAdapter(context: Activity,
         }
     }
 
+
+    fun swapPhotoProgress(status:Int){
+        avatarUpdated = status
+        notifyItemChanged(0)
+    }
 
     fun swapFirstItem(postList: PostList){
         disableAnimation = false
@@ -731,29 +789,20 @@ class FeedAdapter(context: Activity,
     class ProfileHeaderHolder(rootView:View) : RecyclerView.ViewHolder(rootView){
 
 
-        var followersLay    by Delegates.notNull<LinearLayout>()
-        var followingLay    by Delegates.notNull<LinearLayout>()
-        var avatar          by Delegates.notNull<AppCompatImageView>()
-        var followers       by Delegates.notNull<TextView>()
-        var following       by Delegates.notNull<TextView>()
-        var username        by Delegates.notNull<TextView>()
-        var firstName       by Delegates.notNull<TextView>()
-        var posts           by Delegates.notNull<TextView>()
-        var follow          by Delegates.notNull<Button>()
+
+            val   followersLay = rootView.findViewById(R.id.followersLay) as LinearLayout
+            val   followingLay = rootView.findViewById(R.id.followingLay) as LinearLayout
+            val   playlist     = rootView.findViewById(R.id.playlist)   as AppCompatImageView
+            val   avatar       = rootView.findViewById(R.id.avatar)       as AppCompatImageView
+            val   followers    = rootView.findViewById(R.id.followers)    as TextView
+            val   following    = rootView.findViewById(R.id.following)    as TextView
+            val   username     = rootView.findViewById(R.id.username)     as SGTextView
+            val   firstName    = rootView.findViewById(R.id.firstName)    as TextView
+            val   posts        = rootView.findViewById(R.id.posts)        as TextView
+            val   follow       = rootView.findViewById(R.id.follow)       as Button
+        val   progress     = rootView.findViewById(R.id.progressUpdateAvatar)       as ProgressBar
 
 
-        init {
-            followersLay = rootView.findViewById(R.id.followersLay) as LinearLayout
-            followingLay = rootView.findViewById(R.id.followingLay) as LinearLayout
-            avatar       = rootView.findViewById(R.id.avatar)       as AppCompatImageView
-            followers    = rootView.findViewById(R.id.followers)    as TextView
-            following    = rootView.findViewById(R.id.following)    as TextView
-            username     = rootView.findViewById(R.id.username)     as TextView
-            firstName    = rootView.findViewById(R.id.firstName)    as TextView
-            posts        = rootView.findViewById(R.id.posts)        as TextView
-            follow       = rootView.findViewById(R.id.follow)       as Button
-
-        }
     }
 
     fun updateProfilPhoto(path: String) {
@@ -764,6 +813,7 @@ class FeedAdapter(context: Activity,
 
 
         }
+        avatarUpdated = HIDE_PROGRESS
         notifyDataSetChanged()
 
 

@@ -29,7 +29,8 @@ data class Audio(@SerializedName("audio_id")     var audioId:String,
                  @SerializedName("middle_path")  var middlePath:String,
                  @SerializedName("bitrate")      var bitrate:String,
                  @SerializedName("title")        var title:String,
-                 @SerializedName("artist")       var artist:String)
+                 @SerializedName("artist")       var artist:String,
+                 @SerializedName("isFeatured")   var isFeatured:Int = -1)
 
 data class Image(@SerializedName("photo_id")     var photoId:String,
                  @SerializedName("post_id")      var postId: String,

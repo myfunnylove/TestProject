@@ -1,4 +1,4 @@
-package org.main.socforfemale.pattern.signInUp
+package org.main.socforfemale.pattern.signInUpBridge
 
 import android.app.Activity
 import android.content.Intent

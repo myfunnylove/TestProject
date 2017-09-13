@@ -6,13 +6,14 @@ import android.os.Handler
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_follow.*
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.Followers
@@ -21,18 +22,17 @@ import org.main.socforfemale.model.PostList
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
+import org.main.socforfemale.resources.utils.Functions
+import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
+import org.main.socforfemale.rest.Http
 import org.main.socforfemale.ui.fragment.FFFFragment
 import org.main.socforfemale.ui.fragment.MyProfileFragment
 import org.main.socforfemale.ui.fragment.ProfileFragment
 import org.main.socforfemale.ui.fragment.SearchFragment
 import javax.inject.Inject
-
-import kotlinx.android.synthetic.main.activity_follow.*
-import kotlinx.android.synthetic.main.user_profil_header.*
-import org.main.socforfemale.resources.utils.Functions
-import org.main.socforfemale.resources.utils.Prefs
 
 class FollowActivity : BaseActivity(), GoNext,Viewer {
 
@@ -56,6 +56,10 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
 
     @Inject
     lateinit var presenter:Presenter
+
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     var user                            = Base.get.prefs.getUser()
     var profilFragment:ProfileFragment? = null
     var followersFragment:FFFFragment?  = null
@@ -71,10 +75,25 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,true))
                 .build()
                 .inject(this)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+
+        if (intent.getIntExtra(TYPE,-1) == PROFIL_T){
+            supportActionBar!!.setTitle(intent.extras.getString("username"))
+
+        }
+        else if (intent.getIntExtra(TYPE,-1) == FOLLOWING){
+
+            supportActionBar!!.setTitle(resources.getString(R.string.following))
+
+        }else if (intent.getIntExtra(TYPE,-1) == FOLLOWERS){
+            supportActionBar!!.setTitle(resources.getString(R.string.followers))
+
+        }
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
 
@@ -91,6 +110,8 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
         if (manager == null) manager = supportFragmentManager
 
         transaction = manager!!.beginTransaction()
+
+
         if (int == LIST_T){
 
             val searchFragment = SearchFragment.newInstance()
@@ -127,15 +148,30 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             }
 
 
-            val reqObj = JSONObject()
-            reqObj.put("user_id",user.userId)
-            reqObj.put("session",user.session)
-            reqObj.put("user",   userID)
-            reqObj.put("start",  start)
-            reqObj.put("end",    end)
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    log.d("connected")
+                    val reqObj = JSONObject()
+                    reqObj.put("user_id",user.userId)
+                    reqObj.put("session",user.session)
+                    reqObj.put("user",   userID)
+                    reqObj.put("start",  start)
+                    reqObj.put("end",    end)
 
 
-            presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                }
+
+                override fun disconnected() {
+                    log.d("disconnected")
+
+
+                }
+
+            })
+
+
+
 
         }else {
 
@@ -157,17 +193,29 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                 transaction!!.add(R.id.container, followersFragment, FFFFragment.TAG)
 
 //            transaction!!.add(R.id.container,followersFragment,FFFFragment.TAG)
-            val obj = JSONObject()
-            obj.put("user_id",user.userId)
-            obj.put("user",   userID)
-            obj.put("session",user.session)
-            obj.put("start",  MainActivity.startFollowing)
-            obj.put("end",    MainActivity.endFollowing)
+
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    log.d("connected")
+                    val obj = JSONObject()
+                    obj.put("user_id",user.userId)
+                    obj.put("user",   userID)
+                    obj.put("session",user.session)
+                    obj.put("start",  MainActivity.startFollowing)
+                    obj.put("end",    MainActivity.endFollowing)
 
 
-            /*GET FOLLOWERS OR FOLLOWING*/
-            presenter.requestAndResponse(obj, if (int == FOLLOWING) Http.CMDS.GET_FOLLOWING else Http.CMDS.GET_FOLLOWERS)
+                    /*GET FOLLOWERS OR FOLLOWING*/
+                    presenter.requestAndResponse(obj, if (int == FOLLOWING) Http.CMDS.GET_FOLLOWING else Http.CMDS.GET_FOLLOWERS)
+                }
 
+                override fun disconnected() {
+                    log.d("disconnected")
+
+
+                }
+
+            })
         }
             transaction!!.addToBackStack("")
             transaction!!.commit()
@@ -176,14 +224,28 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
     override fun goNext(to: Int, data: String) {
         when(to){
             Const.REFRESH_PROFILE_FEED ->{
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("user",    userID)
-                reqObj.put("start",   data)
-                reqObj.put("end",     end)
 
-                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        log.d("connected")
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("user",    userID)
+                        reqObj.put("start",   data)
+                        reqObj.put("end",     end)
+
+                        presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    }
+
+                    override fun disconnected() {
+                        log.d("disconnected")
+
+
+                    }
+
+                })
             }
 
             Const.TO_FOLLOWERS -> showFragment(FOLLOWERS)
@@ -191,14 +253,27 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
             Const.TO_FOLLOWING -> showFragment(FOLLOWING)
 
             Const.PROFIL_PAGE -> {
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("user",    userID)
-                reqObj.put("start",   data)
-                reqObj.put("end",     end)
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        log.d("connected")
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("user",    userID)
+                        reqObj.put("start",   data)
+                        reqObj.put("end",     end)
 
-                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                        presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                    }
+
+                    override fun disconnected() {
+                        log.d("disconnected")
+
+
+                    }
+
+                })
+
 
              }
 
@@ -255,13 +330,13 @@ class FollowActivity : BaseActivity(), GoNext,Viewer {
                                                 if (postList.posts.size > 0){
                                                     profilFragment!!.swapPosts(postList)
                                                 }else{
-                                                    profilFragment!!.failedGetList()
+                                                    profilFragment!!.failedGetList(ProfileFragment.EMPTY_POSTS)
 
                                                 }
 
                                             }catch (e:Exception){
 
-                                                profilFragment!!.failedGetList()
+                                                profilFragment!!.failedGetList(e.toString())
 
                                             }
                                         }

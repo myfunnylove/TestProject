@@ -17,17 +17,20 @@ import me.iwf.photopicker.PhotoPicker
 import okhttp3.MultipartBody
 import org.json.JSONObject
 import org.main.socforfemale.R
+import org.main.socforfemale.adapter.FeedAdapter
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
@@ -42,7 +45,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity(), GoNext, Viewer {
 
 
-    var profilFragment:       MyProfileFragment?      = null
+    var profilFragment:       MyProfileFragment?    = null
     var searchFragment:       SearchFragment?       = null
     var notificationFragment: NotificationFragment? = null
     var feedFragment:         FeedFragment?         = null
@@ -51,6 +54,11 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     var lastFragment:         Int                   = 0
     @Inject
     lateinit var presenter:Presenter
+
+
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     var user = Base.get.prefs.getUser()
 
     /*
@@ -101,6 +109,7 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,true))
                 .build()
                 .inject(this)
         setPager()
@@ -111,16 +120,32 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
         initFragments()
         setFragment(Const.FEED_FR)
 
-        val reqObj = JSONObject()
-        reqObj.put("user_id", user.userId)
-        reqObj.put("session", user.session)
-        reqObj.put("start",   startFeed)
-        reqObj.put("end",     endFeed)
 
 //        if (feedFragment != null && feedFragment!!.feedAdapter == null){
 //            feedFragment!!.showProgress()
 //        }
-        presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
+
+        errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+            override fun connected() {
+                log.d("connected")
+                val reqObj = JSONObject()
+                reqObj.put("user_id" , user.userId)
+                reqObj.put("session", user.session)
+                reqObj.put("start",   startFeed)
+                reqObj.put("end",     endFeed)
+
+                presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
+
+            }
+
+            override fun disconnected() {
+                log.d("disconnected")
+
+
+            }
+
+        })
+
 
         tablayout.addTab(tablayout.newTab().setIcon(R.drawable.feed_select))
         tablayout.addTab(tablayout.newTab().setIcon(R.drawable.search))
@@ -152,15 +177,26 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                     Const.PROFIL_FR -> {
                         log.i("profil page select $MY_POSTS_STATUS")
                         if (MY_POSTS_STATUS != AFTER_UPDATE) {
-                            val reqObj = JSONObject()
-                            reqObj.put("user_id", user.userId)
-                            reqObj.put("session", user.session)
-                            reqObj.put("user",    user.userId)
-                            reqObj.put("start",   start)
-                            reqObj.put("end",     end)
 
 
-                            presenter!!.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+                            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                                override fun connected() {
+                                    val reqObj = JSONObject()
+                                    reqObj.put("user_id", user.userId)
+                                    reqObj.put("session", user.session)
+                                    reqObj.put("user",    user.userId)
+                                    reqObj.put("start",   start)
+                                    reqObj.put("end",     end)
+                                    presenter!!.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+
+                                }
+
+                                override fun disconnected() {
+
+                                }
+
+                            })
 
                         }
                         lastFragment = p0.position
@@ -174,15 +210,30 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
                         log.i("feed page select")
 
                         if (FEED_STATUS != AFTER_UPDATE){
-                            val reqObj = JSONObject()
-                            reqObj.put("user_id", user.userId)
-                            reqObj.put("session", user.session)
-                            reqObj.put("start",   startFeed)
-                            reqObj.put("end",     endFeed)
 
-                            log.d("feed page select $reqObj")
 
-                            presenter!!.requestAndResponse(reqObj, Http.CMDS.FEED)
+
+                            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                                override fun connected() {
+                                    val reqObj = JSONObject()
+                                    reqObj.put("user_id", user.userId)
+                                    reqObj.put("session", user.session)
+                                    reqObj.put("start",   startFeed)
+                                    reqObj.put("end",     endFeed)
+
+                                    log.d("feed page select $reqObj")
+                                    presenter!!.requestAndResponse(reqObj, Http.CMDS.FEED)
+
+
+
+                                }
+
+                                override fun disconnected() {
+
+                                }
+
+                            })
+
                         }
                         lastFragment = p0.position
 
@@ -263,19 +314,46 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             Const.SEARCH_USER -> {
 
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("start",   startSearch)
-                reqObj.put("end",     endSearch)
-                reqObj.put("user",    data)
 
-                presenter!!.requestAndResponse(reqObj, Http.CMDS.SEARCH_USER)
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("start",   startSearch)
+                        reqObj.put("end",     endSearch)
+                        reqObj.put("user",    data)
+                        presenter!!.requestAndResponse(reqObj, Http.CMDS.SEARCH_USER)
+
+
+
+
+                    }
+
+                    override fun disconnected() {
+                        hideSoftKeyboard()
+                    }
+
+                })
             }
 
             Const.FOLLOW -> {
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        presenter!!.requestAndResponse(JSONObject(data), Http.CMDS.FOLLOW)
 
-                presenter!!.requestAndResponse(JSONObject(data), Http.CMDS.FOLLOW)
+
+
+
+
+                    }
+
+                    override fun disconnected() {
+
+                    }
+
+                })
 
             }
 
@@ -284,27 +362,56 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
             }
             Const.REFRESH_FEED -> {
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("start",   startFeed)
-                reqObj.put("end",     endFeed)
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
 
 
-                presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("start",   startFeed)
+                        reqObj.put("end",     endFeed)
 
+
+                        presenter.requestAndResponse(reqObj, Http.CMDS.FEED)
+
+
+                    }
+
+                    override fun disconnected() {
+
+                    }
+
+                })
             }
 
             Const.REFRESH_PROFILE_FEED ->{
-                val reqObj = JSONObject()
-                reqObj.put("user_id", user.userId)
-                reqObj.put("session", user.session)
-                reqObj.put("user",    user.userId)
-                reqObj.put("start",   start)
-                reqObj.put("end",     end)
 
-                MY_POSTS_STATUS = FIRST_TIME
-                presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        val reqObj = JSONObject()
+                        reqObj.put("user_id", user.userId)
+                        reqObj.put("session", user.session)
+                        reqObj.put("user",    user.userId)
+                        reqObj.put("start",   start)
+                        reqObj.put("end",     end)
+
+                        MY_POSTS_STATUS = FIRST_TIME
+                        presenter.requestAndResponse(reqObj, Http.CMDS.MY_POSTS)
+
+
+
+
+
+                    }
+
+                    override fun disconnected() {
+
+                    }
+
+                })
             }
             else -> {
 
@@ -486,6 +593,12 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
 
                 log.d("lastfragment -> ${lastFragment}")
                 log.d("profil followers count -> ${FFFFragment.followersCount}")
+                if (requestCode == Const.CHANGE_AVATAR){
+                    try{
+                        profilFragment!!.createProgressForAvatar(FeedAdapter.CANCEL_PROGRESS);
+                    }catch (e:Exception){}
+                }
+
                 if  (lastFragment == 4 && FFFFragment.followersCount != -1 && profilFragment != null ){
                     MyProfileFragment.FOLLOWING = FFFFragment.followersCount.toString()
                     profilFragment!!.postAdapter!!.updateFollowersCount()
@@ -571,7 +684,9 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
             Http.CMDS.CHANGE_AVATAR -> {
 
                 user = Base.get.prefs.getUser()
-
+                try{
+                profilFragment!!.createProgressForAvatar(FeedAdapter.HIDE_PROGRESS);
+                }catch (e:Exception){}
                 profilFragment!!.setAvatar(user.profilPhoto)
             }
 
@@ -624,7 +739,9 @@ class MainActivity : BaseActivity(), GoNext, Viewer {
     }
 
     private fun String.uploadAvatar() {
-
+        try{
+            profilFragment!!.createProgressForAvatar(FeedAdapter.SHOW_PROGRESS);
+        }catch (e:Exception){}
         val reqFile = ProgressRequestBody(File(this), object : ProgressRequestBody.UploadCallbacks {
 
             override fun onProgressUpdate(percentage: Int) {

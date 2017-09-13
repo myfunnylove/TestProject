@@ -3,6 +3,7 @@ package org.main.socforfemale.ui.activity
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -27,14 +28,17 @@ import org.main.socforfemale.model.Comments
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.resources.utils.log
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.mvp.Model
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
@@ -50,6 +54,10 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     var postId    = -1
     @Inject
     lateinit var presenter:Presenter
+
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     val user      = Base.get.prefs.getUser()
     var scroll: EndlessRecyclerViewScrollListener? = null
 
@@ -74,9 +82,19 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,true))
+
                 .build()
                 .inject(this)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.headerComment))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
         Const.TAG = "CommentActivity"
         drawingStartLocation = intent.getIntExtra(LOCATION,0)
 
@@ -95,16 +113,26 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
         if (postId != -1){
 
-            /*send data for get comment list*/
-            val obj = JSONObject()
-            obj.put("post_id",   postId)
-            obj.put("start",   0)
-            obj.put("end",    end)
-            obj.put("order",  "ASC")
 
-            obj.put("user_id",user.userId)
-            obj.put("session",user.session)
-            presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    /*send data for get comment list*/
+                    val obj = JSONObject()
+                    obj.put("post_id",   postId)
+                    obj.put("start",   0)
+                    obj.put("end",    end)
+                    obj.put("order",  "ASC")
+
+                    obj.put("user_id",user.userId)
+                    obj.put("session",user.session)
+                    presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+                }
+
+                override fun disconnected() {
+                }
+
+            })
         }else{
 
             list.visibility           = View.GONE
@@ -113,7 +141,17 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
         sendComment.setOnClickListener {
             if(commentText.text.isNotEmpty()){
-                send()
+
+                errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                    override fun connected() {
+                        send()
+
+                    }
+
+                    override fun disconnected() {
+                    }
+
+                })
             }else{
                 Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
             }
@@ -136,7 +174,18 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     if(commentText.text.isNotEmpty()){
-                        send()
+
+                        errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                            override fun connected() {
+                                send()
+
+                            }
+
+                            override fun disconnected() {
+                            }
+
+                        })
+
                     }else{
                         Toast.makeText(Base.get,Base.get.resources.getString(R.string.error_empty_comment),Toast.LENGTH_SHORT).show()
                     }
@@ -188,16 +237,26 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
 
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 if (commentAdapter != null && commentAdapter!!.comments.size >= 10){
-                    log.d("on more $page $totalItemsCount ")
-                    val obj = JSONObject()
-                    obj.put("post_id",postId)
-                    start = commentAdapter!!.comments.size
-                    obj.put("start",  start)
-                    obj.put("end",    end)
-                    obj.put("order",  "ASC")
-                    obj.put("user_id",user.userId)
-                    obj.put("session",user.session)
-                    presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+
+
+                    errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                        override fun connected() {
+                            log.d("on more $page $totalItemsCount ")
+                            val obj = JSONObject()
+                            obj.put("post_id",postId)
+                            start = commentAdapter!!.comments.size
+                            obj.put("start",  start)
+                            obj.put("end",    end)
+                            obj.put("order",  "ASC")
+                            obj.put("user_id",user.userId)
+                            obj.put("session",user.session)
+                            presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+                        }
+
+                        override fun disconnected() {
+                        }
+
+                    })
                 }
             }
 
@@ -234,18 +293,26 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
         log.d("cmd: $from -> result $result")
 
         if (from == Http.CMDS.WRITE_COMMENT){
-            commentText.setText("")
 
-            val obj = JSONObject()
-            obj.put("post_id",postId)
-            start = commentAdapter!!.comments.size
-            obj.put("start",  start)
-            obj.put("end",    end)
-            obj.put("order",  "ASC")
-            obj.put("user_id",user.userId)
-            obj.put("session",user.session)
-            presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    commentText.setText("")
 
+                    val obj = JSONObject()
+                    obj.put("post_id",postId)
+                    start = commentAdapter!!.comments.size
+                    obj.put("start",  start)
+                    obj.put("end",    end)
+                    obj.put("order",  "ASC")
+                    obj.put("user_id",user.userId)
+                    obj.put("session",user.session)
+                    presenter.requestAndResponse(obj, Http.CMDS.GET_COMMENT_LIST)
+                }
+
+                override fun disconnected() {
+                }
+
+            })
         }else if (from == Http.CMDS.GET_COMMENT_LIST){
             val comment = Gson().fromJson<Comments>(result,Comments::class.java)
             list.visibility           = View.VISIBLE
@@ -310,7 +377,8 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     override fun onBackPressed() {
         start = 0
         end = 10
-
+        commentText.hideKeyboard()
+        Functions.hideSoftKeyboard(this)
         commentAdapter = null
         contentRoot.animate()
                 .translationY(Functions.getScreenHeight(this).toFloat())
@@ -353,6 +421,17 @@ class CommentActivity :BaseActivity(),Viewer,AdapterClicker{
     }
 
     override fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun View.hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 }
 

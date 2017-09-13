@@ -28,12 +28,14 @@ import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
@@ -52,6 +54,8 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
     @Inject
     lateinit var presenter:Presenter
 
+    @Inject
+    lateinit var errorConn: ErrorConnection
     var visibly       = false
     var TEXT_SIZE     = 16f
     var TEXT_COLOR_ID = 2;
@@ -64,9 +68,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
         var loading:Boolean = false
 
     }
-    override fun getLayout(): Int {
-       return R.layout.activity_publish_universal
-    }
+    override fun getLayout(): Int = R.layout.activity_publish_universal
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_publish,menu)
@@ -80,31 +82,43 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
 
                 if (!commentText.text.isEmpty()){
+                    errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                        override fun connected() {
+                            val logicImage = if (imageAdapter == null) true else if (imageAdapter!!.list.size == loadedImagesIds.size) true else false
+                            val logicAudio = if (songAdapter == null)  true else if (songAdapter!!.list.size == loadedAudioIds.size)   true else false
 
-                    val logicImage = if (imageAdapter == null) true else if (imageAdapter!!.list.size == loadedImagesIds.size) true else false
-                    val logicAudio = if (songAdapter == null)  true else if (songAdapter!!.list.size == loadedAudioIds.size)   true else false
+                            if (loading == false && logicImage && logicAudio){
 
-                    if (loading == false && logicImage && logicAudio){
-
-                        val quote = Quote(commentText.text.toString(), // quote text
-                                "${TEXT_SIZE}", // quote text size
-                                "${TEXT_COLOR_ID}") //quote text color
+                                val quote = Quote(commentText.text.toString(), // quote text
+                                        "${TEXT_SIZE}", // quote text size
+                                        "${TEXT_COLOR_ID}") //quote text color
 
 
-                        val post = Post(user!!.userId,
-                                user!!.session,
-                                loadedAudioIds,
-                                loadedImagesIds,
-                                quote)
-                        val reqJSOBJ = Gson().toJson(post)
+                                val post = Post(user!!.userId,
+                                        user!!.session,
+                                        loadedAudioIds,
+                                        loadedImagesIds,
+                                        quote)
+                                val reqJSOBJ = Gson().toJson(post)
 
-                        log.d("send data $reqJSOBJ")
+                                log.d("send data $reqJSOBJ")
 
-                        presenter!!.requestAndResponse(JSONObject(reqJSOBJ), Http.CMDS.POST)
-                    }else {
-                        Toast.makeText(this,getString(R.string.error_not_loaded_yet),Toast.LENGTH_SHORT).show()
+                                presenter.requestAndResponse(JSONObject(reqJSOBJ), Http.CMDS.POST)
+                            }else {
+                                Toast.makeText(this@PublishUniversalActivity,getString(R.string.error_not_loaded_yet),Toast.LENGTH_SHORT).show()
 
-                    }
+                            }
+
+                        }
+
+                        override fun disconnected() {
+                            log.d("disconnected")
+
+                            Toast.makeText(this@PublishUniversalActivity,resources.getString(R.string.internet_conn_error),Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
+
                 }
                 else{
                     Toast.makeText(this,getString(R.string.error_empty_quote),Toast.LENGTH_SHORT).show()
@@ -117,10 +131,15 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
     }
     override fun initView() {
         Const.TAG = "PublishUniversalActivity"
-
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.post))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+
+            onBackPressed()
+
+        }
         toolbar.setNavigationOnClickListener {
 
             onBackPressed()
@@ -131,6 +150,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,false))
                 .build()
                 .inject(this)
 
@@ -165,6 +185,7 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
                 PhotoPicker.builder()
                            .setPhotoCount(1)
+
                            .start(this,Const.PICK_IMAGE)
 
         }
@@ -228,9 +249,6 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
         commentText.setTextSize(Const.TEXT_SIZE_DEFAULT)
 
-        textSize1.setTextSize(Const.TEXT_SIZE_DEFAULT)
-        textSize2.setTextSize(Const.TEXT_SIZE_17)
-        textSize3.setTextSize(Const.TEXT_SIZE_22)
 
         textSize1.setOnClickListener {
             TEXT_SIZE            = Const.TEXT_SIZE_DEFAULT
@@ -413,6 +431,9 @@ class PublishUniversalActivity :BaseActivity(),Viewer {
 
 
     override fun onBackPressed() {
+        imageAdapter == null
+        songAdapter == null
+        loading = false
         commentText.hideKeyboard()
         Functions.hideSoftKeyboard(this)
         super.onBackPressed()

@@ -59,4 +59,10 @@
     <string name="unknown">UNKNOWN</string>
     <string name="sms_code">SMS CODE</string>
     <string name="added_to_favorite">ADDED TO FAVORITE LIST</string>
+    <string name="my_playlist">MY PLAYLIST</string>
+    <string name="post">CREATE POST</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="Sign_up">SIGN UP</string>
+    <string name="error_empty_feed">YOU DON\'T HAVE ANY POSTS</string>
+    <string name="error_empty_universal">EMPTY</string>
 </resources>

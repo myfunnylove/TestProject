@@ -17,11 +17,13 @@ import org.json.JSONObject
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
+import org.main.socforfemale.pattern.builder.ErrorConnection
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
 import javax.inject.Inject
@@ -33,6 +35,9 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
     @Inject
     lateinit var presenter:Presenter
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     var isLoginFree = false
     var username = ""
     var password = ""
@@ -59,6 +64,7 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,false))
                 .build()
                 .inject(this)
 
@@ -80,61 +86,80 @@ class LoginAndPassActivity :BaseActivity(),Viewer{
 
         signUp.setOnClickListener {
 
-            username = login.text.toString()
-            password = pass.text.toString()
+            errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+                override fun connected() {
+                    log.d("connected")
 
-            if (!isLoginFree){
 
-                Toast.makeText(this,resources.getString(R.string.username_not_free_error),Toast.LENGTH_SHORT).show();
-            }else if(username.length < 6){
+                    username = login.text.toString()
+                    password =                                                                                                                                                                                                                                                                                    pass.text.toString()
 
-                Toast.makeText(this,resources.getString(R.string.username_field_less_5),Toast.LENGTH_SHORT).show();
+                    if (!isLoginFree){
 
-                login.setLoginResult(R.drawable.close_circle_outline)
+                        Toast.makeText(this@LoginAndPassActivity,resources.getString(R.string.username_not_free_error),Toast.LENGTH_SHORT).show();
+                    }else if(username.length < 6){
 
-            }else if(password.length < 5){
+                        Toast.makeText(this@LoginAndPassActivity,resources.getString(R.string.username_field_less_5),Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this,resources.getString(R.string.password_field_less_5),Toast.LENGTH_SHORT).show();
+                        login.setLoginResult(R.drawable.close_circle_outline)
 
-            }else{
-                val obj = JSONObject()
-                obj.put("username",username)
-                obj.put("password",password)
-                obj.put("photo",Base.get.prefs.getUser().profilPhoto)
-                when(from){
-                    -1 -> {
-                        obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
+                    }else if(password.length < 5){
 
-                        presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
-                    }
+                        Toast.makeText(this@LoginAndPassActivity,resources.getString(R.string.password_field_less_5),Toast.LENGTH_SHORT).show();
 
-                    LoginActivity.FACEBOOK -> {
-                        val user = Base.get.prefs.getUser()
+                    }else{
+                        val obj = JSONObject()
+                        obj.put("username",username)
+                        obj.put("password",password)
+                        obj.put("photo",Base.get.prefs.getUser().profilPhoto)
+                        when(from){
+                            -1 -> {
+                                obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
 
-                        obj.put("id",user.userId)
-                        obj.put("token",user.token)
-                        obj.put("type","fb")
-                        presenter!!.requestAndResponse(obj, Http.CMDS.FB_VA_VK_ORQALI_REG)
+                                presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
+                            }
 
-                    }
+                            LoginActivity.FACEBOOK -> {
+                                val user = Base.get.prefs.getUser()
 
-                    LoginActivity.VKONTAKTE -> {
-                        val user = Base.get.prefs.getUser()
+                                obj.put("id",user.userId)
+                                obj.put("token",user.token)
+                                obj.put("type","fb")
+                                presenter!!.requestAndResponse(obj, Http.CMDS.FB_VA_VK_ORQALI_REG)
 
-                        obj.put("id",user.userId)
-                        obj.put("token",user.token)
-                        obj.put("type","vk")
-                        presenter!!.requestAndResponse(obj, Http.CMDS.FB_VA_VK_ORQALI_REG)
-                    }
+                            }
 
-                    else -> {
-                        obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
+                            LoginActivity.VKONTAKTE -> {
+                                val user = Base.get.prefs.getUser()
 
-                        presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
+                                obj.put("id",user.userId)
+                                obj.put("token",user.token)
+                                obj.put("type","vk")
+                                presenter!!.requestAndResponse(obj, Http.CMDS.FB_VA_VK_ORQALI_REG)
+                            }
+
+                            else -> {
+                                obj.put("phone", Base.get.prefs.getUser().phoneOrMail)
+
+                                presenter!!.requestAndResponse(obj, Http.CMDS.ROYXATDAN_OTISH)
+                            }
+
+                        }
                     }
 
                 }
-            }
+
+                override fun disconnected() {
+                    log.d("disconnected")
+
+                    Toast.makeText(this@LoginAndPassActivity,resources.getString(R.string.internet_conn_error),Toast.LENGTH_SHORT).show()
+
+                }
+
+            })
+
+
+
         }
     }
 

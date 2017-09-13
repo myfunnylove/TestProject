@@ -1,10 +1,13 @@
 package org.main.socforfemale.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -14,13 +17,16 @@ import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
 import org.main.socforfemale.rest.Http
 import org.main.socforfemale.di.DaggerMVPComponent
+import org.main.socforfemale.di.modules.ErrorConnModule
 import org.main.socforfemale.di.modules.MVPModule
 import org.main.socforfemale.di.modules.PresenterModule
 import org.main.socforfemale.model.ResponseData
 import org.main.socforfemale.mvp.Model
 import org.main.socforfemale.mvp.Presenter
 import org.main.socforfemale.mvp.Viewer
-import org.main.socforfemale.pattern.SessionOut
+import org.main.socforfemale.pattern.builder.ErrorConnection
+import org.main.socforfemale.pattern.builder.SessionOut
+import org.main.socforfemale.resources.utils.Functions
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.fragment.YesNoFragment
 import retrofit2.Call
@@ -43,18 +49,30 @@ class SettingsActivity : BaseActivity() ,Viewer{
     @Inject
     lateinit var presenter:Presenter
 
+    @Inject
+    lateinit var errorConn: ErrorConnection
+
     override fun getLayout(): Int = R.layout.activity_settings
 
     override fun initView() {
-
+        log.d("close profile: ${userData.close}")
         DaggerMVPComponent
                 .builder()
                 .mVPModule(MVPModule(this, Model(),this))
                 .presenterModule(PresenterModule())
+                .errorConnModule(ErrorConnModule(this,false))
                 .build()
                 .inject(this)
 
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setTitle(resources.getString(R.string.settings))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
 
+            onBackPressed()
+
+        }
 
         name.setText("${userData.first_name} ${userData.last_name}")
         username.setText(userData.userName)
@@ -71,14 +89,7 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
         name.addTextChangedListener(textwatcher)
         username.addTextChangedListener(textwatcher)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
 
-            onBackPressed()
-
-        }
         switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
         switchCloseAccount.setOnCheckedChangeListener{view, isChecked ->
             val js = JSONObject()
@@ -97,14 +108,14 @@ class SettingsActivity : BaseActivity() ,Viewer{
                                    Base.get.prefs.setUser(user)
                                }
                            }catch (e:Exception){
-                                switchCloseAccount.isChecked = Base.get.prefs.getUser().close
-                            }
+                                switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
+                           }
 
                         }
 
                         override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                             log.d("close profil fail $t")
-                            switchCloseAccount.isChecked = Base.get.prefs.getUser().close
+                            switchCloseAccount.isChecked = if(Base.get.prefs.getUser().close == 1 ) true else false
 
                         }
 
@@ -162,15 +173,31 @@ class SettingsActivity : BaseActivity() ,Viewer{
 
 
       if (changed || map.get(gender.selectedItemPosition) != Base.get.prefs.getUser().gender){
-          val jsObject = JSONObject()
-          jsObject.put("user_id",Base.get.prefs.getUser().userId)
-          jsObject.put("session",Base.get.prefs.getUser().session)
-          jsObject.put("username",username.text.toString())
-          jsObject.put("name",name.text.toString())
-          jsObject.put("gender", map.get(gender.selectedItemPosition))
+
+          errorConn.checkNetworkConnection(object : ErrorConnection.ErrorListener{
+              override fun connected() {
+                  log.d("connected")
+
+                  val jsObject = JSONObject()
+                  jsObject.put("user_id",Base.get.prefs.getUser().userId)
+                  jsObject.put("session",Base.get.prefs.getUser().session)
+                  jsObject.put("username",username.text.toString())
+                  jsObject.put("name",name.text.toString())
+                  jsObject.put("gender", map.get(gender.selectedItemPosition))
 
 
-          presenter.requestAndResponse(jsObject, Http.CMDS.CHANGE_USER_SETTINGS)
+                  presenter.requestAndResponse(jsObject, Http.CMDS.CHANGE_USER_SETTINGS)
+
+              }
+
+              override fun disconnected() {
+                  log.d("disconnected")
+
+                    Toast.makeText(this@SettingsActivity,resources.getString(R.string.internet_conn_error),Toast.LENGTH_SHORT).show()
+              }
+
+          })
+
       }
         return true
     }
@@ -221,5 +248,26 @@ class SettingsActivity : BaseActivity() ,Viewer{
     override fun onStop() {
         changed = false
         super.onStop()
+    }
+
+
+    override fun onBackPressed() {
+        username.hideKeyboard()
+        name.hideKeyboard()
+
+        Functions.hideSoftKeyboard(this)
+
+        super.onBackPressed()
+    }
+
+    fun View.showKeyboard() {
+        this.requestFocus()
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun View.hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 }

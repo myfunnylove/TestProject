@@ -61,7 +61,7 @@ public class MusicController extends FrameLayout {
     Formatter mFormatter;
     private ImageButton mPauseButton;
 //    private ImageButton mFfwdButton;
-
+    private ProgressBar loading;
     private ImageButton playlistButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
@@ -249,7 +249,7 @@ public class MusicController extends FrameLayout {
 //                mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
 //            }
 //        }
-
+        loading = (ProgressBar) v.findViewById(R.id.loading) ;
         playlistButton = (ImageButton) v.findViewById(R.id.playlist);
         if (playlistButton != null) {
 //            playlistButton.setOnClickListener(mRewListener);
@@ -517,6 +517,10 @@ public class MusicController extends FrameLayout {
         }
     };
 
+    public void setLoading(boolean isLoad){
+        if (isLoad) loading.setVisibility(View.VISIBLE); else loading.setVisibility(View.GONE);
+    }
+
     private void updatePausePlay() {
 
 
@@ -524,9 +528,11 @@ public class MusicController extends FrameLayout {
             return;
 
         if (mPlayer.isPlaying()) {
+            setLoading(false);
             mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getGet().getResources(), R.drawable.mc_pause,mPauseButton.getContext().getTheme()));
             mPauseButton.setContentDescription(mPauseDescription);
         } else {
+
             mPauseButton.setImageDrawable(VectorDrawableCompat.create(Base.Companion.getGet().getResources(), R.drawable.mc_play,mPauseButton.getContext().getTheme()));
             mPauseButton.setContentDescription(mPlayDescription);
         }
@@ -538,6 +544,7 @@ public class MusicController extends FrameLayout {
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
         } else {
+
             mPlayer.start();
         }
         log.INSTANCE.d("this is+ "+mPlayer.isPlaying());

@@ -27,6 +27,7 @@ import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.*
 import org.main.socforfemale.mvp.Model
+import org.main.socforfemale.pattern.builder.EmptyContainer
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.log
@@ -37,9 +38,8 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 
 
 
-    var emptyContainer         by Delegates.notNull<LinearLayout>()
-    var errorImg               by Delegates.notNull<AppCompatImageView>()
-    var errorText              by Delegates.notNull<TextView>()
+
+
     var postView               by Delegates.notNull<RecyclerView>()
     var progressLay            by Delegates.notNull<ViewGroup>()
     var swipeRefreshLayout     by Delegates.notNull<SwipeRefreshLayout>()
@@ -54,7 +54,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     var manager: LinearLayoutManager?  = null
     var expanded                      = false
 
-
+    lateinit var emptyContainer:EmptyContainer
     var scroll: EndlessRecyclerViewScrollListener? = null
     companion object {
         var TAG:String   = "ProfileFragment"
@@ -96,16 +96,19 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 
         log.d("init profil fragment")
 
-        emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
-        errorImg       = rootView.findViewById(R.id.errorImg)       as AppCompatImageView
-        errorText      = rootView.findViewById(R.id.errorText)      as TextView
+
         progressLay    = rootView.findViewById(R.id.progressLay)    as ViewGroup
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout)    as SwipeRefreshLayout
 
         postView     = rootView.findViewById(R.id.postList)         as RecyclerView
 
 
+        emptyContainer = EmptyContainer.Builder()
+                .setIcon(R.drawable.account_light)
+                .setText(R.string.error_empty_universal)
+                .initLayoutForFragment(rootView)
 
+                .build()
 
 
         manager = LinearLayoutManager(Base.get)
@@ -233,7 +236,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
         log.e("ProfileFragment => method => failedGetList errorCode => $error")
                 if (postAdapter != null && postAdapter!!.feeds.posts.size != 0){
                     log.e("list bor lekin xatolik shundo ozini qoldiramiz")
-                    emptyContainer.visibility = View.GONE
+                    emptyContainer.hide()
                     postView.visibility       = View.VISIBLE
 
 
@@ -280,7 +283,8 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
             swipeRefreshLayout.isRefreshing = false
 
             scroll!!.resetState()
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
+
             progressLay.visibility    = View.GONE
 
             postView.visibility = View.VISIBLE
@@ -370,7 +374,8 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     fun closeLoadMore() {
         if (oldpostList == null || oldpostList!!.posts.size <= 0){
             postView.visibility = View.GONE
-            emptyContainer.visibility = View.VISIBLE
+            emptyContainer.show()
+
         }
         log.d("hide load more")
         scroll!!.resetState()
@@ -471,6 +476,7 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        if(controller != null) controller!!.setLoading(false);
 
     }
 
@@ -585,6 +591,14 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
                 if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                     pause()
                 }else{
+                    if(controller == null)
+                    {
+                        setController()
+                        controller!!.show()
+                    }
+                    controller!!.setLoading(true);
+
+
                     musicSrv!!.setList(listSong)
                     musicSrv!!.setSong(position)
                     musicSrv!!.playSong()
@@ -596,6 +610,13 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
 //                        controller!!.show()
                 }
             }else{
+                if(controller == null)
+                {
+                    setController()
+                    controller!!.show()
+                }
+                controller!!.setLoading(true);
+
                 musicSrv!!.setList(listSong)
                 musicSrv!!.setSong(position)
                 musicSrv!!.playSong()
@@ -625,6 +646,10 @@ class MyProfileFragment : BaseFragment() , View.OnClickListener, AdapterClicker,
         }else{
             Toast.makeText(Base.get, Base.get.resources.getString(R.string.error_something), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun createProgressForAvatar(status: Int) {
+        postAdapter!!.swapPhotoProgress(status)
     }
 
 }

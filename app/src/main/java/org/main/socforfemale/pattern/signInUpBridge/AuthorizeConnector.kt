@@ -1,4 +1,4 @@
-package org.main.socforfemale.pattern.signInUp
+package org.main.socforfemale.pattern.signInUpBridge
 
 /**
  * Created by Sarvar on 28.08.2017.

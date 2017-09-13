@@ -16,6 +16,7 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +68,7 @@ public class PhotoPickerFragment extends Fragment {
 
   private int SCROLL_THRESHOLD = 30;
   int column;
-
+  private CameraClickListener listener;
   public static int COUNT_MAX = 4;
   private final static String EXTRA_CAMERA = "camera";
   private final static String EXTRA_COLUMN = "column";
@@ -185,8 +186,10 @@ public class PhotoPickerFragment extends Fragment {
     photoGridAdapter.setOnCameraClickListener(new OnClickListener() {
       @Override public void onClick(View view) {
         if (!PermissionsUtils.checkCameraPermission(PhotoPickerFragment.this)) return;
+
         if (!PermissionsUtils.checkWriteStoragePermission(PhotoPickerFragment.this)) return;
-        openCamera();
+
+      openCamera();
       }
     });
 
@@ -227,15 +230,14 @@ public class PhotoPickerFragment extends Fragment {
     try {
       Intent intent = captureManager.dispatchTakePictureIntent();
       startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ActivityNotFoundException e) {
-      // TODO No Activity Found to handle Intent
-      e.printStackTrace();
+    } catch (IOException | ActivityNotFoundException e) {
+      Log.d("CAPTURE",e.toString());
     }
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    Log.d("CAPTURE","intent req ="+requestCode +" res ="+resultCode+" data ="+data );
     if (requestCode == ImageCaptureManager.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
       if (captureManager == null) {
@@ -261,6 +263,8 @@ public class PhotoPickerFragment extends Fragment {
       switch (requestCode) {
         case PermissionsConstant.REQUEST_CAMERA:
         case PermissionsConstant.REQUEST_EXTERNAL_WRITE:
+          Log.d("CAPTURE","click 4");
+
           if (PermissionsUtils.checkWriteStoragePermission(this) &&
                   PermissionsUtils.checkCameraPermission(this)) {
             openCamera();
@@ -321,5 +325,15 @@ public class PhotoPickerFragment extends Fragment {
     }
 
     mGlideRequestManager.resumeRequests();
+  }
+
+  public void setListener(CameraClickListener listener) {
+    this.listener = listener;
+  }
+
+  public interface CameraClickListener{
+
+
+    void onclick();
   }
 }

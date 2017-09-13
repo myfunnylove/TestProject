@@ -1,6 +1,5 @@
-package org.main.socforfemale.pattern;
+package org.main.socforfemale.pattern.builder;
 
-import android.content.Context;
 import android.content.Intent;
 
 import org.main.socforfemale.base.BaseActivity;

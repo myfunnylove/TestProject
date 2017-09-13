@@ -16,9 +16,7 @@ import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.model.Comment
 import org.main.socforfemale.resources.customviews.CircleImageView
 
-/**
- * Created by Michaelan on 7/10/2017.
- */
+
 class CommentAdapter(context:Context,list:ArrayList<Comment>,clicker:AdapterClicker) : RecyclerView.Adapter<CommentAdapter.Holder>() {
 
     val ctx= context

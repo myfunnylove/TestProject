@@ -24,6 +24,7 @@ import org.main.socforfemale.connectors.AdapterClicker
 import org.main.socforfemale.connectors.GoNext
 import org.main.socforfemale.model.User
 import org.main.socforfemale.model.Users
+import org.main.socforfemale.pattern.builder.EmptyContainer
 import org.main.socforfemale.resources.utils.Const
 import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
@@ -42,9 +43,11 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
     var search: EditText       by Delegates.notNull<EditText>()
 //  var searchResult: TextView by Delegates.notNull<TextView>()
     var list: RecyclerView     by Delegates.notNull<RecyclerView>()
-    var errorImg               by Delegates.notNull<AppCompatImageView>()
-    var errorText              by Delegates.notNull<TextView>()
-    var header                 by Delegates.notNull<TextView>()
+
+    var searchLay              by Delegates.notNull<LinearLayout>()
+
+
+    var headerText = ""
     //var progressLay    by Delegates.notNull<ViewGroup>()
     val pattern = "^[\\p{L}0-9]*$"
 
@@ -52,7 +55,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
     var adapter: FollowAdapter?      = null
     val user: User = Base.get.prefs.getUser()
     var changePosition               = -1
-
+    lateinit var emptyContainer:EmptyContainer
 
     companion object {
         var TAG:String  = "FFFFragment"
@@ -79,7 +82,6 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         connectActivity = connActivity
 
     }
-    var emptyContainer by Delegates.notNull<LinearLayout>()
     override fun getFragmentView(): Int {
         return R.layout.fragment_search
     }
@@ -88,18 +90,21 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         Const.TAG = "FFFFragment"
         OZGARGAN_USERNI_IDSI = -1
         QAYSI_HOLATGA_OZGARDI = ProfileFragment.FOLLOW
-        // progressLay    = rootView.findViewById(R.id.progressLay)    as ViewGroup
-        emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
-        errorImg       = rootView.findViewById(R.id.errorImg)       as AppCompatImageView
-        errorText      = rootView.findViewById(R.id.errorText)      as TextView
-        header         = rootView.findViewById(R.id.header)         as TextView
-//        searchResult   = rootView.findViewById(R.id.searchResult)   as TextView
+
         list           = rootView.findViewById(R.id.list)           as RecyclerView
         search         = rootView.findViewById(R.id.search)         as EditText
+        searchLay      = rootView.findViewById(R.id.searchLay)      as LinearLayout
 
+        emptyContainer = EmptyContainer.Builder()
+                .setIcon(R.drawable.account_light)
+                .setText(R.string.error_empty_universal)
+                .initLayoutForFragment(rootView)
+
+                .build()
+        searchLay.visibility = View.GONE
         list.layoutManager = LinearLayoutManager(activity)
         list.setHasFixedSize(true)
-        header.text = arguments.getString("header","")
+        headerText = arguments.getString("header","")
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
         val drawableCompat = VectorDrawableCompat.create(activity.resources,R.drawable.search,search.context.theme)
         search.setCompoundDrawablesWithIntrinsicBounds(drawableCompat,null,null,null)
@@ -129,19 +134,15 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
 
         log.d("${users}")
         if (users.size > 0){
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
             usersList                 = users
             adapter                   = FollowAdapter(Base.get,users,this)
             list.adapter              = adapter
 
 
         }else{
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
+            emptyContainer.show()
 
-            errorImg.setImageDrawable(defaultErrorIcon)
-
-
-            errorText.text = Base.get.resources.getString(R.string.error_empty_search_result)
 
 
         }
@@ -155,23 +156,16 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
             log.e("list bor lekin xatolik shundo ozini qoldiramiz")
 
 
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
+
             list.visibility = View.VISIBLE
 
 
         }else{
             log.e("list null yoki list bom bosh")
 
-            val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error,   errorImg.context.theme)
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.search_light,    errorImg.context.theme)
-            if (error == ""){
-                errorImg.setImageDrawable(defaultErrorIcon)
-            }else{
-                errorImg.setImageDrawable(connectErrorIcon)
+            emptyContainer.show()
 
-            }
-            errorText.text = error
-            emptyContainer.visibility = View.VISIBLE
             list.visibility = View.GONE
         }
 
@@ -211,7 +205,13 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.REQUEST)
 
-            }else{
+            }
+            else if(user.close == 1){
+                log.d("${user.userId} -> ${user.username} ga zapros tashalgan")
+                bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.CLOSE)
+                js.put(ProfileFragment.F_TYPE,ProfileFragment.CLOSE)
+            }
+            else{
                 log.d("${user.userId} -> ${user.username} da xato holat ")
                 bundle.putString(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
                 js.put(ProfileFragment.F_TYPE,ProfileFragment.FOLLOW)
@@ -250,7 +250,7 @@ class FFFFragment :BaseFragment() ,AdapterClicker{
         super.onResume()
         log.d("Onresume $OZGARGAN_USERNI_IDSI $QAYSI_HOLATGA_OZGARDI")
 
-         if (adapter != null && header.text.toString() == Base.get.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
+         if (adapter != null && headerText == Base.get.getString(R.string.following)) followersCount = adapter!!.users.filter { user -> user.follow == 1 }.size
         if (OZGARGAN_USERNI_IDSI != -1 && adapter != null){
             when(QAYSI_HOLATGA_OZGARDI){
                 ProfileFragment.REQUEST ->{

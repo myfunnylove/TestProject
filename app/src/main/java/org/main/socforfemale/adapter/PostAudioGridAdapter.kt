@@ -1,6 +1,7 @@
 package org.main.socforfemale.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
@@ -9,17 +10,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.bgservice.MusicService
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.Audio
+import org.main.socforfemale.model.ResponseData
+import org.main.socforfemale.mvp.Model
+import org.main.socforfemale.resources.utils.log
+import org.main.socforfemale.rest.Http
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URLDecoder
 
-/**
- * Created by Michaelan on 6/28/2017.
- */
-class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener: MusicPlayerListener) : RecyclerView.Adapter<PostAudioGridAdapter.Holder>() {
+
+class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener: MusicPlayerListener,model: Model) : RecyclerView.Adapter<PostAudioGridAdapter.Holder>() {
 
 
     val context                    = ctx
@@ -28,7 +35,16 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
     val isVertical                 = true
     val PLAY                       = R.drawable.play
     val PAUSE                      = R.drawable.pause
+    val model                      = model
+    var user                       = Base.get.prefs.getUser()
+
     val player                     = musicPlayerListener
+    val notFeatured                = VectorDrawableCompat.create(Base.get.resources,R.drawable.plus,context.theme)
+    val featured                   = VectorDrawableCompat.create(Base.get.resources,R.drawable.playlist_remove,context.theme);
+
+
+    val featureMap                 = mapOf<Int,VectorDrawableCompat>( 0 to notFeatured!!,1 to featured!! )
+
     override fun getItemCount(): Int {
         return audios.size
     }
@@ -37,7 +53,7 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
         val audio = audios.get(i)
 
 
-
+        log.d("audio $audio")
 
 
 
@@ -46,29 +62,81 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
 
         val pauseIcon = VectorDrawableCompat.create(Base.get.resources,PAUSE,h.play.context.theme)
 
+        log.d("after notify ${audio.isFeatured}")
 
-
+       if (audio.isFeatured != -1){
+           h.addFavorite.setImageDrawable(featureMap.get(audio.isFeatured))
+           h.addFavorite.tag = featureMap.get(audio.isFeatured)
+       }else{
+           h.addFavorite.visibility = View.GONE
+       }
         h.play.setImageDrawable(playIcon)
+
         if (audio.middlePath == MusicService.PLAYING_SONG_URL && MusicService.PLAY_STATUS == MusicService.PLAYING){
             h.play.tag = PAUSE
             h.play.setImageDrawable(pauseIcon)
-        }
-
-        else{
+        }else{
             h.play.tag = PLAY
             h.play.setImageDrawable(playIcon)
+        }
+
+        h.addFavorite.setOnClickListener{
+
+            val reqObj = JSONObject()
+
+            reqObj.put("user_id",user.userId)
+            reqObj.put("session",user.session)
+            reqObj.put("audio",   audio.audioId)
+
+            model.responseCall(Http.getRequestData(reqObj, Http.CMDS.ADD_SONG_TO_PLAYLIST))
+                    .enqueue(object : Callback<ResponseData>{
+                        override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
+                            log.d("from add audio from favorite $t")
+
+                        }
+
+                        override fun onResponse(call: Call<ResponseData>?, response: Response<ResponseData>?) {
+                           try{
+                               val resp = response!!.body()!!
+                               log.d("from add audio from favorite $resp")
+                               if (resp.res == "0"){
+
+                                   if(h.addFavorite.tag == featureMap.get(0)){
+                                       h.addFavorite.setImageDrawable(featureMap.get(1))
+                                       h.addFavorite.tag = featureMap.get(1)
+                                       audios.get(h.adapterPosition).isFeatured = 1
+                                       log.d("to notify ${h.adapterPosition}")
+
+                                       notifyItemChanged(h.adapterPosition)
+                                       notifyDataSetChanged()
+                                   }else{
+                                       h.addFavorite.setImageDrawable(featureMap.get(0))
+                                       h.addFavorite.tag = featureMap.get(0)
+                                       audios.get(h.adapterPosition).isFeatured = 0
+                                       notifyItemChanged(h.adapterPosition)
+                                       notifyDataSetChanged()
+
+                                   }
+
+                               }
+                           }catch (e:Exception){}
+                        }
+
+                    })
+
+
+            notifyItemChanged(h.adapterPosition)
         }
 
         h.play.setOnClickListener {
 
 
-
+            log.d("audio clicked => ${audios.get(i)}")
             player.playClick(audios,i)
         }
 
-        h.addFavorite.setOnClickListener {
-            Toast.makeText(context,context.resources.getString(R.string.added_to_favorite),Toast.LENGTH_SHORT).show()
-        }
+
+
         h.title.text    = URLDecoder.decode(audio.artist,"UTF-8")
         h.songName.text = URLDecoder.decode(audio.title,"UTF-8")
         h.duration.text = "(${audio.duration})"

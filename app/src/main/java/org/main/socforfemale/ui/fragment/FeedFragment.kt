@@ -35,6 +35,7 @@ import org.main.socforfemale.bgservice.MusicService.MusicBinder
 import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import org.main.socforfemale.adapter.PostAudioGridAdapter
+import org.main.socforfemale.pattern.builder.EmptyContainer
 
 
 /**
@@ -44,9 +45,6 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
 
 
     var feedAdapter:FeedAdapter? = null
-    var emptyContainer         by Delegates.notNull<LinearLayout>()
-    var errorImg               by Delegates.notNull<AppCompatImageView>()
-    var errorText              by Delegates.notNull<TextView>()
     var listFeed               by Delegates.notNull<RecyclerView>()
     var progressLay            by Delegates.notNull<ViewGroup>()
     var swipeRefreshLayout     by Delegates.notNull<SwipeRefreshLayout>()
@@ -54,6 +52,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     val user = Base.get.prefs.getUser()
     var manager:LinearLayoutManager?                      = null
     var scroll:EndlessRecyclerViewScrollListener?         = null
+
+    lateinit var emptyContainer:EmptyContainer
     companion object {
         var TAG: String = "FeedFragment"
 
@@ -86,20 +86,16 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
         Const.TAG = "FeedFragment"
 
         progressLay    = rootView.findViewById(R.id.progressLay)    as ViewGroup
-        emptyContainer = rootView.findViewById(R.id.emptyContainer) as LinearLayout
-        errorImg       = rootView.findViewById(R.id.errorImg)       as AppCompatImageView
-        errorText      = rootView.findViewById(R.id.errorText)      as TextView
+
         swipeRefreshLayout    = rootView.findViewById(R.id.swipeRefreshLayout)    as SwipeRefreshLayout
 
-      //  refreshLayout  = rootView.findViewById(R.id.refresh_layout) as RecyclerRefreshLayout
         listFeed       = rootView.findViewById(R.id.listFeed)       as RecyclerView
 
-//        refreshLayout.setOnRefreshListener {
-//            MainActivity.startFeed = 0
-//            MainActivity.endFeed   = MainActivity.startFeed + 10
-//            refreshLayout.setRefreshing(true)
-//            connectActivity!!.goNext(Const.REFRESH_FEED,"")
-//        }
+        emptyContainer = EmptyContainer.Builder()
+                                       .setIcon(R.drawable.feed_light)
+                                       .setText(R.string.error_empty_feed)
+                                       .initLayoutForFragment(rootView)
+                                       .build()
         manager = LinearLayoutManager(Base.get)
         listFeed.layoutManager = manager
         listFeed.setHasFixedSize(true)
@@ -176,7 +172,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
         log.d("show progress")
 
 
-        emptyContainer.visibility = View.GONE
+        emptyContainer.hide()
         progressLay.visibility = View.VISIBLE
     }
     fun hideProgress(){
@@ -221,23 +217,15 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             log.e("list bor lekin xatolik shundo ozini qoldiramiz")
 
 
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
             listFeed.visibility = View.VISIBLE
 
 
         }else{
             log.e("list null yoki list bom bosh")
 
-            val connectErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.network_error, errorImg.context.theme)
-            val defaultErrorIcon = VectorDrawableCompat.create(Base.get.resources, R.drawable.feed_light,          errorImg.context.theme)
-            if (error == ""){
-                errorImg.setImageDrawable(defaultErrorIcon)
-            }else{
-                errorImg.setImageDrawable(connectErrorIcon)
+            emptyContainer.show()
 
-            }
-            errorText.text = error
-            emptyContainer.visibility = View.VISIBLE
             listFeed.visibility = View.GONE
         }
 
@@ -250,7 +238,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
 
         try {
             scroll!!.resetState()
-            emptyContainer.visibility = View.GONE
+            emptyContainer.hide()
+
             progressLay.visibility = View.GONE
             swipeRefreshLayout.isRefreshing = false
 
@@ -386,6 +375,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     override fun pause() {
         playbackPaused = true
         musicSrv!!.pausePlayer()
+        if(controller != null) controller!!.setLoading(false);
 
     }
 
@@ -402,7 +392,7 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
        if (controller == null){
            controller = MusicController(activity)
            //set previous and next button listeners
-           controller!!.setPrevNextListeners(View.OnClickListener { playNext() }, View.OnClickListener { playPrev() })
+           controller!!.setPrevNextListeners({ playNext() }, { playPrev() })
            //set and show
            controller!!.setMediaPlayer(this)
            controller!!.setAnchorView(rootView.findViewById(R.id.listFeed))
@@ -418,6 +408,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             playbackPaused = false
         }
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
             if (FeedFragment.cachedSongAdapters != null) {
                 FeedFragment.cachedSongAdapters!!.get(FeedFragment.playedSongPosition)!!.notifyDataSetChanged()
@@ -434,6 +426,8 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
             playbackPaused = false
         }
         controller!!.show()
+        controller!!.setLoading(true);
+
         try {
 
             if (FeedFragment.cachedSongAdapters != null) {
@@ -493,13 +487,22 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
     }
 
     override fun playClick(listSong: ArrayList<Audio>, position: Int) {
+
             if (musicSrv != null){
+                log.d("PLAYIN SONG ${musicSrv!!.isPng}")
 
                 if(musicSrv!!.isPng){
-
+                    log.d("PLAYIN SONG in fragment  2 -> ${listSong.get(position).middlePath == MusicService.PLAYING_SONG_URL}")
                     if (MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
                         pause()
                     }else{
+                        if(controller == null)
+                        {
+                            setController()
+                            controller!!.show()
+                        }
+                        controller!!.setLoading(true);
+
                         musicSrv!!.setList(listSong)
                         musicSrv!!.setSong(position)
                         musicSrv!!.playSong()
@@ -508,16 +511,30 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
                             setController()
                             playbackPaused = false
                         }
+
 //                        controller!!.show()
                     }
                 }else{
-                    musicSrv!!.setList(listSong)
-                    musicSrv!!.setSong(position)
-                    musicSrv!!.playSong()
-                    log.d("playbak is paused $playbackPaused")
-                    if (playbackPaused){
-                        setController()
-                        playbackPaused = false
+
+                    if(MusicService.PLAY_STATUS == MusicService.PAUSED && MusicService.PLAYING_SONG_URL == listSong.get(position).middlePath){
+                        start()
+                    }else{
+                        if(controller == null)
+                        {
+                            setController()
+                            controller!!.show()
+                        }
+                        controller!!.setLoading(true);
+
+                        musicSrv!!.setList(listSong)
+                        musicSrv!!.setSong(position)
+                        musicSrv!!.playSong()
+                        log.d("playbak is paused $playbackPaused")
+                        if (playbackPaused){
+                            setController()
+                            playbackPaused = false
+                        }
+
                     }
 //                    controller!!.show()
 

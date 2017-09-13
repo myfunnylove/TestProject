@@ -17,6 +17,7 @@ import android.util.Log;
 
 import org.main.socforfemale.R;
 import org.main.socforfemale.model.Audio;
+import org.main.socforfemale.resources.utils.log;
 import org.main.socforfemale.ui.activity.MainActivity;
 
 /*
@@ -118,7 +119,7 @@ public class MusicService extends Service implements
             player.setDataSource("http://api.maydon.net/new/"+playSong.getMiddlePath());
             MusicService.PLAYING_SONG_URL = playSong.getMiddlePath();
             PLAY_STATUS = PLAYING;
-
+            log.INSTANCE.d("PLAYIN SONG -> "+MusicService.PLAYING_SONG_URL);
         }
         catch(Exception e){
             Log.e("MUSIC SERVICE", "Error setting data source", e);
@@ -129,6 +130,7 @@ public class MusicService extends Service implements
             @Override
             public void onPrepared(MediaPlayer mp) {
                 player.start();
+                createAndShowNotification();
                 Intent intent = new Intent(TAG);
                 LocalBroadcastManager.getInstance(MusicService.this).sendBroadcast(intent);
             }
@@ -161,6 +163,10 @@ public class MusicService extends Service implements
         //start playback
         mp.start();
         //notification
+
+    }
+
+    private void createAndShowNotification(){
         Intent notIntent = new Intent(this, MainActivity.class);
         notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendInt = PendingIntent.getActivity(this, 0,
@@ -195,6 +201,8 @@ public class MusicService extends Service implements
     }
 
     public void  pausePlayer(){
+        log.INSTANCE.d("PLAYING SONG PAUSED");
+
         player.pause();
         //player.release();
         PLAY_STATUS = PAUSED;
@@ -208,6 +216,8 @@ public class MusicService extends Service implements
     }
 
     public void go(){
+        log.INSTANCE.d("PLAYING SONG GO");
+
         player.start();
         Intent intent = new Intent(TAG);
         LocalBroadcastManager.getInstance(MusicService.this).sendBroadcast(intent);
