@@ -228,28 +228,30 @@ class PickedSongAdapter(ctx:Context,adapterClicker:AdapterClicker,listPhoto:Arra
 
                 PublishUniversalActivity.loading = false
 
-                if (response!!.body()!!.res == "0")
-                {
-                    try{
-                        val resObj = JSONObject(Http.getResponseData(response.body()!!.prms))
-                        val audioId = resObj.optString("audio_id")
+                try{
+                    if (response!!.body()!!.res == "0")
+                    {
+                            val resObj = JSONObject(Http.getResponseData(response.body()!!.prms))
+                            val audioId = resObj.optString("audio_id")
 
 
                             PublishUniversalActivity.loadedAudioIds.add(audioId)
 
-                        val song = list.get(id)
-                        song.progress = 100
-                        song.onFail = 0
-                        song.loaded = true
+                            val song = list.get(id)
+                            song.progress = 100
+                            song.onFail = 0
+                            song.loaded = true
 
 
-                        setProgress(id,song)
-                    }catch (e:Exception){
-                        log.d("unzip image_id exception $e")
+                            setProgress(id,song)
+
+                    }else{
+
+                        setError(id,path)
+
                     }
-
-                }else{
-
+                }catch (e:Exception){
+                    log.d("unzip image_id exception $e")
                     setError(id,path)
 
                 }

@@ -2,6 +2,7 @@ package org.main.socforfemale.model
 
 import android.graphics.Path
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 
 /**
  * Created by Michaelan on 6/27/2017.
