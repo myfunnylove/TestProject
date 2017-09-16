@@ -128,5 +128,10 @@
             />
         <service android:name=".bgservice.MusicService" />
     </application>
+<<<<<<< HEAD
 <uses-sdk tools:overrideLibrary="ru.arturvasilov.rxloader"/>
+=======
+    <uses-sdk tools:overrideLibrary="com.l4digital.rxloader" />
+
+>>>>>>> a4a1917db4948e40b118b2866b7738dfe7903fc1
 </manifest>
