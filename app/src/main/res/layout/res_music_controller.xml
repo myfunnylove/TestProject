@@ -34,11 +34,13 @@
         android:paddingTop="4dip">
 
         <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/emptyIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/image_broken_variant_white"
             android:background="@android:color/transparent"
+
             />
 
         <android.support.v7.widget.AppCompatImageButton

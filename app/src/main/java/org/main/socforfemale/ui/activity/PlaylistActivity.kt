@@ -13,8 +13,8 @@ import org.main.socforfemale.R
 import org.main.socforfemale.adapter.PostAudioGridAdapter
 import org.main.socforfemale.base.Base
 import org.main.socforfemale.base.BaseActivity
-import org.main.socforfemale.bgservice.MusicController
-import org.main.socforfemale.bgservice.MusicService
+import org.main.socforfemale.musicplayer.MusicController
+import org.main.socforfemale.musicplayer.MusicService
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.di.DaggerMVPComponent
 import org.main.socforfemale.di.modules.ErrorConnModule
@@ -292,15 +292,25 @@ class PlaylistActivity : BaseActivity(),Viewer , MusicController.MediaPlayerCont
     }
 
     override fun start() {
-        musicSrv!!.go()
-        adapter.notifyDataSetChanged()
+        if(musicSrv != null && musicSrv!!.songs != null) {
+            if (musicSrv!!.songs.size > 0) {
+                musicSrv!!.go()
+                adapter.notifyDataSetChanged()
+            }
+        }else{
+            if (adapter != null && adapter.audios != null && adapter.audios.size > 0){
+                playClick(adapter.audios,0)
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+    override fun goPlayList() {
 
     }
 
-
     private fun setController() {
         if (controller == null){
-            controller = MusicController(this)
+            controller = MusicController(this,true)
             //set previous and next button listeners
             controller!!.setPrevNextListeners(View.OnClickListener { playNext() }, View.OnClickListener { playPrev() })
             //set and show

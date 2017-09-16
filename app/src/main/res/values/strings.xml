@@ -64,5 +64,5 @@
     <string name="try_again">TRY AGAIN</string>
     <string name="Sign_up">SIGN UP</string>
     <string name="error_empty_feed">YOU DON\'T HAVE ANY POSTS</string>
-    <string name="error_empty_universal">EMPTY</string>
+    <string name="error_empty_universal">EMPTY</string>'
 </resources>

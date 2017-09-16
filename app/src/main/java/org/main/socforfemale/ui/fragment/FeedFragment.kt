@@ -2,16 +2,12 @@ package org.main.socforfemale.ui.fragment
 
 import android.content.*
 import android.os.Bundle
-import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import org.main.socforfemale.R
 import org.main.socforfemale.adapter.FeedAdapter
@@ -23,25 +19,26 @@ import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.PostList
 import org.main.socforfemale.resources.customviews.loadmorerecyclerview.EndlessRecyclerViewScrollListener
 import org.main.socforfemale.resources.utils.Const
-import org.main.socforfemale.resources.utils.Prefs
 import org.main.socforfemale.resources.utils.log
 import org.main.socforfemale.ui.activity.FollowActivity
 import org.main.socforfemale.ui.activity.MainActivity
 import kotlin.properties.Delegates
-import org.main.socforfemale.bgservice.MusicController
-import org.main.socforfemale.bgservice.MusicService
+import org.main.socforfemale.musicplayer.MusicController
+import org.main.socforfemale.musicplayer.MusicService
 import org.main.socforfemale.model.Audio
-import org.main.socforfemale.bgservice.MusicService.MusicBinder
+import org.main.socforfemale.musicplayer.MusicService.MusicBinder
 import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import org.main.socforfemale.adapter.PostAudioGridAdapter
 import org.main.socforfemale.pattern.builder.EmptyContainer
+import org.main.socforfemale.ui.activity.PlaylistActivity
 
 
 /**
  * Created by Michaelan on 5/19/2017.
  */
 class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerControl,MusicPlayerListener{
+
 
 
     var feedAdapter:FeedAdapter? = null
@@ -387,12 +384,15 @@ class FeedFragment : BaseFragment(), AdapterClicker,MusicController.MediaPlayerC
         musicSrv!!.go()
     }
 
+    override fun goPlayList() {
 
+        startActivity(Intent(activity,PlaylistActivity::class.java))
+    }
     private fun setController() {
        if (controller == null){
-           controller = MusicController(activity)
+           controller = MusicController(activity,false)
            //set previous and next button listeners
-           controller!!.setPrevNextListeners({ playNext() }, { playPrev() })
+           controller!!.setPrevNextListeners({ playNext() }, { playPrev() },{ goPlayList() })
            //set and show
            controller!!.setMediaPlayer(this)
            controller!!.setAnchorView(rootView.findViewById(R.id.listFeed))

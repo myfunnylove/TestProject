@@ -1,4 +1,4 @@
-package org.main.socforfemale.bgservice;
+package org.main.socforfemale.musicplayer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -80,6 +80,9 @@ public class MusicService extends Service implements
     //pass song list
     public void setList(ArrayList<Audio> theSongs){
         songs=theSongs;
+    }
+    public ArrayList<Audio> getSongs(){
+        return songs;
     }
 
     //binder

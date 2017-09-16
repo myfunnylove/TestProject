@@ -1,4 +1,4 @@
-package org.main.socforfemale.bgservice;
+package org.main.socforfemale.musicplayer;
 
 /**
  * Created by Sarvar on 07.08.2017.
@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -53,18 +54,18 @@ public class MusicController extends FrameLayout {
     private boolean mShowing;
     private boolean mDragging;
     private static final int sDefaultTimeout = 3000;
-    private final boolean mUseFastForward;
+    private boolean isPlaylistActivity = false;
     private boolean mFromXml;
     private boolean mListenersSet;
-    private View.OnClickListener mNextListener, mPrevListener;
+    private View.OnClickListener mNextListener, mPrevListener,playlistListener;
     StringBuilder mFormatBuilder;
     Formatter mFormatter;
     private ImageButton mPauseButton;
 //    private ImageButton mFfwdButton;
     private ProgressBar loading;
-    private ImageButton playlistButton;
-    private ImageButton mNextButton;
-    private ImageButton mPrevButton;
+    private AppCompatImageButton playlistButton,emptyIcon;
+    private AppCompatImageButton mNextButton;
+    private AppCompatImageButton mPrevButton;
     private CharSequence mPlayDescription;
     private CharSequence mPauseDescription;
     //private final AccessibilityManager mAccessibilityManager;
@@ -73,7 +74,7 @@ public class MusicController extends FrameLayout {
         super(context, attrs);
         mRoot = this;
         mContext = context;
-        mUseFastForward = true;
+
         mFromXml = true;
      //   mAccessibilityManager = AccessibilityManager.getGet(context);
     }
@@ -85,10 +86,10 @@ public class MusicController extends FrameLayout {
             initControllerView(mRoot);
     }
 
-    public MusicController(Context context, boolean useFastForward) {
+    public MusicController(Context context, boolean isPlaylistActivity) {
         super(context);
         mContext = context;
-        mUseFastForward = useFastForward;
+        this.isPlaylistActivity = isPlaylistActivity;
         initFloatingWindowLayout();
         initFloatingWindow();
      //   mAccessibilityManager = AccessibilityManager.getGet(context);
@@ -250,20 +251,22 @@ public class MusicController extends FrameLayout {
 //            }
 //        }
         loading = (ProgressBar) v.findViewById(R.id.loading) ;
-        playlistButton = (ImageButton) v.findViewById(R.id.playlist);
+        playlistButton = (AppCompatImageButton) v.findViewById(R.id.playlist);
+        emptyIcon = (AppCompatImageButton) v.findViewById(R.id.emptyIcon);
         if (playlistButton != null) {
-//            playlistButton.setOnClickListener(mRewListener);
-//            if (!mFromXml) {
-//                playlistButton.setVisibility(mUseFastForward ? View.VISIBLE : View.GONE);
-//            }
+            playlistButton.requestFocus();
+
+                emptyIcon.setVisibility(!isPlaylistActivity ? View.VISIBLE : View.GONE);
+                playlistButton.setVisibility(!isPlaylistActivity ? View.VISIBLE : View.GONE);
+
         }
 
         // By default these are hidden. They will be enabled when setPrevNextListeners() is called
-        mNextButton = (ImageButton) v.findViewById(R.id.next);
+        mNextButton = (AppCompatImageButton) v.findViewById(R.id.next);
         if (mNextButton != null && !mFromXml && !mListenersSet) {
             mNextButton.setVisibility(View.GONE);
         }
-        mPrevButton = (ImageButton) v.findViewById(R.id.prev);
+        mPrevButton = (AppCompatImageButton) v.findViewById(R.id.prev);
         if (mPrevButton != null && !mFromXml && !mListenersSet) {
             mPrevButton.setVisibility(View.GONE);
         }
@@ -648,7 +651,12 @@ public class MusicController extends FrameLayout {
             show(sDefaultTimeout);
         }
     };
-
+    private final View.OnClickListener goPlayListActivity = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+         mPlayer.goPlayList();
+        }
+    };
     private final View.OnClickListener mFfwdListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -671,6 +679,11 @@ public class MusicController extends FrameLayout {
             mPrevButton.setOnClickListener(mPrevListener);
             mPrevButton.setEnabled(mPrevListener != null);
         }
+
+        if (playlistButton != null) {
+            playlistButton.setEnabled(playlistListener != null);
+            playlistButton.setOnClickListener(playlistListener);
+        }
     }
 
     public void setPrevNextListeners(View.OnClickListener next, View.OnClickListener prev) {
@@ -689,6 +702,27 @@ public class MusicController extends FrameLayout {
             }
         }
     }
+    public void setPrevNextListeners(View.OnClickListener next, View.OnClickListener prev,View.OnClickListener playlist) {
+        mNextListener = next;
+        mPrevListener = prev;
+        playlistListener = playlist;
+        mListenersSet = true;
+
+        if (mRoot != null) {
+            installPrevNextListeners();
+
+            if (mNextButton != null && !mFromXml) {
+                mNextButton.setVisibility(View.VISIBLE);
+            }
+            if (mPrevButton != null && !mFromXml) {
+                mPrevButton.setVisibility(View.VISIBLE);
+            }
+
+            if (playlistButton != null) {
+                playlistButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     public interface MediaPlayerControl {
         void    start();
@@ -701,7 +735,7 @@ public class MusicController extends FrameLayout {
         boolean canPause();
         boolean canSeekBackward();
         boolean canSeekForward();
-
+        void goPlayList();
         /**
          * Get the audio session id for the player used by this VideoView. This can be used to
          * apply audio effects to the audio track of a video.

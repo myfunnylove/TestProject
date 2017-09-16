@@ -1,7 +1,6 @@
 package org.main.socforfemale.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
@@ -9,11 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import org.json.JSONObject
 import org.main.socforfemale.R
 import org.main.socforfemale.base.Base
-import org.main.socforfemale.bgservice.MusicService
+import org.main.socforfemale.musicplayer.MusicService
 import org.main.socforfemale.connectors.MusicPlayerListener
 import org.main.socforfemale.model.Audio
 import org.main.socforfemale.model.ResponseData
@@ -137,8 +135,10 @@ class PostAudioGridAdapter(ctx:Context,list:ArrayList<Audio>,musicPlayerListener
 
 
 
-        h.title.text    = URLDecoder.decode(audio.artist,"UTF-8")
-        h.songName.text = URLDecoder.decode(audio.title,"UTF-8")
+        h.title.text    = if(audio.artist.isNotEmpty()) URLDecoder.decode(audio.artist,"UTF-8")
+                          else context.resources.getString(R.string.unknown)
+        h.songName.text = if(audio.title.isNotEmpty()) URLDecoder.decode(audio.artist,"UTF-8")
+        else context.resources.getString(R.string.unknown)
         h.duration.text = "(${audio.duration})"
     }
 

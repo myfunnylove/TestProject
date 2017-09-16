@@ -5,14 +5,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 android {
-     signingConfigs {
-         config {
-             keyAlias 'mbank'
-             keyPassword 'So1551567'
-             storeFile file('D:/Muhammadjon/1.Rabota_MBank/Mbank_Old/mbank_key')
-             storePassword 'so1551567'
-         }
-     }
+//     signingConfigs {
+//         config {
+//             keyAlias 'mbank'
+//             keyPassword 'So1551567'
+//             storeFile file('D:/Muhammadjon/1.Rabota_MBank/Mbank_Old/mbank_key')
+//             storePassword 'so1551567'
+//         }
+//     }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -32,7 +32,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-             signingConfig signingConfigs.config
+//             signingConfig signingConfigs.config
             useProguard true
 
         }
@@ -88,5 +88,4 @@ dependencies {
     compile 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
     kapt  'com.google.dagger:dagger-android-processor:2.11'
     compile 'com.squareup.okhttp3:logging-interceptor:3.10.0-SNAPSHOT'
-    compile 'com.l4digital.rxloader:rxloader:2.0.1'
 }
