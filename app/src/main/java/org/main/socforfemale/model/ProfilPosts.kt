@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 data class PostList(@SerializedName("posts")     var posts:ArrayList<Posts>,
                     @SerializedName("followers") var followers:String,
                     @SerializedName("following") var following:String,
-                    @SerializedName("postlar") var postlarSoni:String)
+                    @SerializedName("postlar")   var postlarSoni:String)
 
 data class Posts(      @SerializedName("id")     var id:String,
                        @SerializedName("quote")  var quote:Quote,

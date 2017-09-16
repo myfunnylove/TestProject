@@ -125,7 +125,8 @@ public class PhotoPickerActivity extends AppCompatActivity {
   }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      Log.d("CAPTURE","intent req ="+requestCode +" res ="+resultCode+" data ="+data );
+      super.onActivityResult(requestCode,resultCode,data);
+      Log.d("CAPTURE","intent req a ="+requestCode +" res ="+resultCode+" data ="+data );
 
 
       if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {

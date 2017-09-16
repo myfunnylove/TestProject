@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 android {
 //     signingConfigs {
 //         config {
@@ -86,6 +87,5 @@ dependencies {
     compile 'com.google.dagger:dagger-android:2.11'
     compile 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
     kapt  'com.google.dagger:dagger-android-processor:2.11'
-
     compile 'com.squareup.okhttp3:logging-interceptor:3.10.0-SNAPSHOT'
 }

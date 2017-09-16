@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.main.socforfemale">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -127,5 +128,5 @@
             />
         <service android:name=".bgservice.MusicService" />
     </application>
-
+<uses-sdk tools:overrideLibrary="ru.arturvasilov.rxloader"/>
 </manifest>

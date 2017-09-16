@@ -24,13 +24,13 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 
-class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
+class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) :IPresenter {
 
     val view:Viewer = viewer
 
     val model:Model = modeler
     val context = context
-    fun requestAndResponse(data:JSONObject,cmd:String){
+    override fun requestAndResponse(data:JSONObject, cmd:String){
 
 
         log.v("REQUEST =========>")
@@ -40,10 +40,11 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
         log.e(cmd)
         log.v("REQUEST =========;")
 
-                view.initProgress()
-                view.showProgress()
 
+        view.initProgress()
+        view.showProgress()
                  Observable.just(model.response(Http.getRequestData(data,cmd)))
+
                            .subscribeOn(Schedulers.io())
 
                             .flatMap({res -> res})
@@ -85,7 +86,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
                                  user.userName    = userInfo.info.username
                                  user.profilPhoto = if (userInfo.info.photo150.isNullOrEmpty()) "" else userInfo.info.photo150
                                  user.close       = userInfo.info.close
-
+                                         //TODO GENDER AND NAME SHOULD BE GET
                                  Base.get.prefs.setUser(user)
                                  Observable.just(infoUser)
                              }else{
@@ -103,7 +104,7 @@ class Presenter(viewer: Viewer, modeler:Model,context:BaseActivity) {
 
 
 
-                             view.hideProgress()
+                               view.hideProgress()
 
 
                                 when(response.res){

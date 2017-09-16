@@ -236,6 +236,7 @@ public class PhotoPickerFragment extends Fragment {
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode,resultCode,data);
 
     Log.d("CAPTURE","intent req ="+requestCode +" res ="+resultCode+" data ="+data );
     if (requestCode == ImageCaptureManager.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
