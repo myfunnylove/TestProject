@@ -351,4 +351,13 @@ object Const {
             NOTIF_FR to R.drawable.notification_select,
             PROFIL_FR to R.drawable.account_select
     )
+
+
+    /*PUSH TITLES*/
+    object Push{
+        val LIKE = 1
+        val COMMENT = 2
+        val REQUESTED = 3
+        val OTHER = 4
+    }
 }

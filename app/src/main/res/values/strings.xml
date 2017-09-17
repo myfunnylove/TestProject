@@ -64,5 +64,12 @@
     <string name="try_again">TRY AGAIN</string>
     <string name="Sign_up">SIGN UP</string>
     <string name="error_empty_feed">YOU DON\'T HAVE ANY POSTS</string>
-    <string name="error_empty_universal">EMPTY</string>'
+    <string name="error_empty_universal">EMPTY</string>
+    <string name="user">user $1%s</string>
+    <string name="allow">ALLOW</string>
+
+    <string name="pushLikeBody">liked your post</string>
+    <string name="pushFollowBody">followed you</string>
+    <string name="pushRequestBody">requested you</string>
+    <string name="pushCommentBody">commented your post</string>
 </resources>
